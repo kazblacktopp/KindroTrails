@@ -1,3 +1,3 @@
-# kindro-trails
+# Welcome to Kindro Trails
 
-A web app that displays information about the walking trails around Australia.
+Kindro Trails is a web app that displays information about the walking trails around Australia.
