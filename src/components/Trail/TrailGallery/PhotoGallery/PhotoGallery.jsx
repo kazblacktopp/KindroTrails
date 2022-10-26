@@ -1,5 +1,5 @@
 import TrailPhoto from "../TrailPhoto/TrailPhoto";
-import classes from "./PhotoGallery.module.css";
+// import classes from "./PhotoGallery.module.css";
 
 function PhotoGallery(props) {
   return (

@@ -1,4 +1,4 @@
-import classes from "./GearListItem.module.css";
+// import classes from "./GearListItem.module.css";
 
 function GearListItem(props) {
   return <li>Gear List Item</li>;

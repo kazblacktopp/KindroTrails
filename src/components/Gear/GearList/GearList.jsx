@@ -1,5 +1,5 @@
 import GearListItem from "../GearListItem/GearListItem";
-import classes from "./GearList.module.css";
+// import classes from "./GearList.module.css";
 
 function GearList(props) {
   return (
