@@ -1,6 +1,8 @@
 .summary {
   display: flex;
   flex-direction: column;
+  max-width: 52rem;
+  margin: auto;
 }
 
 .summary h2 {
@@ -10,6 +12,7 @@
   font-style: italic;
   text-transform: uppercase;
   margin-bottom: 1.6rem;
+  color: var(--color-green-950);
 }
 
 .summary p {
@@ -17,27 +20,80 @@
   margin-bottom: 1.6rem;
 }
 
+.summary a {
+  text-decoration: none;
+  color: var(--color-green-950);
+  margin-bottom: 2.4rem;
+  text-align: right;
+}
+
+.callout-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .callout {
-  padding: 1rem 2rem 2rem;
+  padding: 2rem 2rem 2rem;
+  background-color: var(--color-green-100);
+  max-width: 40rem;
+  color: var(--color-green-950);
+}
+
+.callout:first-of-type {
   margin-bottom: 2rem;
-  list-style: none;
-  font-size: var(--font-size-small);
-  color: var(--color-black);
-  background-color: var(--color-grey-500);
 }
 
 .callout h3 {
   margin-bottom: 1rem;
   text-align: center;
-  font-size: var(--font-size-regular);
+  font-size: var(--font-size-title-6-mobile);
   font-weight: 700;
   font-style: italic;
   text-transform: uppercase;
 }
 
+.callout ul {
+  list-style: none;
+  font-size: var(--font-size-small);
+}
+
 /* Tablet Screen Size */
-/* @media only screen and (min-width: 641px) {
-} */
+@media only screen and (min-width: 641px) and (max-width: 1007px) {
+  .summary {
+    max-width: 76rem;
+  }
+
+  .summary h2 {
+    font-size: var(--font-size-title-4);
+  }
+
+  .summary p {
+    font-size: var(--font-size-large);
+  }
+
+  .callout h3 {
+    font-size: var(--font-size-title-5-mobile);
+  }
+
+  .callout ul {
+    font-size: var(--font-size-regular);
+  }
+}
+
+@media only screen and (min-width: 681px) {
+  .callout-container {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-around;
+  }
+
+  .callout:first-of-type {
+    margin-bottom: 0;
+    margin-right: 2rem;
+  }
+}
 
 /* Desktop Screen Size */
 @media only screen and (min-width: 1008px) {
