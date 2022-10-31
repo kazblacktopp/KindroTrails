@@ -3,7 +3,6 @@ import classes from "./TrailSummary.module.css";
 function TrailSummary(props) {
   return (
     <div className={classes.summary}>
-      <h2>Overland Track</h2>
       <p>
         The Overland Track is Australia's premier <strong>alpine</strong> walk.
       </p>
