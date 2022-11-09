@@ -1,30 +1,35 @@
-.summary {
+.section_summary {
   display: flex;
   flex-direction: column;
   max-width: 52rem;
-  margin: auto;
+  margin: 0 auto 3.6rem;
 }
 
-.summary p {
+.summary_container {
+  display: flex;
+  flex-direction: column;
+}
+
+.summary_container p {
   color: var(--color-grey-800);
   margin-bottom: 1.6rem;
 }
 
-.summary a {
+.summary_container a {
   text-decoration: none;
   color: var(--color-green-950);
   margin-bottom: 2.4rem;
   text-align: right;
 }
 
-.callout-container {
+.callout_container {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
 .callout {
-  padding: 2rem 2rem 2rem;
+  padding: 2rem;
   background-color: var(--color-green-100);
   max-width: 40rem;
   color: var(--color-green-950);
@@ -37,7 +42,7 @@
 .callout h3 {
   margin-bottom: 1rem;
   text-align: center;
-  font-size: var(--font-size-title-6-mobile);
+  font-size: var(--font-size-title-3-mobile);
   font-weight: 700;
   font-style: italic;
   text-transform: uppercase;
@@ -45,33 +50,21 @@
 
 .callout ul {
   list-style: none;
-  font-size: var(--font-size-small);
+  font-size: var(--font-size-body-small);
 }
 
 /* Tablet Screen Size */
-@media only screen and (min-width: 641px) and (max-width: 1007px) {
-  .summary {
+@media only screen and (min-width: 641px) {
+  .section_summary {
     max-width: 76rem;
   }
 
-  .summary p {
-    font-size: var(--font-size-large);
+  .summary_container p {
+    font-size: var(--font-size-body-large);
   }
 
-  .callout h3 {
-    font-size: var(--font-size-title-5-mobile);
-  }
-
-  .callout ul {
-    font-size: var(--font-size-regular);
-  }
-}
-
-@media only screen and (min-width: 681px) {
-  .callout-container {
-    display: flex;
+  .callout_container {
     flex-direction: row;
-    align-items: flex-start;
     justify-content: space-around;
   }
 
@@ -83,7 +76,42 @@
 
 /* Desktop Screen Size */
 @media only screen and (min-width: 1008px) {
-  .summary h2 {
-    font-size: var(--font-size-title-3);
+  .section_summary {
+    padding: 4.8rem;
+    margin: 0;
+  }
+
+  .summary_container {
+    margin: 4.8rem;
+  }
+
+  .callout_container {
+    align-items: flex-start;
+  }
+
+  .callout:first-of-type {
+    margin-bottom: 2rem;
+  }
+
+  .callout h3 {
+    font-size: var(--font-size-title-3-desktop);
+  }
+
+  .callout ul {
+    font-size: var(--font-size-body-xsmall);
+  }
+}
+
+@media only screen and (min-width: 1200px) {
+  .summary_container p {
+    font-size: var(--font-size-body-xlarge);
+  }
+
+  .callout h3 {
+    font-size: var(--font-size-title-3-desktop-lg);
+  }
+
+  .callout ul {
+    font-size: var(--font-size-body-regular);
   }
 }
