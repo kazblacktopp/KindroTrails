@@ -4,8 +4,10 @@ specifiers:
   '@testing-library/jest-dom': ^5.16.5
   '@testing-library/react': ^13.4.0
   '@testing-library/user-event': ^13.5.0
+  photoswipe: ^5.3.3
   react: ^18.2.0
   react-dom: ^18.2.0
+  react-photoswipe-gallery: ^2.2.2
   react-scripts: 5.0.1
   web-vitals: ^2.1.4
 
@@ -13,8 +15,10 @@ dependencies:
   '@testing-library/jest-dom': 5.16.5
   '@testing-library/react': 13.4.0_biqbaboplfbrettd7655fr4n2y
   '@testing-library/user-event': 13.5.0_aaq3sbffpfe3jnxzm2zngsddei
+  photoswipe: 5.3.3
   react: 18.2.0
   react-dom: 18.2.0_react@18.2.0
+  react-photoswipe-gallery: 2.2.2_gfk53z5gt55zcvpr7c4mfogy6q
   react-scripts: 5.0.1_mojkb66nrb35nkdmirjres5uq4
   web-vitals: 2.1.4
 
@@ -7104,6 +7108,11 @@ packages:
     resolution: {integrity: sha512-7EAHlyLHI56VEIdK57uwHdHKIaAGbnXPiw0yWbarQZOKaKpvUIgW0jWRVLiatnM+XXlSwsanIBH/hzGMJulMow==}
     dev: false
 
+  /photoswipe/5.3.3:
+    resolution: {integrity: sha512-BUuulwZwkYFKADSe5xf0dd+wf6dws34ZvqP8R3oYHepRauOXoQHvw600sw1HlWd8K0S3LRCS4jxyR5fTuI383Q==}
+    engines: {node: '>= 0.12.0'}
+    dev: false
+
   /picocolors/0.2.1:
     resolution: {integrity: sha512-cMlDqaLEqfSaW8Z7N5Jw+lyIW869EzT73/F5lhtY9cLGoVxSXznfgfXMO0Z5K0o0Q2TkTXq+0KFsdnSe3jDViA==}
     dev: false
@@ -8137,6 +8146,18 @@ packages:
 
   /react-is/18.2.0:
     resolution: {integrity: sha512-xWGDIW6x921xtzPkhiULtthJHoJvBbF3q26fzloPCK0hsvxtPVelvftw3zjbHWSkR2km9Z+4uxbDDK/6Zw9B8w==}
+    dev: false
+
+  /react-photoswipe-gallery/2.2.2_gfk53z5gt55zcvpr7c4mfogy6q:
+    resolution: {integrity: sha512-pe77HMiM5s4F/Q2nw8QHHvRzz7/XYkPMhWpeN71DT/1qfidk8fbZjsuqyAysRnhCGnFKxF9HfKx1BsfPuPTZNw==}
+    peerDependencies:
+      photoswipe: '>= 5.2.2'
+      prop-types: '>= 15.7.0'
+      react: '>= 16.8.0'
+    dependencies:
+      photoswipe: 5.3.3
+      prop-types: 15.8.1
+      react: 18.2.0
     dev: false
 
   /react-refresh/0.11.0:
