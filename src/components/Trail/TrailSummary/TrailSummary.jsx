@@ -1,28 +1,32 @@
+import Card from "../../UI/Card/Card";
 import classes from "./TrailSummary.module.css";
 
 function TrailSummary(props) {
   return (
-    <div className={classes.summary}>
-      <p>
-        The Overland Track is Australia's premier <strong>alpine</strong> walk.
-      </p>
-      <p>
-        The track begins at the iconic Cradle Mountain and ends at Australia’s
-        deepest lake, Lake St Clair.
-      </p>
-      <p>
-        The Cradle Mountain-Lake St Clair National Park is part of the
-        magnificent Tasmanian Wilderness World Heritage Area.
-      </p>
-      <a
-        href="https://parks.tas.gov.au/explore-our-parks/cradle-mountain/overland-track"
-        target="_blank"
-        rel="noreferrer"
-      >
-        Learn more
-      </a>
-      <div className={classes["callout-container"]}>
-        <div className={classes.callout}>
+    <section className={classes["section_summary"]}>
+      <div className={classes["summary_container"]}>
+        <p>
+          The Overland Track is Australia's premier <strong>alpine </strong>
+          walk.
+        </p>
+        <p>
+          The track begins at the iconic Cradle Mountain and ends at Australia’s
+          deepest lake, Lake St Clair.
+        </p>
+        <p>
+          The Cradle Mountain-Lake St Clair National Park is part of the
+          magnificent Tasmanian Wilderness World Heritage Area.
+        </p>
+        <a
+          href="https://parks.tas.gov.au/explore-our-parks/cradle-mountain/overland-track"
+          target="_blank"
+          rel="noreferrer"
+        >
+          Learn more
+        </a>
+      </div>
+      <div className={classes["callout_container"]}>
+        <Card styles={classes.callout}>
           <h3>Fun Facts</h3>
           <ul>
             <li>
@@ -44,8 +48,8 @@ function TrailSummary(props) {
               <strong>Elevation</strong>: 720m to 1,250m
             </li>
           </ul>
-        </div>
-        <div className={classes.callout}>
+        </Card>
+        <Card styles={classes.callout}>
           <h3>Average Temperatures</h3>
           <ul>
             <li>
@@ -61,9 +65,9 @@ function TrailSummary(props) {
               <strong>Spring</strong>: 2.2&#176;C min. 12.9&#176;C max.
             </li>
           </ul>
-        </div>
+        </Card>
       </div>
-    </div>
+    </section>
   );
 }
 
