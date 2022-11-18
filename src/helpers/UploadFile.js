@@ -4,7 +4,7 @@ import {
   IMAGE_MAX_WIDTH,
   THUMBNAIL_MAX_WIDTH,
   IS_THUMBNAIL,
-} from "../config/config";
+} from "../config/appConfig";
 // import classes from "./UploadFile.module.css";
 
 // Resize and Compress file (x2)

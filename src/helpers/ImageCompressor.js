@@ -1,4 +1,4 @@
-import { DEFAULT_SCALE, DEFAULT_QUALITY } from "../config/config";
+import { DEFAULT_SCALE, DEFAULT_QUALITY } from "../config/appConfig";
 
 export default class ImageCompressor {
   constructor(props) {
