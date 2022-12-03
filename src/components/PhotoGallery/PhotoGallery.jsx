@@ -1,26 +1,26 @@
-import { Gallery, Item } from "react-photoswipe-gallery";
-import classes from "./PhotoGallery.module.css";
-import "photoswipe/dist/photoswipe.css";
+import { Gallery, Item } from 'react-photoswipe-gallery';
+import classes from './PhotoGallery.module.css';
+import 'photoswipe/dist/photoswipe.css';
 
 export default function PhotoGallery() {
   // UI elements on fullscreen photo
   const uiElements = [
     {
       // For thumbnails
-      name: "bulletsIndicator",
+      name: 'bulletsIndicator',
       order: 9,
       isButton: false,
-      appendTo: "wrapper",
+      appendTo: 'wrapper',
       onInit: (el, pswpInstance) => {
-        el.style.position = "absolute";
-        el.style.bottom = "20px";
-        el.style.left = "10px";
-        el.style.right = "0";
-        el.style.display = "grid";
-        el.style.gridGap = "10px";
-        el.style.gridTemplateColumns = "repeat(auto-fit, 40px)";
-        el.style.gridTemplateRows = "repeat(auto-fit, 40px)";
-        el.style.justifyContent = "center";
+        el.style.position = 'absolute';
+        el.style.bottom = '20px';
+        el.style.left = '10px';
+        el.style.right = '0';
+        el.style.display = 'grid';
+        el.style.gridGap = '10px';
+        el.style.gridTemplateColumns = 'repeat(auto-fit, 40px)';
+        el.style.gridTemplateRows = 'repeat(auto-fit, 40px)';
+        el.style.justifyContent = 'center';
 
         const dataSource = pswpInstance.options.dataSource;
         const thumbnails = [];
@@ -28,22 +28,22 @@ export default function PhotoGallery() {
         for (let i = 0; i < dataSource.length; i++) {
           const slideData = dataSource[i];
 
-          const thumbnail = document.createElement("div");
-          thumbnail.style.transition = "transform 0.15s ease-in";
-          thumbnail.style.opacity = "0.6";
-          thumbnail.style.cursor = "pointer";
-          thumbnail.onclick = (e) => {
+          const thumbnail = document.createElement('div');
+          thumbnail.style.transition = 'transform 0.15s ease-in';
+          thumbnail.style.opacity = '0.6';
+          thumbnail.style.cursor = 'pointer';
+          thumbnail.onclick = e => {
             const target = e.target;
             const thumbnailEl =
-              target.tagName === "IMG" ? target.parentElement : e.target;
+              target.tagName === 'IMG' ? target.parentElement : e.target;
             pswpInstance.goTo(thumbnails.indexOf(thumbnailEl));
           };
 
-          const thumbnailImage = document.createElement("img");
-          thumbnailImage.setAttribute("src", slideData.msrc);
-          thumbnailImage.style.width = "100%";
-          thumbnailImage.style.height = "100%";
-          thumbnailImage.style.objectFit = "cover";
+          const thumbnailImage = document.createElement('img');
+          thumbnailImage.setAttribute('src', slideData.msrc);
+          thumbnailImage.style.width = '100%';
+          thumbnailImage.style.height = '100%';
+          thumbnailImage.style.objectFit = 'cover';
 
           thumbnail.appendChild(thumbnailImage);
 
@@ -54,18 +54,18 @@ export default function PhotoGallery() {
 
         let prevIndex = -1;
 
-        pswpInstance.on("change", () => {
+        pswpInstance.on('change', () => {
           if (prevIndex >= 0) {
             const prevThumbnail = thumbnails[prevIndex];
-            prevThumbnail.style.opacity = "0.6";
-            prevThumbnail.style.cursor = "pointer";
-            prevThumbnail.style.transform = "scale(1)";
+            prevThumbnail.style.opacity = '0.6';
+            prevThumbnail.style.cursor = 'pointer';
+            prevThumbnail.style.transform = 'scale(1)';
           }
 
           const currentThumbnail = thumbnails[pswpInstance.currIndex];
-          currentThumbnail.style.opacity = "1";
-          currentThumbnail.style.cursor = "unset";
-          currentThumbnail.style.transform = "scale(1.2)";
+          currentThumbnail.style.opacity = '1';
+          currentThumbnail.style.cursor = 'unset';
+          currentThumbnail.style.transform = 'scale(1.2)';
 
           prevIndex = pswpInstance.currIndex;
         });
@@ -75,8 +75,8 @@ export default function PhotoGallery() {
 
   const {
     gallery_box: galleryBox,
-    "gallery-img_box": galleryImgBox,
-    "gallery-img": galleryImg,
+    'gallery-img_box': galleryImgBox,
+    'gallery-img': galleryImg,
   } = classes;
 
   return (
@@ -156,6 +156,26 @@ export default function PhotoGallery() {
                 className={galleryImg}
                 src="https://farm6.staticflickr.com/5584/14985868676_4b802b932a_m.jpg"
                 alt="Thumbnail of river sunset by Michael Hull"
+                ref={ref}
+                onClick={open}
+              />
+            )}
+          </Item>
+        </figure>
+        <figure className={galleryImgBox}>
+          <Item
+            cropped
+            original="https://farm4.staticflickr.com/3920/15008465772_d50c8f0531_h.jpg"
+            thumbnail="https://farm4.staticflickr.com/3920/15008465772_383e697089_m.jpg"
+            width="1600"
+            height="1066"
+            alt="Photo of bear by Thomas Lefebvre"
+          >
+            {({ ref, open }) => (
+              <img
+                className={galleryImg}
+                src="https://farm4.staticflickr.com/3920/15008465772_383e697089_m.jpg"
+                alt="Thumbnail of bear by Thomas Lefebvre"
                 ref={ref}
                 onClick={open}
               />
