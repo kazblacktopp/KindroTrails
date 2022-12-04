@@ -1,51 +1,39 @@
-import Card from "../../UI/Card/Card";
-import classes from "./TrailSummary.module.css";
+import Card from '../../UI/Card/Card';
+import classes from './TrailSummary.module.css';
 
-function TrailSummary(props) {
+export default function TrailSummary({ summaryData }) {
+  const { description, infoURL, facts, temperatures } = summaryData;
+
   return (
-    <section className={classes["section_summary"]}>
-      <div className={classes["summary_container"]}>
-        <p>
-          The Overland Track is Australia's premier <strong>alpine </strong>
-          walk.
-        </p>
-        <p>
-          The track begins at the iconic Cradle Mountain and ends at Australia’s
-          deepest lake, Lake St Clair.
-        </p>
-        <p>
-          The Cradle Mountain-Lake St Clair National Park is part of the
-          magnificent Tasmanian Wilderness World Heritage Area.
-        </p>
-        <a
-          href="https://parks.tas.gov.au/explore-our-parks/cradle-mountain/overland-track"
-          target="_blank"
-          rel="noreferrer"
-        >
+    <section className={classes['section_summary']}>
+      <div className={classes['summary_container']}>
+        <p>{description}</p>
+        <a href={infoURL} target="_blank" rel="noreferrer">
           Learn more
         </a>
       </div>
-      <div className={classes["callout_container"]}>
+      <div className={classes['callout_container']}>
         <Card styles={classes.callout}>
           <h3>Fun Facts</h3>
           <ul>
             <li>
-              <strong>Distance</strong>: 65km (6 days)
+              <strong>Distance</strong>: {facts.distance}
             </li>
             <li>
-              <strong>Direction</strong>: One way
+              <strong>Direction</strong>: {facts.direction}
             </li>
             <li>
-              <strong>Difficulty</strong>: Grade 4
+              <strong>Difficulty</strong>: {facts.difficulty}
             </li>
             <li>
-              <strong>Carry Own Gear?</strong>: Yes
+              <strong>Carry Own Gear?</strong>: {facts.gear ? 'Yes' : 'No'}
             </li>
             <li>
-              <strong>Environment</strong>: Remote Alpine
+              <strong>Environment</strong>: {facts.environment}
             </li>
             <li>
-              <strong>Elevation</strong>: 720m to 1,250m
+              <strong>Elevation</strong>: {facts.elevation.lowest} m to{' '}
+              {facts.elevation.highest} m
             </li>
           </ul>
         </Card>
@@ -53,16 +41,20 @@ function TrailSummary(props) {
           <h3>Average Temperatures</h3>
           <ul>
             <li>
-              <strong>Summer</strong>: 5.8&#176;C min. 18.7&#176;C max.
+              <strong>Summer</strong>: {temperatures.summer.min}&#176;C min.{' '}
+              {temperatures.summer.max}&#176;C max.
             </li>
             <li>
-              <strong>Autumn</strong>: 3.0&#176;C min. 13.4&#176;C max.
+              <strong>Autumn</strong>: {temperatures.autumn.min}&#176;C min.{' '}
+              {temperatures.autumn.max}&#176;C max.
             </li>
             <li>
-              <strong>Winter</strong>: 0.1&#176;C min. 7.7&#176;C max.
+              <strong>Winter</strong>: {temperatures.winter.min}&#176;C min.{' '}
+              {temperatures.winter.max}&#176;C max.
             </li>
             <li>
-              <strong>Spring</strong>: 2.2&#176;C min. 12.9&#176;C max.
+              <strong>Spring</strong>: {temperatures.spring.min}&#176;C min.{' '}
+              {temperatures.spring.max}&#176;C max.
             </li>
           </ul>
         </Card>
@@ -70,5 +62,3 @@ function TrailSummary(props) {
     </section>
   );
 }
-
-export default TrailSummary;
