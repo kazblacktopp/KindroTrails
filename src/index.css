@@ -86,3 +86,19 @@ body {
   margin: 0;
   padding: 0;
 }
+
+.pswp__default-caption {
+  top: 100px;
+  bottom: unset !important;
+}
+
+.pswp__default-caption a {
+  color: white !important;
+}
+
+@media only screen and (min-width: 641px) {
+  .pswp__default-caption {
+    top: 0;
+    bottom: unset !important;
+  }
+}

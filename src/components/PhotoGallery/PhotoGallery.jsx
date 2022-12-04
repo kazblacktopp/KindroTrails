@@ -1,8 +1,8 @@
 import { Gallery, Item } from 'react-photoswipe-gallery';
-import classes from './PhotoGallery.module.css';
 import 'photoswipe/dist/photoswipe.css';
+import classes from './PhotoGallery.module.css';
 
-export default function PhotoGallery() {
+export default function PhotoGallery({ photos }) {
   // UI elements on fullscreen photo
   const uiElements = [
     {
@@ -79,130 +79,35 @@ export default function PhotoGallery() {
     'gallery-img': galleryImg,
   } = classes;
 
+  const photosContent = Object.values(photos).map((photo, i) => {
+    return (
+      <figure key={`image_${i}`} className={galleryImgBox}>
+        <Item
+          cropped
+          original={photo['image_url']}
+          thumbnail={photo['image_thumbnail_url']}
+          width={photo['image_width']}
+          height={photo['image_height']}
+          alt={photo['image_alt']}
+          caption={photo['image_attribution_html']}
+        >
+          {({ ref, open }) => (
+            <img
+              className={galleryImg}
+              src={photo['image_thumbnail_url']}
+              alt=""
+              ref={ref}
+              onClick={open}
+            />
+          )}
+        </Item>
+      </figure>
+    );
+  });
+
   return (
-    <Gallery uiElements={uiElements}>
-      <div className={galleryBox}>
-        <figure className={galleryImgBox}>
-          <Item
-            cropped
-            original="https://farm4.staticflickr.com/3894/15008518202_c265dfa55f_h.jpg"
-            thumbnail="https://farm4.staticflickr.com/3894/15008518202_b016d7d289_m.jpg"
-            width="1600"
-            height="1600"
-            alt="Photo of seashore by Folkert Gorter"
-          >
-            {({ ref, open }) => (
-              <img
-                className={galleryImg}
-                src="https://farm4.staticflickr.com/3894/15008518202_b016d7d289_m.jpg"
-                alt="Thumbnail of seashore by Folkert Gorter"
-                ref={ref}
-                onClick={open}
-              />
-            )}
-          </Item>
-        </figure>
-        <figure className={galleryImgBox}>
-          <Item
-            cropped
-            original="https://farm6.staticflickr.com/5591/15008867125_b61960af01_h.jpg"
-            thumbnail="https://farm6.staticflickr.com/5591/15008867125_68a8ed88cc_m.jpg"
-            width="1600"
-            height="1068"
-            alt="Photo of mountain lake by Samuel Rohl"
-          >
-            {({ ref, open }) => (
-              <img
-                className={galleryImg}
-                src="https://farm6.staticflickr.com/5591/15008867125_68a8ed88cc_m.jpg"
-                alt="Thumbnail of mountain lake by Samuel Rohl"
-                ref={ref}
-                onClick={open}
-              />
-            )}
-          </Item>
-        </figure>
-        <figure className={galleryImgBox}>
-          <Item
-            cropped
-            original="https://farm4.staticflickr.com/3902/14985871946_86abb8c56f_b.jpg"
-            thumbnail="https://farm4.staticflickr.com/3902/14985871946_86abb8c56f_m.jpg"
-            width="1600"
-            height="1066"
-            alt="Photo of fog in the village by Ales Krivec"
-          >
-            {({ ref, open }) => (
-              <img
-                className={galleryImg}
-                src="https://farm4.staticflickr.com/3902/14985871946_86abb8c56f_m.jpg"
-                alt="Thumbnail of fog in the village by Ales Krivec"
-                ref={ref}
-                onClick={open}
-              />
-            )}
-          </Item>
-        </figure>
-        <figure className={galleryImgBox}>
-          <Item
-            cropped
-            original="https://farm6.staticflickr.com/5584/14985868676_b51baa4071_h.jpg"
-            thumbnail="https://farm6.staticflickr.com/5584/14985868676_4b802b932a_m.jpg"
-            width="1600"
-            height="1066"
-            alt="Photo of river sunset by Michael Hull"
-          >
-            {({ ref, open }) => (
-              <img
-                className={galleryImg}
-                src="https://farm6.staticflickr.com/5584/14985868676_4b802b932a_m.jpg"
-                alt="Thumbnail of river sunset by Michael Hull"
-                ref={ref}
-                onClick={open}
-              />
-            )}
-          </Item>
-        </figure>
-        <figure className={galleryImgBox}>
-          <Item
-            cropped
-            original="https://farm4.staticflickr.com/3920/15008465772_d50c8f0531_h.jpg"
-            thumbnail="https://farm4.staticflickr.com/3920/15008465772_383e697089_m.jpg"
-            width="1600"
-            height="1066"
-            alt="Photo of bear by Thomas Lefebvre"
-          >
-            {({ ref, open }) => (
-              <img
-                className={galleryImg}
-                src="https://farm4.staticflickr.com/3920/15008465772_383e697089_m.jpg"
-                alt="Thumbnail of bear by Thomas Lefebvre"
-                ref={ref}
-                onClick={open}
-              />
-            )}
-          </Item>
-        </figure>
-        <figure className={galleryImgBox}>
-          <Item
-            cropped
-            original="https://farm4.staticflickr.com/3920/15008465772_d50c8f0531_h.jpg"
-            thumbnail="https://farm4.staticflickr.com/3920/15008465772_383e697089_m.jpg"
-            width="1600"
-            height="1066"
-            alt="Photo of bear by Thomas Lefebvre"
-          >
-            {({ ref, open }) => (
-              <img
-                className={galleryImg}
-                src="https://farm4.staticflickr.com/3920/15008465772_383e697089_m.jpg"
-                alt="Thumbnail of bear by Thomas Lefebvre"
-                ref={ref}
-                onClick={open}
-              />
-            )}
-          </Item>
-        </figure>
-      </div>
+    <Gallery uiElements={uiElements} withCaption>
+      <div className={galleryBox}>{photosContent}</div>
     </Gallery>
   );
 }
