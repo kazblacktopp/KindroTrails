@@ -79,22 +79,24 @@ export default function PhotoGallery({ photos }) {
     'gallery-img': galleryImg,
   } = classes;
 
-  const photosContent = Object.values(photos).map((photo, i) => {
+  const photosContent = photos.map((photo, i) => {
+    const { imageFullscreen, imageThumbnail, imageAttribution } = photo;
+
     return (
       <figure key={`image_${i}`} className={galleryImgBox}>
         <Item
           cropped
-          original={photo['image_url']}
-          thumbnail={photo['image_thumbnail_url']}
-          width={photo['image_width']}
-          height={photo['image_height']}
-          alt={photo['image_alt']}
-          caption={photo['image_attribution_html']}
+          original={imageFullscreen.image}
+          thumbnail={imageThumbnail.image}
+          width={imageFullscreen.width}
+          height={imageFullscreen.height}
+          alt={imageFullscreen.name}
+          caption={imageAttribution}
         >
           {({ ref, open }) => (
             <img
               className={galleryImg}
-              src={photo['image_thumbnail_url']}
+              src={imageThumbnail.image}
               alt=""
               ref={ref}
               onClick={open}
