@@ -2,14 +2,20 @@
   padding: 3rem;
 }
 
-.page_title {
+.title_container {
   text-align: center;
+}
+
+.title_container h1 {
   font-size: var(--font-size-title-1-mobile);
   font-weight: 800;
   font-style: italic;
   text-transform: uppcleercase;
-  margin-bottom: 1.6rem;
   color: var(--color-green-950);
+}
+
+.title_container p {
+  margin-bottom: 1.6rem;
 }
 
 .top-section_container {
@@ -22,7 +28,7 @@
 
 /* Tablet Screen Size */
 @media only screen and (min-width: 641px) {
-  .page_title {
+  .title_container h1 {
     font-size: var(--font-size-title-1-tab);
   }
 }
@@ -33,7 +39,7 @@
     background-color: var(--color-green-50);
   }
 
-  .page_title {
+  .title_container h1 {
     font-size: var(--font-size-title-1-desktop);
   }
 
