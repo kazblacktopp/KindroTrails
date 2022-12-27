@@ -1,13 +1,39 @@
+import { Fragment } from 'react';
 import Card from '../../UI/Card/Card';
 import classes from './TrailSummary.module.css';
 
 export default function TrailSummary({ summaryData }) {
-  const { description, infoURL, facts, temperatures } = summaryData;
+  const {
+    description,
+    infoURL,
+    distance,
+    direction,
+    difficulty,
+    ownGear,
+    environment,
+    elevLowest,
+    elevHighest,
+    summerMin,
+    summerMax,
+    autumnMin,
+    autumnMax,
+    winterMin,
+    winterMax,
+    springMin,
+    springMax,
+  } = summaryData;
+
+  const descriptionLines = description.split(/\n/);
+  const descriptionWithBreaks = descriptionLines.flatMap((line, index) =>
+    index > 0
+      ? [<br key={`br-${index}`} />, <Fragment key={index}>{line}</Fragment>]
+      : [line]
+  );
 
   return (
     <section className={classes['section_summary']}>
       <div className={classes['summary_container']}>
-        <p>{description}</p>
+        <p>{descriptionWithBreaks}</p>
         <a href={infoURL} target="_blank" rel="noreferrer">
           Learn more
         </a>
@@ -17,23 +43,22 @@ export default function TrailSummary({ summaryData }) {
           <h3>Fun Facts</h3>
           <ul>
             <li>
-              <strong>Distance</strong>: {facts.distance}
+              <strong>Distance</strong>: {distance} km
             </li>
             <li>
-              <strong>Direction</strong>: {facts.direction}
+              <strong>Direction</strong>: {direction}
             </li>
             <li>
-              <strong>Difficulty</strong>: {facts.difficulty}
+              <strong>Difficulty</strong>: Level {difficulty}
             </li>
             <li>
-              <strong>Carry Own Gear?</strong>: {facts.gear ? 'Yes' : 'No'}
+              <strong>Carry Own Gear?</strong>: {ownGear}
             </li>
             <li>
-              <strong>Environment</strong>: {facts.environment}
+              <strong>Environment</strong>: {environment}
             </li>
             <li>
-              <strong>Elevation</strong>: {facts.elevation.lowest} m to{' '}
-              {facts.elevation.highest} m
+              <strong>Elevation</strong>: {elevLowest} m to {elevHighest} m
             </li>
           </ul>
         </Card>
@@ -41,20 +66,20 @@ export default function TrailSummary({ summaryData }) {
           <h3>Average Temperatures</h3>
           <ul>
             <li>
-              <strong>Summer</strong>: {temperatures.summer.min}&#176;C min.{' '}
-              {temperatures.summer.max}&#176;C max.
+              <strong>Summer</strong>: {summerMin}&#176;C min. {summerMax}
+              &#176;C max.
             </li>
             <li>
-              <strong>Autumn</strong>: {temperatures.autumn.min}&#176;C min.{' '}
-              {temperatures.autumn.max}&#176;C max.
+              <strong>Autumn</strong>: {autumnMin}&#176;C min. {autumnMax}
+              &#176;C max.
             </li>
             <li>
-              <strong>Winter</strong>: {temperatures.winter.min}&#176;C min.{' '}
-              {temperatures.winter.max}&#176;C max.
+              <strong>Winter</strong>: {winterMin}&#176;C min. {winterMax}
+              &#176;C max.
             </li>
             <li>
-              <strong>Spring</strong>: {temperatures.spring.min}&#176;C min.{' '}
-              {temperatures.spring.max}&#176;C max.
+              <strong>Spring</strong>: {springMin}&#176;C min. {springMax}
+              &#176;C max.
             </li>
           </ul>
         </Card>
