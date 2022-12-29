@@ -3,8 +3,9 @@ import PhotoGallery from '../../PhotoGallery/PhotoGallery';
 import classes from './TrailPage.module.css';
 
 function TrailPage(props) {
-  const { title, country, state, trailImages, ...remainingData } =
-    props.trailData;
+  const { title, country, state, ...remainingData } = props.trailData;
+
+  const { trailImages } = props;
 
   return (
     <main>

@@ -5,7 +5,7 @@ import classes from './TrailSummary.module.css';
 export default function TrailSummary({ summaryData }) {
   const {
     description,
-    infoURL,
+    infoUrl,
     distance,
     direction,
     difficulty,
@@ -34,7 +34,7 @@ export default function TrailSummary({ summaryData }) {
     <section className={classes['section_summary']}>
       <div className={classes['summary_container']}>
         <p>{descriptionWithBreaks}</p>
-        <a href={infoURL} target="_blank" rel="noreferrer">
+        <a href={infoUrl} target="_blank" rel="noreferrer">
           Learn more
         </a>
       </div>
