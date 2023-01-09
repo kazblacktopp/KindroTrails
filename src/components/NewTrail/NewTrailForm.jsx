@@ -1,6 +1,6 @@
 import { Fragment, useState } from 'react';
 import { useRef } from 'react';
-import compressFile from '../../helpers/compressFile';
+import { compressImage } from '../../helpers/compressImage';
 import {
   IMAGE_MAX_WIDTH,
   THUMBNAIL_MAX_WIDTH,
@@ -9,14 +9,15 @@ import {
 import TrailPage from '../Trail/TrailPage/TrailPage';
 import classes from './NewTrailForm.module.css';
 import { uploadToStorage } from '../../helpers/uploadToStorage';
+import { createNewObject } from '../../helpers/createNewObject';
 
 export default function NewTrailForm({ onSubmitNewTrail }) {
   const photoInputRef = useRef();
 
-  const [previewImages, setPreviewImages] = useState([]);
   const [urlInputValue, setUrlInputValue] = useState('');
   const [urlAtrribution, setUrlAttribution] = useState('');
   const [filenamesElArray, setFilenamesElArray] = useState([]);
+  const [previewImages, setPreviewImages] = useState([]);
   const [isPreview, setIsPreview] = useState(false);
 
   const initialTrailState = {
@@ -25,21 +26,39 @@ export default function NewTrailForm({ onSubmitNewTrail }) {
     infoUrl: '',
     country: '',
     state: '',
-    distance: '',
-    direction: '',
-    difficulty: '',
-    ownGear: '',
-    environment: '',
-    elevLowest: '',
-    elevHighest: '',
-    summerMin: '',
-    summerMax: '',
-    autumnMin: '',
-    autumnMax: '',
-    winterMin: '',
-    winterMax: '',
-    springMin: '',
-    springMax: '',
+    facts: {
+      distance: '',
+      time: {
+        timeAmount: '',
+        timeType: '',
+      },
+      direction: '',
+      difficulty: '',
+      ownGear: '',
+      environment: '',
+      elevation: {
+        lowest: '',
+        highest: '',
+      },
+    },
+    temperatures: {
+      summer: {
+        sumMin: '',
+        sumMax: '',
+      },
+      autumn: {
+        autMin: '',
+        autMax: '',
+      },
+      winter: {
+        winMin: '',
+        winMax: '',
+      },
+      spring: {
+        sprMin: '',
+        sprMax: '',
+      },
+    },
     trailImages: [],
   };
 
@@ -48,29 +67,27 @@ export default function NewTrailForm({ onSubmitNewTrail }) {
   function inputChangeHandler(event) {
     event.preventDefault();
 
-    const trailKey = event.target.name;
-    const newValue = event.target.value;
-    const nodeType = event.target.type;
+    const targetInput = event.target;
+    const { name, value, type } = targetInput;
 
-    if (nodeType === 'textarea') {
-      event.target.parentNode.dataset.replicatedValue = newValue;
+    if (type === 'textarea') {
+      targetInput.parentNode.dataset.replicatedValue = value;
     }
 
-    if (trailKey === 'imageURL') {
-      setUrlInputValue(newValue);
+    if (name === 'imageURL') {
+      setUrlInputValue(value);
       return;
     }
 
-    if (trailKey === 'imageAttributionHtml') {
-      setUrlAttribution(newValue);
+    if (name === 'imageAttributionHtml') {
+      setUrlAttribution(value);
       return;
     }
 
     setNewTrail(prevTrailState => {
-      return {
-        ...prevTrailState,
-        [trailKey]: newValue,
-      };
+      const newTrailState = createNewObject(prevTrailState, name, value);
+
+      return newTrailState;
     });
   }
 
@@ -86,13 +103,19 @@ export default function NewTrailForm({ onSubmitNewTrail }) {
     addToFilenameArray(fileListArray);
 
     fileListArray.forEach(file => {
-      compressFile(
+      compressImage(
         file,
         createPreviewImages,
         IMAGE_MAX_WIDTH,
         THUMBNAIL,
         THUMBNAIL_MAX_WIDTH
       );
+    });
+  }
+
+  function createPreviewImages(imageData) {
+    setPreviewImages(prevPreviewState => {
+      return [...prevPreviewState, imageData];
     });
   }
 
@@ -107,12 +130,6 @@ export default function NewTrailForm({ onSubmitNewTrail }) {
       });
 
       return [...prevArrayState, ...newFilenameEls];
-    });
-  }
-
-  function createPreviewImages(imageData) {
-    setPreviewImages(prevPreviewState => {
-      return [...prevPreviewState, imageData];
     });
   }
 
@@ -131,7 +148,7 @@ export default function NewTrailForm({ onSubmitNewTrail }) {
 
     file.attribution = attribution;
 
-    compressFile(
+    compressImage(
       file,
       createPreviewImages,
       IMAGE_MAX_WIDTH,
@@ -165,6 +182,7 @@ export default function NewTrailForm({ onSubmitNewTrail }) {
 
   function displayTrailPreviewHandler(e) {
     e.preventDefault();
+
     setIsPreview(true);
   }
 
@@ -212,6 +230,11 @@ export default function NewTrailForm({ onSubmitNewTrail }) {
 
     onSubmitNewTrail(newTrail);
   }
+
+  const { facts, temperatures } = newTrail;
+  const { timeAmount, timeType } = facts.time;
+  const { lowest, highest } = facts.elevation;
+  const { summer, autumn, winter, spring } = temperatures;
 
   const {
     form_container,
@@ -315,17 +338,37 @@ export default function NewTrailForm({ onSubmitNewTrail }) {
                 type="number"
                 id="distance"
                 name="distance"
-                value={newTrail.distance}
+                value={facts.distance}
                 required
                 onChange={inputChangeHandler}
               />
+            </div>
+            <div>
+              <label>
+                Time to Complete:
+                <input
+                  type="number"
+                  name="timeAmount"
+                  value={timeAmount}
+                  required
+                  onChange={inputChangeHandler}
+                />
+                <select
+                  name="timeType"
+                  value={timeType}
+                  onChange={inputChangeHandler}
+                >
+                  <option value="hours">Hours</option>
+                  <option value="days">Days</option>
+                </select>
+              </label>
             </div>
             <div>
               <label htmlFor="direction">Trail direction:</label>
               <select
                 id="direction"
                 name="direction"
-                value={newTrail.direction}
+                value={facts.direction}
                 required
                 onChange={inputChangeHandler}
               >
@@ -339,7 +382,7 @@ export default function NewTrailForm({ onSubmitNewTrail }) {
               <select
                 id="difficulty"
                 name="difficulty"
-                value={newTrail.difficulty}
+                value={facts.difficulty}
                 required
                 onChange={inputChangeHandler}
               >
@@ -354,9 +397,9 @@ export default function NewTrailForm({ onSubmitNewTrail }) {
             <div>
               <label htmlFor="own-gear">Carry own gear?</label>
               <select
-                name="ownGear"
                 id="own-gear"
-                value={newTrail.ownGear}
+                name="ownGear"
+                value={facts.ownGear}
                 required
                 onChange={inputChangeHandler}
               >
@@ -371,7 +414,7 @@ export default function NewTrailForm({ onSubmitNewTrail }) {
                 type="text"
                 id="environment"
                 name="environment"
-                value={newTrail.environment}
+                value={facts.environment}
                 placeholder="E.g.: Remote Alpine"
                 required
                 onChange={inputChangeHandler}
@@ -383,8 +426,8 @@ export default function NewTrailForm({ onSubmitNewTrail }) {
               <input
                 type="number"
                 id="elevation-low"
-                name="elevLowest"
-                value={newTrail.elevLowest}
+                name="lowest"
+                value={lowest}
                 required
                 onChange={inputChangeHandler}
               />
@@ -394,8 +437,8 @@ export default function NewTrailForm({ onSubmitNewTrail }) {
               <input
                 type="number"
                 id="elevation-high"
-                name="elevHighest"
-                value={newTrail.elevHighest}
+                name="highest"
+                value={highest}
                 required
                 onChange={inputChangeHandler}
               />
@@ -409,8 +452,9 @@ export default function NewTrailForm({ onSubmitNewTrail }) {
               <input
                 type="number"
                 id="summer-min"
-                name="summerMin"
-                value={newTrail.summerMin}
+                name="sumMin"
+                step="0.1"
+                value={summer.sumMin}
                 required
                 onChange={inputChangeHandler}
               />
@@ -420,8 +464,9 @@ export default function NewTrailForm({ onSubmitNewTrail }) {
               <input
                 type="number"
                 id="summer-max"
-                name="summerMax"
-                value={newTrail.summerMax}
+                name="sumMax"
+                step="0.1"
+                value={summer.sumMax}
                 required
                 onChange={inputChangeHandler}
               />
@@ -435,8 +480,9 @@ export default function NewTrailForm({ onSubmitNewTrail }) {
                 <input
                   type="number"
                   id="autumn-min"
-                  name="autumnMin"
-                  value={newTrail.autumnMin}
+                  name="autMin"
+                  step="0.1"
+                  value={autumn.autMin}
                   required
                   onChange={inputChangeHandler}
                 />
@@ -446,8 +492,9 @@ export default function NewTrailForm({ onSubmitNewTrail }) {
                 <input
                   type="number"
                   id="autumn-max"
-                  name="autumnMax"
-                  value={newTrail.autumnMax}
+                  name="autMax"
+                  step="0.1"
+                  value={autumn.autMax}
                   required
                   onChange={inputChangeHandler}
                 />
@@ -459,8 +506,9 @@ export default function NewTrailForm({ onSubmitNewTrail }) {
               <input
                 type="number"
                 id="winter-min"
-                name="winterMin"
-                value={newTrail.winterMin}
+                name="winMin"
+                step="0.1"
+                value={winter.winMin}
                 required
                 onChange={inputChangeHandler}
               />
@@ -470,8 +518,9 @@ export default function NewTrailForm({ onSubmitNewTrail }) {
               <input
                 type="number"
                 id="winter-max"
-                name="winterMax"
-                value={newTrail.winterMax}
+                name="winMax"
+                step="0.1"
+                value={winter.winMax}
                 required
                 onChange={inputChangeHandler}
               />
@@ -484,8 +533,9 @@ export default function NewTrailForm({ onSubmitNewTrail }) {
               <input
                 type="number"
                 id="spring-min"
-                name="springMin"
-                value={newTrail.springMin}
+                name="sprMin"
+                step="0.1"
+                value={spring.sprMin}
                 required
                 onChange={inputChangeHandler}
               />
@@ -495,8 +545,9 @@ export default function NewTrailForm({ onSubmitNewTrail }) {
               <input
                 type="number"
                 id="spring-max"
-                name="springMax"
-                value={newTrail.springMax}
+                name="sprMax"
+                step="0.1"
+                value={spring.sprMax}
                 required
                 onChange={inputChangeHandler}
               />
