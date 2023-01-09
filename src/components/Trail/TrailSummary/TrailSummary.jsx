@@ -3,25 +3,18 @@ import Card from '../../UI/Card/Card';
 import classes from './TrailSummary.module.css';
 
 export default function TrailSummary({ summaryData }) {
+  const { description, infoUrl, facts, temperatures } = summaryData;
   const {
-    description,
-    infoUrl,
     distance,
+    time,
     direction,
     difficulty,
     ownGear,
     environment,
-    elevLowest,
-    elevHighest,
-    summerMin,
-    summerMax,
-    autumnMin,
-    autumnMax,
-    winterMin,
-    winterMax,
-    springMin,
-    springMax,
-  } = summaryData;
+    elevation,
+  } = facts;
+  const { lowest, highest } = elevation;
+  const { summer, autumn, winter, spring } = temperatures;
 
   const descriptionLines = description.split(/\n/);
   const descriptionWithBreaks = descriptionLines.flatMap((line, index) =>
@@ -43,7 +36,8 @@ export default function TrailSummary({ summaryData }) {
           <h3>Fun Facts</h3>
           <ul>
             <li>
-              <strong>Distance</strong>: {distance} km
+              <strong>Distance</strong>: {distance} km ({time.timeAmount}{' '}
+              {time.timeType})
             </li>
             <li>
               <strong>Direction</strong>: {direction}
@@ -58,7 +52,7 @@ export default function TrailSummary({ summaryData }) {
               <strong>Environment</strong>: {environment}
             </li>
             <li>
-              <strong>Elevation</strong>: {elevLowest} m to {elevHighest} m
+              <strong>Elevation</strong>: {lowest} m to {highest} m
             </li>
           </ul>
         </Card>
@@ -66,20 +60,24 @@ export default function TrailSummary({ summaryData }) {
           <h3>Average Temperatures</h3>
           <ul>
             <li>
-              <strong>Summer</strong>: {summerMin}&#176;C min. {summerMax}
-              &#176;C max.
+              <strong>Summer</strong>: (L) {summer.sumMin}&#176;C (H){' '}
+              {summer.sumMax}
+              &#176;C
             </li>
             <li>
-              <strong>Autumn</strong>: {autumnMin}&#176;C min. {autumnMax}
-              &#176;C max.
+              <strong>Autumn</strong>: (L) {autumn.autMin}&#176;C (H){' '}
+              {autumn.autMax}
+              &#176;C
             </li>
             <li>
-              <strong>Winter</strong>: {winterMin}&#176;C min. {winterMax}
-              &#176;C max.
+              <strong>Winter</strong>: (L) {winter.winMin}&#176;C (H){' '}
+              {winter.winMax}
+              &#176;C
             </li>
             <li>
-              <strong>Spring</strong>: {springMin}&#176;C min. {springMax}
-              &#176;C max.
+              <strong>Spring</strong>: (L) {spring.sprMin}&#176;C (H){' '}
+              {spring.sprMax}
+              &#176;C
             </li>
           </ul>
         </Card>
