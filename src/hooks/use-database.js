@@ -9,7 +9,7 @@ import { getDatabase, ref as createRefInDatabase } from 'firebase/database';
 import { firebaseConfig } from '../config/firebaseConfig';
 import { useState } from 'react';
 
-export default function useDatabase() {
+export function useDatabase() {
   const [error, setError] = useState('');
 
   const app = initializeApp(firebaseConfig);
