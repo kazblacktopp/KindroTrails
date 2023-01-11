@@ -7,9 +7,9 @@ import {
   THUMBNAIL,
 } from '../../config/appConfig';
 import TrailPage from '../Trail/TrailPage/TrailPage';
-import classes from './NewTrailForm.module.css';
-import { uploadToStorage } from '../../helpers/uploadToStorage';
 import { createNewObject } from '../../helpers/createNewObject';
+
+import classes from './NewTrailForm.module.css';
 
 export default function NewTrailForm({ onSubmitNewTrail }) {
   const photoInputRef = useRef();
@@ -193,42 +193,7 @@ export default function NewTrailForm({ onSubmitNewTrail }) {
   }
 
   function submitNewTrailHandler() {
-    previewImages.forEach(async imageObj => {
-      const { imageFullscreen, imageThumbnail, imageAttribution } = imageObj;
-
-      const uploadedFullscreenData = await uploadToStorage(imageFullscreen);
-      const uploadedThumbnailData = await uploadToStorage(imageThumbnail);
-
-      const { imageURL: fullscreenURL, imageSnapshot: fullscreenSnapshot } =
-        uploadedFullscreenData;
-
-      const { imageURL: thumbnailURL, imageSnapshot: thumbnailSnapshot } =
-        uploadedThumbnailData;
-
-      const uploadedImageObj = {
-        imageFullscreen: {
-          image: fullscreenURL,
-          name: imageFullscreen.name,
-          width: imageFullscreen.width,
-          size: fullscreenSnapshot.metadata.size,
-          height: imageFullscreen.height,
-          storageRef: fullscreenSnapshot.ref.fullPath,
-        },
-        imageThumbnail: {
-          image: thumbnailURL,
-          name: imageThumbnail.name,
-          size: thumbnailSnapshot.metadata.size,
-          width: imageThumbnail.width,
-          height: imageThumbnail.height,
-          storageRef: thumbnailSnapshot.ref.fullPath,
-        },
-        imageAttribution,
-      };
-
-      newTrail.trailImages.push(uploadedImageObj);
-    });
-
-    onSubmitNewTrail(newTrail);
+    onSubmitNewTrail(newTrail, previewImages);
   }
 
   const { facts, temperatures } = newTrail;

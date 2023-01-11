@@ -18,7 +18,7 @@ function TrailPage(props) {
         </div>
         <div className={classes['top-section_container']}>
           <TrailSummary summaryData={remainingData} />
-          <PhotoGallery photos={trailImages} />
+          <PhotoGallery photos={trailImages} trailTitle={title} />
         </div>
       </div>
     </main>
