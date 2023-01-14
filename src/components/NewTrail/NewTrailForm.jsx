@@ -9,9 +9,11 @@ import {
 import TrailPage from '../Trail/TrailPage/TrailPage';
 import { createNewObject } from '../../helpers/createNewObject';
 
+import { trailData } from '../../config/trailData';
+
 import classes from './NewTrailForm.module.css';
 
-export default function NewTrailForm({ onSubmitNewTrail }) {
+export default function NewTrailForm({ onSubmitNewTrail, onClose }) {
   const photoInputRef = useRef();
 
   const [urlInputValue, setUrlInputValue] = useState('');
@@ -62,7 +64,12 @@ export default function NewTrailForm({ onSubmitNewTrail }) {
     trailImages: [],
   };
 
-  const [newTrail, setNewTrail] = useState(initialTrailState);
+  //   TODO: Save 'newTrailPreview' to a context instead of a component state
+  const [newTrailPreview, setNewTrailPreview] = useState(initialTrailState);
+
+  function loadTestData() {
+    setNewTrailPreview(trailData);
+  }
 
   function inputChangeHandler(event) {
     event.preventDefault();
@@ -84,7 +91,7 @@ export default function NewTrailForm({ onSubmitNewTrail }) {
       return;
     }
 
-    setNewTrail(prevTrailState => {
+    setNewTrailPreview(prevTrailState => {
       const newTrailState = createNewObject(prevTrailState, name, value);
 
       return newTrailState;
@@ -193,10 +200,16 @@ export default function NewTrailForm({ onSubmitNewTrail }) {
   }
 
   function submitNewTrailHandler() {
-    onSubmitNewTrail(newTrail, previewImages);
+    onSubmitNewTrail(newTrailPreview, previewImages);
+
+    // TODO: Upload newTrailPreview and previewImages to TrailContext?
   }
 
-  const { facts, temperatures } = newTrail;
+  function clearNewTrailForm() {
+    setNewTrailPreview(initialTrailState);
+  }
+
+  const { facts, temperatures } = newTrailPreview;
   const { timeAmount, timeType } = facts.time;
   const { lowest, highest } = facts.elevation;
   const { summer, autumn, winter, spring } = temperatures;
@@ -217,16 +230,21 @@ export default function NewTrailForm({ onSubmitNewTrail }) {
     url_input_container,
     url_input_wrapper,
     filename_preview,
-    preview_btn,
   } = classes;
 
   return (
     <Fragment>
       {isPreview && (
         <Fragment>
-          <TrailPage trailData={newTrail} trailImages={previewImages} />
-          <button onClick={closePreviewHandler}>Close</button>
-          <button onClick={submitNewTrailHandler}>Submit</button>
+          <TrailPage trailData={newTrailPreview} trailImages={previewImages} />
+          <div className="action_btns pad-30">
+            <button className="btn btn_red" onClick={closePreviewHandler}>
+              Close
+            </button>
+            <button className="btn btn_green" onClick={submitNewTrailHandler}>
+              Submit
+            </button>
+          </div>
         </Fragment>
       )}
 
@@ -238,7 +256,7 @@ export default function NewTrailForm({ onSubmitNewTrail }) {
               type="text"
               id="title"
               name="title"
-              value={newTrail.title}
+              value={newTrailPreview.title}
               placeholder="Please enter a title for the trail."
               required
               onChange={inputChangeHandler}
@@ -250,7 +268,7 @@ export default function NewTrailForm({ onSubmitNewTrail }) {
               <textarea
                 id="trailDescription"
                 name="description"
-                value={newTrail.description}
+                value={newTrailPreview.description}
                 placeholder="Please enter a description for the trail."
                 rows="3"
                 required
@@ -264,7 +282,7 @@ export default function NewTrailForm({ onSubmitNewTrail }) {
               type="url"
               id="info-url"
               name="infoUrl"
-              value={newTrail.infoUrl}
+              value={newTrailPreview.infoUrl}
               placeholder="E.g.: https://website.com"
               required
               onChange={inputChangeHandler}
@@ -277,7 +295,7 @@ export default function NewTrailForm({ onSubmitNewTrail }) {
                 type="text"
                 id="country"
                 name="country"
-                value={newTrail.country}
+                value={newTrailPreview.country}
                 placeholder="E.g. Australia"
                 required
                 onChange={inputChangeHandler}
@@ -289,7 +307,7 @@ export default function NewTrailForm({ onSubmitNewTrail }) {
                 type="text"
                 id="state"
                 name="state"
-                value={newTrail.state}
+                value={newTrailPreview.state}
                 placeholder="E.g.: Queensland"
                 required
                 onChange={inputChangeHandler}
@@ -532,6 +550,7 @@ export default function NewTrailForm({ onSubmitNewTrail }) {
                 className={photoInput}
               />
               <button
+                className="btn btn_blue"
                 type="button"
                 onClick={() => photoInputRef.current.click()}
               >
@@ -569,13 +588,32 @@ export default function NewTrailForm({ onSubmitNewTrail }) {
             <h3>Uploaded Files:</h3>
             <ul>{filenamesElArray.length !== 0 ? filenamesElArray : ''}</ul>
           </div>
-          <button
-            className={preview_btn}
-            type="button"
-            onClick={displayTrailPreviewHandler}
-          >
-            Preview
+          <div className="action_btns">
+            <div className="clear_close_btn_group">
+              <button className="btn btn_red" type="button" onClick={onClose}>
+                Close
+              </button>
+              <button
+                className="btn btn_yellow"
+                type="button"
+                onClick={clearNewTrailForm}
+              >
+                Clear
+              </button>
+            </div>
+            <button
+              className="btn btn_green"
+              type="button"
+              onClick={displayTrailPreviewHandler}
+            >
+              Preview
+            </button>
+          </div>
+          {/* Removes below button before building for production */}
+          <button className="btn btn_test" type="button" onClick={loadTestData}>
+            Load
           </button>
+          {/* *************************************************** */}
         </form>
       )}
     </Fragment>
