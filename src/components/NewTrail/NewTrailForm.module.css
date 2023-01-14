@@ -1,3 +1,7 @@
+.form_container {
+  padding: 3rem;
+}
+
 .form_container h3,
 .form_container label {
   font-size: var(--font-size-body-regular);
@@ -52,13 +56,7 @@
 }
 
 .photo_input_container button {
-  font: inherit;
   width: fit-content;
-  background: var(--color-green-900);
-  color: white;
-  padding: 0.5rem 1.5rem;
-  border-radius: 5px;
-  border: none;
 }
 
 .photoInput {
@@ -80,12 +78,9 @@
 
 .filename_preview {
   font-size: var(--font-size-body-xsmall);
+  margin-bottom: 3rem;
 }
 
 .filename_preview ul {
   list-style: none;
-}
-
-.preview_btn {
-  align-self: center;
 }
