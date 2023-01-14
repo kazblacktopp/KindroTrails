@@ -53,8 +53,6 @@ function trailStateReducer(state, action) {
     trailLocations: updatedTrailLocations,
   };
 
-  console.log('newObj: ', updatedTrailCtx);
-
   return updatedTrailCtx;
 }
 

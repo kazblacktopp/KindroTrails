@@ -32,19 +32,9 @@ export default function NewTrail({ onClose, onViewTrail }) {
       trailImages: [...uploadedImagesArray],
     };
 
-    // TODO: Set newTrailObj to a Context instead of component state as 'currentTrail'? and load it as the current trail
-    // setNewTrail(() => {
-    //   console.log('Setting New Trail after upload to storage...');
-    //   console.log(newTrailObj);
-
-    //   return newTrailObj;
-    // });
-
     const updateIsSuccessful = await updateDatabase(newTrailObj);
 
     if (!updateIsSuccessful) return;
-
-    console.log('Upload is complete');
 
     trailCxt.addToTrails(newTrailObj);
 
@@ -54,8 +44,6 @@ export default function NewTrail({ onClose, onViewTrail }) {
   }
 
   async function uploadImage(imageDataArray, trailID) {
-    console.log('Starting to upload images to storage...');
-
     const uploadedImagesObjArray = await Promise.all(
       imageDataArray.map(async imageObj => {
         const { imageFullscreen, imageThumbnail, imageAttribution } = imageObj;
@@ -100,8 +88,6 @@ export default function NewTrail({ onClose, onViewTrail }) {
         return uploadedImageObj;
       })
     );
-
-    console.log('Finished uploading images to storage.');
 
     return uploadedImagesObjArray;
   }
