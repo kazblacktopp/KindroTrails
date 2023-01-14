@@ -1,5 +1,5 @@
 export function createNewObject(currentObj, keyName, inputValue) {
-  let newTrailObj = {
+  const newTrailObj = {
     ...currentObj,
   };
 
