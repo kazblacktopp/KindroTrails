@@ -1,0 +1,32 @@
+.nav {
+  margin-right: auto;
+}
+
+.nav li {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  list-style: none;
+}
+
+.nav button {
+  border: none;
+  background: none;
+}
+
+.nav img {
+  width: 5rem;
+  height: 5rem;
+  cursor: pointer;
+  transition: scale 300ms;
+}
+
+.nav img:hover {
+  transform: scale(1.05);
+}
+
+@supports (scale: 1) {
+  .nav img:hover {
+    scale: 1.05;
+  }
+}
