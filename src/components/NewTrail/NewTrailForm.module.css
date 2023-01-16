@@ -1,0 +1,86 @@
+.form_container {
+  padding: 3rem;
+}
+
+.form_container h3,
+.form_container label {
+  font-size: var(--font-size-body-regular);
+  font-weight: 700;
+}
+
+.title,
+.description,
+.info_url,
+.country,
+.state {
+  display: flex;
+  flex-direction: column;
+}
+
+.textarea_grow_wrap {
+  display: grid;
+}
+
+/* Created as a replica of the textarea child element where the default height value is auto and will expand with the content */
+.textarea_grow_wrap::after {
+  content: attr(data-replicated-value) ' ';
+  white-space: pre-wrap;
+  visibility: hidden;
+}
+
+.textarea_grow_wrap > textarea {
+  resize: none;
+  overflow: hidden;
+}
+
+/* Both elements are placed on top of each other - as the pseudo element grows the textarea is forced to grow */
+.textarea_grow_wrap::after,
+.textarea_grow_wrap > textarea {
+  font: inherit;
+  grid-area: 1 / 1 / 2 / 2;
+}
+
+.location_container {
+  display: flex;
+  gap: 20px;
+}
+
+.facts_container {
+  display: grid;
+  /* more styles */
+}
+
+.photo_input_container {
+  display: flex;
+  flex-direction: column;
+}
+
+.photo_input_container button {
+  width: fit-content;
+}
+
+.photoInput {
+  display: none;
+}
+
+.url_input_container {
+  display: flex;
+}
+
+.url_input_container button {
+  align-self: flex-end;
+}
+
+.url_input_wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.filename_preview {
+  font-size: var(--font-size-body-xsmall);
+  margin-bottom: 3rem;
+}
+
+.filename_preview ul {
+  list-style: none;
+}

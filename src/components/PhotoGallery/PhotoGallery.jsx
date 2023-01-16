@@ -2,7 +2,7 @@ import { Gallery, Item } from 'react-photoswipe-gallery';
 import 'photoswipe/dist/photoswipe.css';
 import classes from './PhotoGallery.module.css';
 
-export default function PhotoGallery({ photos }) {
+export default function PhotoGallery({ photos, trailTitle }) {
   // UI elements on fullscreen photo
   const uiElements = [
     {
@@ -31,6 +31,7 @@ export default function PhotoGallery({ photos }) {
           const thumbnail = document.createElement('div');
           thumbnail.style.transition = 'transform 0.15s ease-in';
           thumbnail.style.opacity = '0.6';
+          thumbnail.style.border = '1px solid white';
           thumbnail.style.cursor = 'pointer';
           thumbnail.onclick = e => {
             const target = e.target;
@@ -90,14 +91,14 @@ export default function PhotoGallery({ photos }) {
           thumbnail={imageThumbnail.image}
           width={imageFullscreen.width}
           height={imageFullscreen.height}
-          alt={imageFullscreen.name}
+          alt={`${trailTitle} ${i + 1}`}
           caption={imageAttribution}
         >
           {({ ref, open }) => (
             <img
               className={galleryImg}
               src={imageThumbnail.image}
-              alt=""
+              alt={`${trailTitle} ${i + 1}`}
               ref={ref}
               onClick={open}
             />

@@ -2,23 +2,37 @@ import TrailSummary from '../TrailSummary/TrailSummary';
 import PhotoGallery from '../../PhotoGallery/PhotoGallery';
 import classes from './TrailPage.module.css';
 
-function TrailPage(props) {
-  const { title, country, state, ...remainingData } = props.trailData;
+function TrailPage({ trailData, trailImages }) {
+  const { title, country, state, ...remainingData } = trailData;
 
-  const { trailImages } = props;
+  function capitaliseString(string) {
+    const stringArray = string.toLowerCase().split(' ');
+
+    const capitalisedString = stringArray
+      .map(stringEl => {
+        return stringEl[0].toUpperCase() + stringEl.substring(1);
+      })
+      .join(' ');
+
+    return capitalisedString;
+  }
+
+  const capitalisedTitle = capitaliseString(title);
+  const capitalisedCountry = capitaliseString(country);
+  const capitalisedState = capitaliseString(state);
 
   return (
     <main>
       <div className={classes['section-container']}>
         <div className={classes['title_container']}>
-          <h1>{title}</h1>
+          <h1>{capitalisedTitle}</h1>
           <p>
-            {state}, {country}
+            {capitalisedState}, {capitalisedCountry}
           </p>
         </div>
         <div className={classes['top-section_container']}>
           <TrailSummary summaryData={remainingData} />
-          <PhotoGallery photos={trailImages} />
+          <PhotoGallery photos={trailImages} trailTitle={capitalisedTitle} />
         </div>
       </div>
     </main>
