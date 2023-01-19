@@ -6,81 +6,81 @@ import TrailPage from './components/Trail/TrailPage/TrailPage';
 import NewTrail from './components/NewTrail/NewTrail';
 
 function App() {
-  const trailCxt = useContext(TrailContext);
-  const [addNewTrail, setAddNewTrail] = useState(false);
-  const [viewTrail, setViewTrail] = useState(false);
-  const [selectedTrail, setSelectedTrail] = useState(null);
+	const trailCxt = useContext(TrailContext);
+	const [addNewTrail, setAddNewTrail] = useState(false);
+	const [viewTrail, setViewTrail] = useState(false);
+	const [selectedTrail, setSelectedTrail] = useState(null);
 
-  // Set showAddBtn to true if user is logged in and has admin permissions
-  const [showAddBtn, setShowAddBtn] = useState(true);
+	// Set showAddBtn to true if user is logged in and has admin permissions
+	const [showAddBtn, setShowAddBtn] = useState(true);
 
-  function clickHomeHandler() {
-    setAddNewTrail(false);
-    setViewTrail(false);
+	function clickHomeHandler() {
+		setAddNewTrail(false);
+		setViewTrail(false);
 
-    // If user is logged in and has admin permissions:
-    setShowAddBtn(true);
-  }
+		// If user is logged in and has admin permissions:
+		setShowAddBtn(true);
+	}
 
-  function addNewTrailHandler() {
-    setAddNewTrail(true);
-    setShowAddBtn(false);
-  }
+	function addNewTrailHandler() {
+		setAddNewTrail(true);
+		setShowAddBtn(false);
+	}
 
-  function closeNewTrailFormHandler() {
-    setAddNewTrail(false);
-    setShowAddBtn(true);
-  }
+	function closeNewTrailFormHandler() {
+		setAddNewTrail(false);
+		setShowAddBtn(true);
+	}
 
-  function viewTrailHandler(trailID) {
-    const trail = trailCxt.trails[trailID];
+	function viewTrailHandler(trailID) {
+		const trail = trailCxt.trails[trailID];
 
-    setSelectedTrail(trail);
+		setSelectedTrail(trail);
+		setAddNewTrail(false);
+		setViewTrail(true);
+	}
 
-    setAddNewTrail(false);
-    setViewTrail(true);
-  }
+	let appPages;
 
-  let appPages;
+	if (!viewTrail && !addNewTrail) {
+		appPages = <SearchOptions></SearchOptions>;
+	}
 
-  if (!viewTrail && !addNewTrail) {
-    appPages = <SearchOptions></SearchOptions>;
-  }
+	if (viewTrail && !addNewTrail) {
+		appPages = (
+			<TrailPage
+				trailData={selectedTrail}
+				trailImages={selectedTrail.trailImages}
+			/>
+		);
+	}
 
-  if (viewTrail && !addNewTrail) {
-    appPages = (
-      <TrailPage
-        trailData={selectedTrail}
-        trailImages={selectedTrail.trailImages}
-      />
-    );
-  }
+	if (addNewTrail) {
+		appPages = (
+			<NewTrail
+				onClose={closeNewTrailFormHandler}
+				onViewTrail={viewTrailHandler}
+			/>
+		);
+	}
 
-  if (addNewTrail) {
-    appPages = (
-      <NewTrail
-        onClose={closeNewTrailFormHandler}
-        onViewTrail={viewTrailHandler}
-      />
-    );
-  }
-
-  return (
-    <div className="app_container">
-      <header className="top_header">
-        <NavBar onClickHome={clickHomeHandler}></NavBar>
-        {!addNewTrail && showAddBtn && (
-          <button
-            className="new_trail_btn btn btn_blue"
-            onClick={addNewTrailHandler}
-          >
-            Add New Trail
-          </button>
-        )}
-      </header>
-      {appPages}
-    </div>
-  );
+	return (
+		<div className="app_container">
+			<header className="top_header">
+				<NavBar onClickHome={clickHomeHandler}></NavBar>
+				{!addNewTrail && showAddBtn && (
+					<button
+						className="new_trail_btn btn btn_blue"
+						onClick={addNewTrailHandler}
+					>
+						Add New Trail
+					</button>
+				)}
+			</header>
+			{appPages}
+		</div>
+	);
 }
 
 export default App;
+
