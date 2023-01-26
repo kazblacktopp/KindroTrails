@@ -181,12 +181,15 @@ export default function PhotoGallery({ photos }) {
 					thumbnail={imageThumbnail.image}
 					width={imageFullscreen.width}
 					height={imageFullscreen.height}
+					alt={imageDescription ? imageDescription : ''}
 					caption={imageAttribution}
 				>
 					{({ ref, open }) => (
 						<img
 							className={galleryImg}
 							src={imageThumbnail.image}
+							width={imageThumbnail.width}
+							height={imageThumbnail.height}
 							alt={imageDescription ? imageDescription : ''}
 							ref={ref}
 							onClick={open}
