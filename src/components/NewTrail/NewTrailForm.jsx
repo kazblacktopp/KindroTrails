@@ -171,6 +171,12 @@ export default function NewTrailForm({ onSubmitNewTrail, onClose }) {
 		addToFilenameArray(fileListArray);
 
 		fileListArray.forEach(file => {
+			// TODO: file.attribution needs to be set once user accounts are implemented
+			file.description = imageDescription || null;
+			file.attribution = null;
+
+			// TODO: file.name will need to be unique (randomly generated?)
+
 			compressImage(
 				file,
 				createPreviewImages,
@@ -226,7 +232,7 @@ export default function NewTrailForm({ onSubmitNewTrail, onClose }) {
 			}</p>`;
 		}
 
-		file.imageDescription = imageDescription;
+		file.description = imageDescription || null;
 		file.attribution = attributionHTML;
 
 		compressImage(

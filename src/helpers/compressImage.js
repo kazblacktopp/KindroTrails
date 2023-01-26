@@ -64,7 +64,7 @@ export function compressImage(
 					const imageData = {
 						imageFullscreen,
 						imageThumbnail: imageThumbnail || null,
-						imageDescription: image.imageDescription,
+						imageDescription: image.description,
 						imageAttribution: image.attribution,
 					};
 
