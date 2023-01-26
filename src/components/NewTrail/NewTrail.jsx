@@ -5,7 +5,8 @@ import Card from '../UI/Card/Card';
 import NewTrailForm from './NewTrailForm';
 
 export default function NewTrail({ onClose, onViewTrail }) {
-	const { uploadToStorage, updateDatabase, isLoading, error } = useDatabase();
+	const { uploadToStorage, updateDatabase, queryDatabase, isLoading, error } =
+		useDatabase();
 	const [trailName, setTrailName] = useState('');
 	const [newTrailID, setNewTrailID] = useState(null);
 	const [message, setMessage] = useState(null);
@@ -21,76 +22,99 @@ export default function NewTrail({ onClose, onViewTrail }) {
 		const lowercaseCountry = newTrailData.country.toLowerCase();
 		const lowercaseState = newTrailData.state.toLowerCase();
 
-		const uploadedImagesArray = await uploadImage(newTrailImages, trailID);
+		try {
+			const uploadedImagesArray = await uploadImage(
+				newTrailImages,
+				trailID,
+			);
 
-		const newTrailObj = {
-			...newTrailData,
-			id: trailID,
-			title: lowercaseTitle,
-			country: lowercaseCountry,
-			state: lowercaseState,
-			trailImages: [...uploadedImagesArray],
-		};
+			const newTrailObj = {
+				...newTrailData,
+				id: trailID,
+				title: lowercaseTitle,
+				country: lowercaseCountry,
+				state: lowercaseState,
+				trailImages: [...uploadedImagesArray],
+			};
 
-		const updateIsSuccessful = await updateDatabase(newTrailObj);
+			const updateIsSuccessful = await updateDatabase(newTrailObj);
 
-		if (!updateIsSuccessful) return;
+			if (!updateIsSuccessful)
+				throw new Error('Database update was unsuccessful.');
 
-		trailCxt.updateTrails(newTrailObj);
+			// TODO: The below database query needs testing
+			queryDatabase({
+				queryType: 'trails',
+				queryID: trailID,
+				dataProcessFn: trailCxt.updateTrails,
+			});
 
-		setNewTrailID(trailID);
+			setNewTrailID(trailID);
 
-		setMessage('Trail uploaded successfully!');
+			setMessage('Trail uploaded successfully!');
+		} catch (err) {
+			console.error('uploadNewTrailHandler: ', err);
+		}
 	}
 
 	async function uploadImage(imageDataArray, trailID) {
-		const uploadedImagesObjArray = await Promise.all(
-			imageDataArray.map(async imageObj => {
-				const { imageFullscreen, imageThumbnail, imageAttribution } =
-					imageObj;
+		try {
+			const uploadedImagesObjArray = await Promise.all(
+				imageDataArray.map(async imageObj => {
+					const {
+						imageFullscreen,
+						imageThumbnail,
+						imageAttribution,
+					} = imageObj;
 
-				const uploadedFullscreenData = await uploadToStorage(
-					imageFullscreen,
-					trailID,
-				);
+					const uploadedFullscreenData = await uploadToStorage(
+						imageFullscreen,
+						trailID,
+					);
 
-				const isThumbnail = true;
+					const isThumbnail = true;
 
-				const uploadedThumbnailData = await uploadToStorage(
-					imageThumbnail,
-					trailID,
-					isThumbnail,
-				);
+					const uploadedThumbnailData = await uploadToStorage(
+						imageThumbnail,
+						trailID,
+						isThumbnail,
+					);
 
-				const { url: fullscreenURL, metadata: fullscreenMetadata } =
-					uploadedFullscreenData;
+					if (!uploadedFullscreenData || !uploadedThumbnailData)
+						throw new Error('Unable to upload image to storage');
 
-				const { url: thumbnailURL, metadata: thumbnailMetadata } =
-					uploadedThumbnailData;
+					const { url: fullscreenURL, metadata: fullscreenMetadata } =
+						uploadedFullscreenData;
 
-				const uploadedImageObj = {
-					imageFullscreen: {
-						image: fullscreenURL,
-						name: imageFullscreen.name,
-						size: fullscreenMetadata.size,
-						width: imageFullscreen.width,
-						height: imageFullscreen.height,
-					},
-					imageThumbnail: {
-						image: thumbnailURL,
-						name: imageThumbnail.name,
-						size: thumbnailMetadata.size,
-						width: imageThumbnail.width,
-						height: imageThumbnail.height,
-					},
-					imageAttribution,
-				};
+					const { url: thumbnailURL, metadata: thumbnailMetadata } =
+						uploadedThumbnailData;
 
-				return uploadedImageObj;
-			}),
-		);
+					const uploadedImageObj = {
+						imageFullscreen: {
+							image: fullscreenURL,
+							name: imageFullscreen.name,
+							size: fullscreenMetadata.size,
+							width: imageFullscreen.width,
+							height: imageFullscreen.height,
+						},
+						imageThumbnail: {
+							image: thumbnailURL,
+							name: imageThumbnail.name,
+							size: thumbnailMetadata.size,
+							width: imageThumbnail.width,
+							height: imageThumbnail.height,
+						},
+						imageAttribution,
+					};
 
-		return uploadedImagesObjArray;
+					return uploadedImageObj;
+				}),
+			);
+
+			return uploadedImagesObjArray;
+		} catch (err) {
+			console.error('uploadImage: ', err);
+		}
 	}
 
 	function viewTrailHandler() {

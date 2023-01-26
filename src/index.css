@@ -213,3 +213,13 @@ button:disabled {
 	justify-content: center;
 }
 
+.pswp__button--info svg {
+	margin: 0.2rem 0 0 0.2rem;
+	padding: 0.4rem 0 0 0.4rem;
+}
+
+#pswp__icn-info {
+	fill: none;
+	stroke: white;
+}
+

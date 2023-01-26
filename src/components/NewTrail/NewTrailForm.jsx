@@ -21,10 +21,14 @@ export default function NewTrailForm({ onSubmitNewTrail, onClose }) {
 	const photoInputRef = useRef();
 
 	const [urlInputValue, setUrlInputValue] = useState('');
+	const [imageTitle, setImageTitle] = useState('');
+	const [imageDescription, setImageDescription] = useState('');
 	const [imageAuthor, setImageAuthor] = useState('');
+	const [imageCopyright, setImageCopyright] = useState('');
 	const [imageSource, setImageSource] = useState('');
 	const [imageSourceURL, setImageSourceURL] = useState('');
 	const [imageLicenseName, setImageLicenseName] = useState('');
+	const [needsAttribution, setNeedsAttribution] = useState(false);
 	const [imageLicenseVersion, setImageLicenseVersion] = useState(
 		CC_LICENSE_LATEST_VERSION,
 	);
@@ -92,6 +96,16 @@ export default function NewTrailForm({ onSubmitNewTrail, onClose }) {
 			targetInput.parentNode.dataset.replicatedValue = value;
 		}
 
+		if (name === 'imageTitle') {
+			setImageTitle(value);
+			return;
+		}
+
+		if (name === 'imageDescription') {
+			setImageDescription(value);
+			return;
+		}
+
 		if (name === 'imageURL') {
 			setUrlInputValue(value);
 			return;
@@ -100,6 +114,10 @@ export default function NewTrailForm({ onSubmitNewTrail, onClose }) {
 		if (name === 'imageAuthor') {
 			setImageAuthor(value);
 			return;
+		}
+
+		if (name === 'imageCopyright') {
+			setImageCopyright(value);
 		}
 
 		if (name === 'imageSource') {
@@ -118,8 +136,10 @@ export default function NewTrailForm({ onSubmitNewTrail, onClose }) {
 			if (value === '' || value === 'PDM' || value === 'CC0') {
 				hasVersion = false;
 				setImageLicenseVersion(CC_LICENSE_PDM_VERSION);
+				setNeedsAttribution(false);
 			} else {
 				setImageLicenseVersion(CC_LICENSE_LATEST_VERSION);
+				setNeedsAttribution(true);
 			}
 
 			setImageLicenseName(value);
@@ -184,36 +204,50 @@ export default function NewTrailForm({ onSubmitNewTrail, onClose }) {
 	async function submitUrlHandler(e) {
 		e.preventDefault();
 
-		setUrlInputValue('');
-		setImageAuthor('');
-		setImageSourceURL('');
-		setImageLicenseName('');
-		setLicenseHasVersions(false);
-		setImageLicenseVersion(CC_LICENSE_LATEST_VERSION);
-
-		const licenceBaseURL = CC_LICENSE_BASE_URLS[`URL_${imageLicenseName}`];
-
-		const imageLicenseURL = `${licenceBaseURL}${imageLicenseVersion}`;
-
 		const file = await makeFileFromUrl(urlInputValue);
 
 		addToFilenameArray([file]);
 
-		// TODO: create licenseAcronym using NAME_${imageLicenseName} for use in attributionHTML
+		const licenceBaseURL = CC_LICENSE_BASE_URLS[`URL_${imageLicenseName}`];
+		const imageLicenseURL = `${licenceBaseURL}${imageLicenseVersion}`;
 
-		const attributionHTML = `<a href="${imageSource}">${imageAuthor}</a>, <a href="${imageLicenseURL}">CC BY-SA 3.0</a>, via ${imageSource}`;
+		const title = imageTitle ? imageTitle : 'Photo';
 
+		const acronymArray = imageLicenseName.split('_');
+		const firstAcronymEl = acronymArray.shift();
+
+		const licenseAcronym = firstAcronymEl + ' ' + acronymArray.join('-');
+
+		let attributionHTML = null;
+
+		if (imageLicenseName !== 'PDM' && imageLicenseName !== 'CC0') {
+			attributionHTML = `<p>${title}<br>by <a href="${imageSourceURL}">${imageAuthor}</a>,<br><a href="${imageLicenseURL}">${licenseAcronym} ${imageLicenseVersion}</a><br>${
+				imageCopyright ? imageCopyright : ''
+			}</p>`;
+		}
+
+		file.imageDescription = imageDescription;
 		file.attribution = attributionHTML;
 
-		console.log(file);
+		compressImage(
+			file,
+			createPreviewImages,
+			IMAGE_MAX_WIDTH,
+			THUMBNAIL,
+			THUMBNAIL_MAX_WIDTH,
+		);
 
-		// compressImage(
-		// 	file,
-		// 	createPreviewImages,
-		// 	IMAGE_MAX_WIDTH,
-		// 	THUMBNAIL,
-		// 	THUMBNAIL_MAX_WIDTH,
-		// );
+		setUrlInputValue('');
+		setImageTitle('');
+		setImageDescription('');
+		setImageAuthor('');
+		setImageCopyright('');
+		setImageSource('');
+		setImageSourceURL('');
+		setImageLicenseName('');
+		setNeedsAttribution(false);
+		setLicenseHasVersions(false);
+		setImageLicenseVersion(CC_LICENSE_LATEST_VERSION);
 	}
 
 	async function makeFileFromUrl(url) {
@@ -253,8 +287,6 @@ export default function NewTrailForm({ onSubmitNewTrail, onClose }) {
 
 	function submitNewTrailHandler() {
 		onSubmitNewTrail(newTrailPreview, previewImages);
-
-		// TODO: Upload newTrailPreview and previewImages to TrailContext?
 	}
 
 	function clearNewTrailForm() {
@@ -296,6 +328,57 @@ export default function NewTrailForm({ onSubmitNewTrail, onClose }) {
 	} = classes;
 
 	const disableAddURLBtn = imageLicenseName === '';
+
+	const attributionInputs = (
+		<Fragment>
+			<label htmlFor="trailImageTitle">
+				Enter Image Title (if supplied)
+			</label>
+			<input
+				id="trailImageTitle"
+				type="text"
+				name="imageTitle"
+				value={imageTitle}
+				onChange={inputChangeHandler}
+			/>
+			<label htmlFor="trailImageAuthor">Enter Image Author</label>
+			<input
+				type="text"
+				id="trailImageAuthor"
+				name="imageAuthor"
+				value={imageAuthor}
+				onChange={inputChangeHandler}
+			/>
+			<label htmlFor="trailImageCopyright">
+				Enter Image Copyright Notice (if supplied)
+			</label>
+			<input
+				type="text"
+				id="trailImageCopyright"
+				name="imageCopyright"
+				value={imageCopyright}
+				onChange={inputChangeHandler}
+			/>
+			<label htmlFor="trailImageSource">
+				Enter Image Source (i.e. website where the image was published)
+			</label>
+			<input
+				type="text"
+				id="trailImageSource"
+				name="imageSource"
+				value={imageSource}
+				onChange={inputChangeHandler}
+			/>
+			<label htmlFor="trailImageSourceURL">Enter Image Source URL</label>
+			<input
+				type="text"
+				id="trailImageSourceURL"
+				name="imageSourceURL"
+				value={imageSourceURL}
+				onChange={inputChangeHandler}
+			/>
+		</Fragment>
+	);
 
 	return (
 		<Fragment>
@@ -661,41 +744,18 @@ export default function NewTrailForm({ onSubmitNewTrail, onClose }) {
 									value={urlInputValue}
 									onChange={inputChangeHandler}
 								/>
-								<label htmlFor="trailImageAuthor">
-									Enter Image Author
+								<label htmlFor="trailImageDescription">
+									Enter Image Description (optional)
 								</label>
 								<input
+									id="trailImageDescription"
 									type="text"
-									id="trailImageAuthor"
-									name="imageAuthor"
-									value={imageAuthor}
-									onChange={inputChangeHandler}
-								/>
-								<label htmlFor="trailImageSource">
-									Enter Image Source (i.e. the name of the
-									website where you found the image)
-								</label>
-								<input
-									type="text"
-									id="trailImageSource"
-									name="imageSource"
-									value={imageSource}
-									onChange={inputChangeHandler}
-								/>
-								<label htmlFor="trailImageSourceURL">
-									Enter Image Source URL (i.e. URL where you
-									found the image)
-								</label>
-								<input
-									type="text"
-									id="trailImageSourceURL"
-									name="imageSourceURL"
-									value={imageSourceURL}
+									name="imageDescription"
+									value={imageDescription}
 									onChange={inputChangeHandler}
 								/>
 								<label htmlFor="imageLicenseName">
-									Select the license the image was published
-									under:
+									Select appropriate image re-use license:
 								</label>
 								<select
 									id="imageLicenseName"
@@ -740,6 +800,7 @@ export default function NewTrailForm({ onSubmitNewTrail, onClose }) {
 										<option value="1.0">1.0</option>
 									</select>
 								</label>
+								{needsAttribution && attributionInputs}
 							</div>
 							<button
 								type="button"
