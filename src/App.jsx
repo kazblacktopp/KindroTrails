@@ -5,7 +5,7 @@ import SearchOptions from './components/Search/SearchOptions';
 import TrailPage from './components/Trail/TrailPage/TrailPage';
 import NewTrail from './components/NewTrail/NewTrail';
 
-function App() {
+export default function App() {
 	const trailCxt = useContext(TrailContext);
 	const [addNewTrail, setAddNewTrail] = useState(false);
 	const [viewTrail, setViewTrail] = useState(false);
@@ -18,7 +18,7 @@ function App() {
 		setAddNewTrail(false);
 		setViewTrail(false);
 
-		// If user is logged in and has admin permissions:
+		// TODO: If user is logged in and has admin permissions:
 		setShowAddBtn(true);
 	}
 
@@ -40,11 +40,7 @@ function App() {
 		setViewTrail(true);
 	}
 
-	let appPages;
-
-	if (!viewTrail && !addNewTrail) {
-		appPages = <SearchOptions></SearchOptions>;
-	}
+	let appPages = <SearchOptions></SearchOptions>;
 
 	if (viewTrail && !addNewTrail) {
 		appPages = (
@@ -81,6 +77,4 @@ function App() {
 		</div>
 	);
 }
-
-export default App;
 
