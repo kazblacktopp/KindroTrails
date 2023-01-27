@@ -225,8 +225,6 @@ button:disabled {
 
 .spinner svg {
 	display: block;
-	height: var(--font-size-body-regular);
-	width: var(--font-size-body-regular);
 	fill: var(--color-primary);
 	animation: rotate 2s infinite linear;
 }
