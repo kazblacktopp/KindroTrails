@@ -1,5 +1,4 @@
-import { Fragment, useState } from 'react';
-import { useRef } from 'react';
+import { Fragment, useState, useRef } from 'react';
 import { compressImage } from '../../helpers/compressImage';
 import {
 	IMAGE_MAX_WIDTH,
@@ -11,10 +10,12 @@ import {
 	CC_LICENSE_PDM_VERSION,
 } from '../../config/appConfig';
 import TrailPage from '../Trail/TrailPage/TrailPage';
+import PhotoGallery from '../PhotoGallery/PhotoGallery';
 import { createNewObject } from '../../helpers/createNewObject';
 
 import { trailData } from '../../config/trailData';
 
+import icons from '../../assets/icons.svg';
 import classes from './NewTrailForm.module.css';
 
 export default function NewTrailForm({ onSubmitNewTrail, onClose }) {
@@ -33,9 +34,9 @@ export default function NewTrailForm({ onSubmitNewTrail, onClose }) {
 		CC_LICENSE_LATEST_VERSION,
 	);
 	const [licenseHasVersions, setLicenseHasVersions] = useState(false);
-	const [filenamesElArray, setFilenamesElArray] = useState([]);
 	const [previewImages, setPreviewImages] = useState([]);
 	const [isPreview, setIsPreview] = useState(false);
+	const [isLoading, setIsLoading] = useState(false);
 
 	const initialTrailState = {
 		title: '',
@@ -168,14 +169,14 @@ export default function NewTrailForm({ onSubmitNewTrail, onClose }) {
 
 		const fileListArray = [...files];
 
-		addToFilenameArray(fileListArray);
-
 		fileListArray.forEach(file => {
-			// TODO: file.attribution needs to be set once user accounts are implemented
-			file.description = imageDescription || null;
+			// TODO: `file.attribution` and `file.description` needs to be set once user accounts are implemented
+			file.description = null;
 			file.attribution = null;
 
-			// TODO: file.name will need to be unique (randomly generated?)
+			// TODO: `file.name` may need to be unique (randomly generated?). Is this possible?
+
+			setIsLoading(true);
 
 			compressImage(
 				file,
@@ -191,28 +192,14 @@ export default function NewTrailForm({ onSubmitNewTrail, onClose }) {
 		setPreviewImages(prevPreviewState => {
 			return [...prevPreviewState, imageData];
 		});
-	}
 
-	function addToFilenameArray(fileList) {
-		setFilenamesElArray(prevArrayState => {
-			const newFilenameEls = fileList.map((file, i) => {
-				return (
-					<li key={`imageName_${prevArrayState.length + i + 1}`}>
-						{file.name}
-					</li>
-				);
-			});
-
-			return [...prevArrayState, ...newFilenameEls];
-		});
+		setIsLoading(false);
 	}
 
 	async function submitUrlHandler(e) {
 		e.preventDefault();
 
 		const file = await makeFileFromUrl(urlInputValue);
-
-		addToFilenameArray([file]);
 
 		const licenceBaseURL = CC_LICENSE_BASE_URLS[`URL_${imageLicenseName}`];
 		const imageLicenseURL = `${licenceBaseURL}${imageLicenseVersion}`;
@@ -234,6 +221,8 @@ export default function NewTrailForm({ onSubmitNewTrail, onClose }) {
 
 		file.description = imageDescription || null;
 		file.attribution = attributionHTML;
+
+		setIsLoading(true);
 
 		compressImage(
 			file,
@@ -330,7 +319,9 @@ export default function NewTrailForm({ onSubmitNewTrail, onClose }) {
 		photoInput,
 		url_input_container,
 		url_input_wrapper,
-		filename_preview,
+		photo_preview,
+		preview_header_wrapper,
+		preview_wrapper,
 	} = classes;
 
 	const disableAddURLBtn = imageLicenseName === '';
@@ -384,6 +375,14 @@ export default function NewTrailForm({ onSubmitNewTrail, onClose }) {
 				onChange={inputChangeHandler}
 			/>
 		</Fragment>
+	);
+
+	const spinner = (
+		<div className="spinner">
+			<svg>
+				<use href={`${icons}#icon-loader`}></use>
+			</svg>
+		</div>
 	);
 
 	return (
@@ -809,6 +808,7 @@ export default function NewTrailForm({ onSubmitNewTrail, onClose }) {
 								{needsAttribution && attributionInputs}
 							</div>
 							<button
+								className="btn btn_blue"
 								type="button"
 								onClick={submitUrlHandler}
 								disabled={disableAddURLBtn}
@@ -817,13 +817,18 @@ export default function NewTrailForm({ onSubmitNewTrail, onClose }) {
 							</button>
 						</div>
 					</div>
-					<div className={filename_preview}>
-						<h3>Uploaded Files:</h3>
-						<ul>
-							{filenamesElArray.length !== 0
-								? filenamesElArray
-								: ''}
-						</ul>
+					<div className={photo_preview}>
+						<div className={preview_header_wrapper}>
+							<h3>Uploaded Photos:</h3>
+							{isLoading && spinner}
+						</div>
+						<div className={preview_wrapper}>
+							{previewImages.length ? (
+								<PhotoGallery photos={previewImages} />
+							) : (
+								''
+							)}
+						</div>
 					</div>
 					<div className="action_btns">
 						<div className="clear_close_btn_group">

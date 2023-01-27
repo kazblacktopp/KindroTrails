@@ -1,11 +1,11 @@
 .form_container {
-  padding: 3rem;
+	padding: 3rem;
 }
 
 .form_container h3,
 .form_container label {
-  font-size: var(--font-size-body-regular);
-  font-weight: 700;
+	font-size: var(--font-size-body-regular);
+	font-weight: 700;
 }
 
 .title,
@@ -13,74 +13,91 @@
 .info_url,
 .country,
 .state {
-  display: flex;
-  flex-direction: column;
+	display: flex;
+	flex-direction: column;
 }
 
 .textarea_grow_wrap {
-  display: grid;
+	display: grid;
 }
 
 /* Created as a replica of the textarea child element where the default height value is auto and will expand with the content */
 .textarea_grow_wrap::after {
-  content: attr(data-replicated-value) ' ';
-  white-space: pre-wrap;
-  visibility: hidden;
+	content: attr(data-replicated-value) ' ';
+	white-space: pre-wrap;
+	visibility: hidden;
 }
 
 .textarea_grow_wrap > textarea {
-  resize: none;
-  overflow: hidden;
+	resize: none;
+	overflow: hidden;
 }
 
 /* Both elements are placed on top of each other - as the pseudo element grows the textarea is forced to grow */
 .textarea_grow_wrap::after,
 .textarea_grow_wrap > textarea {
-  font: inherit;
-  grid-area: 1 / 1 / 2 / 2;
+	font: inherit;
+	grid-area: 1 / 1 / 2 / 2;
 }
 
 .location_container {
-  display: flex;
-  gap: 20px;
+	display: flex;
+	gap: 20px;
+	width: 100%;
 }
 
 .facts_container {
-  display: grid;
-  /* more styles */
+	display: grid;
+	/* more styles */
 }
 
 .photo_input_container {
-  display: flex;
-  flex-direction: column;
+	display: flex;
+	flex-direction: column;
 }
 
 .photo_input_container button {
-  width: fit-content;
+	width: fit-content;
 }
 
 .photoInput {
-  display: none;
+	display: none;
 }
 
 .url_input_container {
-  display: flex;
-}
-
-.url_input_container button {
-  align-self: flex-end;
+	display: flex;
+	flex-direction: column;
+	gap: 2rem;
+	margin-bottom: 2rem;
 }
 
 .url_input_wrapper {
-  display: flex;
-  flex-direction: column;
+	display: flex;
+	flex-direction: column;
+	width: 100%;
 }
 
-.filename_preview {
-  font-size: var(--font-size-body-xsmall);
-  margin-bottom: 3rem;
+.url_input_container button {
+	align-self: flex-end;
 }
 
-.filename_preview ul {
-  list-style: none;
+.photo_preview {
+	width: 100%;
+	max-width: 500px;
+	margin-bottom: 2rem;
 }
+
+.preview_header_wrapper {
+	display: flex;
+	align-items: center;
+	margin-bottom: 2rem;
+	gap: 1rem;
+}
+
+.preview_wrapper div {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(59px, 1fr));
+	gap: 0.4rem;
+	list-style: none;
+}
+
