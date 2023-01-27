@@ -216,7 +216,7 @@ export default function NewTrailForm({ onSubmitNewTrail, onClose }) {
 		if (imageLicenseName !== 'PDM' && imageLicenseName !== 'CC0') {
 			attributionHTML = `<p>${title}<br>by <a href="${imageSourceURL}">${imageAuthor}</a>,<br><a href="${imageLicenseURL}">${licenseAcronym} ${imageLicenseVersion}</a><br>${
 				imageCopyright ? imageCopyright : ''
-			}</p>`;
+			}via ${imageSource}</p>`;
 		}
 
 		file.description = imageDescription || null;
