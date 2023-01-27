@@ -1,18 +1,32 @@
 import { Fragment, useContext } from 'react';
 import { useDatabase } from '../../hooks/use-database';
 import TrailContext from '../../store/trail-context';
+import icons from '../../assets/icons.svg';
 import classes from './SearchOptions.module.css';
 
 export default function SearchOptions(props) {
 	const { queryDatabase, isLoading, error } = useDatabase();
 	const trailCtx = useContext(TrailContext);
 
-	const { search_container_outer, search_container_inner, search_btn, soon } =
-		classes;
+	const {
+		search_container_outer,
+		search_container_inner,
+		search_btn,
+		search_spinner,
+		coming_soon,
+	} = classes;
+
+	const spinner = (
+		<div className="spinner">
+			<svg className={search_spinner}>
+				<use href={`${icons}#icon-loader`}></use>
+			</svg>
+		</div>
+	);
 
 	const countryBtnClasses = `btn btn_green ${search_btn}`;
-	const nameBtnClasses = `btn_blue ${search_btn} ${soon}`;
-	const gradeBtnClasses = `btn_red ${search_btn} ${soon}`;
+	const nameBtnClasses = `btn_blue ${search_btn} ${coming_soon}`;
+	const gradeBtnClasses = `btn_red ${search_btn} ${coming_soon}`;
 
 	function searchByCountryHandler() {
 		queryDatabase({
@@ -41,7 +55,7 @@ export default function SearchOptions(props) {
 	);
 
 	if (isLoading) {
-		searchPageContent = <p>Loading....</p>;
+		searchPageContent = spinner;
 	}
 
 	if (error) {
