@@ -322,6 +322,7 @@ export default function NewTrailForm({ onSubmitNewTrail, onClose }) {
 		photo_preview,
 		preview_header_wrapper,
 		preview_wrapper,
+		preveiw_spinner,
 	} = classes;
 
 	const disableAddURLBtn = imageLicenseName === '';
@@ -379,7 +380,7 @@ export default function NewTrailForm({ onSubmitNewTrail, onClose }) {
 
 	const spinner = (
 		<div className="spinner">
-			<svg>
+			<svg className={preveiw_spinner}>
 				<use href={`${icons}#icon-loader`}></use>
 			</svg>
 		</div>
