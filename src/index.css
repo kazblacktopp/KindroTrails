@@ -205,11 +205,11 @@ button:disabled {
 	margin-left: auto;
 }
 
-.msg_card {
+.container_centered {
 	display: flex;
 	width: 100vw;
 	height: 100vh;
-	align-items: center;
+	align-items: flex-start;
 	justify-content: center;
 }
 
@@ -237,5 +237,15 @@ button:disabled {
 	100% {
 		transform: rotate(360deg);
 	}
+}
+
+.feedback {
+	width: 90%;
+	max-width: 50rem;
+	padding: 3rem;
+}
+
+.feedback p {
+	margin-bottom: 2rem;
 }
 
