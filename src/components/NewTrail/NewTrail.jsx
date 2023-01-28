@@ -1,20 +1,19 @@
 import { Fragment, useState, useContext } from 'react';
 import { useDatabase } from '../../hooks/use-database';
 import TrailContext from '../../store/trail-context';
+import Spinner from '../UI/Spinner/Spinner';
 import Card from '../UI/Card/Card';
 import NewTrailForm from './NewTrailForm';
 
 export default function NewTrail({ onClose, onViewTrail }) {
 	const { uploadToStorage, updateDatabase, queryDatabase, isLoading, error } =
 		useDatabase();
-	const [trailName, setTrailName] = useState('');
 	const [newTrailID, setNewTrailID] = useState(null);
 	const [message, setMessage] = useState(null);
 	const trailCxt = useContext(TrailContext);
 
 	async function uploadNewTrailHandler(newTrailData, newTrailImages) {
 		setMessage(null);
-		setTrailName(newTrailData.title);
 
 		const trailID = newTrailData.title.toLowerCase().split(' ').join('_');
 
@@ -42,16 +41,20 @@ export default function NewTrail({ onClose, onViewTrail }) {
 			if (!updateIsSuccessful)
 				throw new Error('Database update was unsuccessful.');
 
-			// TODO: The below database query needs testing
-			queryDatabase({
+			const trailResult = await queryDatabase({
 				queryType: 'trails',
 				queryID: trailID,
-				dataProcessFn: trailCxt.updateTrails,
 			});
+
+			if (!trailResult) {
+				throw new Error('The database did not return a trail result.');
+			}
+
+			trailCxt.updateTrails(trailResult);
 
 			setNewTrailID(trailID);
 
-			setMessage('Trail uploaded successfully!');
+			setMessage(`Trail uploaded successfully!`);
 		} catch (err) {
 			console.error('uploadNewTrailHandler: ', err);
 		}
@@ -134,20 +137,18 @@ export default function NewTrail({ onClose, onViewTrail }) {
 		/>
 	);
 
-	if (isLoading && !error && !message) {
+	if (isLoading && !message) {
 		content = (
-			<div className="msg_card">
-				<Card>
-					<p>{`Uploading ${trailName} ...`}</p>
-				</Card>
+			<div className="container_centered">
+				<Spinner />
 			</div>
 		);
 	}
 
 	if (message && !error && !isLoading) {
 		content = (
-			<div className="msg_card">
-				<Card>
+			<div className="container_centered">
+				<Card styles="feedback">
 					<p>{message}</p>
 					<div className="action_btns">
 						<button
@@ -170,9 +171,9 @@ export default function NewTrail({ onClose, onViewTrail }) {
 
 	if (error) {
 		content = (
-			<div className="msg_card">
-				<Card>
-					<p>{`Something went wrong: ${error}`}</p>
+			<div styles="container_centered">
+				<Card className="feedback">
+					<p>{error}</p>
 					<button
 						className="btn btn_red"
 						onClick={closeMessageHandler}

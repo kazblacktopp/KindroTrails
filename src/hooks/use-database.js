@@ -8,9 +8,9 @@ import {
 import {
 	getDatabase,
 	ref as createRefInDatabase,
-	onValue,
 	update,
-	off,
+	child,
+	get,
 } from 'firebase/database';
 import { firebaseConfig } from '../config/firebaseConfig';
 import { useState } from 'react';
@@ -113,7 +113,7 @@ export function useDatabase() {
 		}
 	}
 
-	function queryDatabase({ dataProcessFn, queryType, queryID = '' }) {
+	async function queryDatabase({ queryType, queryID = '' }) {
 		setIsLoading(true);
 		setError(null);
 
@@ -122,23 +122,9 @@ export function useDatabase() {
 				throw new Error('Please provide a `queryType` parameter.');
 			}
 
-			if (!dataProcessFn || typeof dataProcessFn !== 'function') {
-				throw new Error(
-					'Please provide the required dataProcessFn function parameter in order to process data returned from the database.',
-				);
-			}
+			const dbRef = createRefInDatabase(database);
 
-			let id = queryID;
-
-			if (queryType !== 'trails') {
-				id = '';
-			}
-
-			// TODO: The below queryRef needs testing
-			const queryRef = createRefInDatabase(
-				database,
-				'/' + queryType + '/' + id,
-			);
+			const queryRef = '/' + queryType + '/' + queryID;
 
 			if (!queryRef) {
 				throw new Error(
@@ -146,20 +132,17 @@ export function useDatabase() {
 				);
 			}
 
-			// Remove all existing event listeners of eventType: 'value' from the queryRef
-			off(queryRef, 'value');
+			const snapshot = await get(child(dbRef, queryRef));
 
-			// Executes `dataProcessFn` then applies an event listener of type: 'value', with `dataProcessFn` as the event callback. An event is triggered whenever a change is made in the database at the queryRef (including child nodes)
-			onValue(queryRef, snapshot => {
-				if (!snapshot.exists()) {
-					throw new Error('Database query snapshot does not exist.');
-				}
+			if (!snapshot.exists()) {
+				throw new Error('Database query snapshot does not exist.');
+			}
 
-				const data = snapshot.val();
+			const data = snapshot.val();
 
-				dataProcessFn(data);
-				setIsLoading(false);
-			});
+			setIsLoading(false);
+
+			return data;
 		} catch (err) {
 			console.error('queryDatabase: ', err);
 			setIsLoading(false);
@@ -169,6 +152,12 @@ export function useDatabase() {
 		}
 	}
 
-	return { queryDatabase, updateDatabase, uploadToStorage, isLoading, error };
+	return {
+		queryDatabase,
+		updateDatabase,
+		uploadToStorage,
+		isLoading,
+		error,
+	};
 }
 

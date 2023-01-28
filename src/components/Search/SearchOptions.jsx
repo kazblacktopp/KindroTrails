@@ -1,10 +1,10 @@
 import { Fragment, useContext } from 'react';
 import { useDatabase } from '../../hooks/use-database';
 import TrailContext from '../../store/trail-context';
-import icons from '../../assets/icons.svg';
+import Spinner from '../UI/Spinner/Spinner';
 import classes from './SearchOptions.module.css';
 
-export default function SearchOptions(props) {
+export default function SearchOptions({ onResult }) {
 	const { queryDatabase, isLoading, error } = useDatabase();
 	const trailCtx = useContext(TrailContext);
 
@@ -12,33 +12,29 @@ export default function SearchOptions(props) {
 		search_container_outer,
 		search_container_inner,
 		search_btn,
-		search_spinner,
 		coming_soon,
 	} = classes;
-
-	const spinner = (
-		<div className="spinner">
-			<svg className={search_spinner}>
-				<use href={`${icons}#icon-loader`}></use>
-			</svg>
-		</div>
-	);
 
 	const countryBtnClasses = `btn btn_green ${search_btn}`;
 	const nameBtnClasses = `btn_blue ${search_btn} ${coming_soon}`;
 	const gradeBtnClasses = `btn_red ${search_btn} ${coming_soon}`;
 
-	function searchByCountryHandler() {
-		queryDatabase({
-			queryType: 'trailLocations',
-			dataProcessFn: updateTrailLocations,
-		});
-	}
+	async function searchByCountryHandler() {
+		try {
+			const queryResult = await queryDatabase({
+				queryType: 'trailLocations',
+			});
 
-	function updateTrailLocations(locationsObj) {
-		console.log(locationsObj);
+			if (!queryResult) {
+				throw new Error('The database did not return a query result.');
+			}
 
-		trailCtx.updateTrailLocations(locationsObj);
+			trailCtx.updateTrailLocations(queryResult);
+
+			onResult('countries');
+		} catch (err) {
+			console.error('searchByCountryHandler: ', err);
+		}
 	}
 
 	let searchPageContent = (
@@ -55,7 +51,11 @@ export default function SearchOptions(props) {
 	);
 
 	if (isLoading) {
-		searchPageContent = spinner;
+		searchPageContent = (
+			<div className="container_centered">
+				<Spinner />
+			</div>
+		);
 	}
 
 	if (error) {
