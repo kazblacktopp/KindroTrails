@@ -1,7 +1,8 @@
-import { useState, useContext } from 'react';
+import { useState, useContext, useRef } from 'react';
 import TrailContext from './store/trail-context';
 import NavBar from './components/UI/Nav/NavBar';
 import SearchOptions from './components/Search/SearchOptions';
+import CountryPage from './components/Trail/TrailSelection/CountryPage/CountryPage';
 import TrailPage from './components/Trail/TrailPage/TrailPage';
 import NewTrail from './components/NewTrail/NewTrail';
 
@@ -9,7 +10,11 @@ export default function App() {
 	const trailCxt = useContext(TrailContext);
 	const [addNewTrail, setAddNewTrail] = useState(false);
 	const [viewTrail, setViewTrail] = useState(false);
-	const [selectedTrail, setSelectedTrail] = useState(null);
+	const [viewCountriesList, setViewCountriesList] = useState(false);
+	const [viewStatesList, setViewStatesList] = useState(false);
+
+	const selectedCountry = useRef();
+	const selectedTrail = useRef();
 
 	// Set showAddBtn to true if user is logged in and has admin permissions
 	const [showAddBtn, setShowAddBtn] = useState(true);
@@ -32,21 +37,43 @@ export default function App() {
 		setShowAddBtn(true);
 	}
 
+	function displayResultHandler(resultType, resultID = null) {
+		if (resultType === 'countries') {
+			setViewCountriesList(true);
+		}
+
+		if (resultType === 'states') {
+			setViewCountriesList(false);
+			setViewStatesList(true);
+			selectedCountry.current = resultID;
+		}
+	}
+
 	function viewTrailHandler(trailID) {
 		const trail = trailCxt.trails[trailID];
 
-		setSelectedTrail(trail);
+		selectedTrail.current = trail;
 		setAddNewTrail(false);
 		setViewTrail(true);
 	}
 
-	let appPages = <SearchOptions></SearchOptions>;
+	let appPages = (
+		<SearchOptions onResult={displayResultHandler}></SearchOptions>
+	);
 
-	if (viewTrail && !addNewTrail) {
+	if (viewCountriesList) {
+		appPages = <CountryPage onResult={displayResultHandler} />;
+	}
+
+	if (viewStatesList) {
+		appPages = <div>{selectedCountry.current}</div>;
+	}
+
+	if (viewTrail) {
 		appPages = (
 			<TrailPage
-				trailData={selectedTrail}
-				trailImages={selectedTrail.trailImages}
+				trailData={selectedTrail.current}
+				trailImages={selectedTrail.current.trailImages}
 			/>
 		);
 	}
