@@ -8,7 +8,7 @@ export default function CountryPage({ onResult }) {
 	const { country_container_outer, country_container_inner, country_btn } =
 		classes;
 
-	function generateCountriesJSX() {
+	function generateJSX() {
 		const countriesArray = [];
 
 		for (const country in trailCtx.trailLocations) {
@@ -39,13 +39,16 @@ export default function CountryPage({ onResult }) {
 	function loadStatesHandler(event) {
 		event.preventDefault();
 
+		console.log(event.target.id);
+
 		onResult('states', event.target.id);
 	}
 
-	const searchPageContent = generateCountriesJSX();
+	const searchPageContent = generateJSX();
 
 	return (
 		<div className={country_container_outer}>
+			<h1>Search by Country</h1>
 			<h2>Choose a country:</h2>
 			<ul className={country_container_inner}>{searchPageContent}</ul>
 		</div>
