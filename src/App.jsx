@@ -3,6 +3,7 @@ import TrailContext from './store/trail-context';
 import NavBar from './components/UI/Nav/NavBar';
 import SearchOptions from './components/Search/SearchOptions';
 import CountryPage from './components/Trail/TrailSelection/CountryPage/CountryPage';
+import StatePage from './components/Trail/TrailSelection/StatePage/StatePage';
 import TrailPage from './components/Trail/TrailPage/TrailPage';
 import NewTrail from './components/NewTrail/NewTrail';
 
@@ -22,6 +23,8 @@ export default function App() {
 	function clickHomeHandler() {
 		setAddNewTrail(false);
 		setViewTrail(false);
+		setViewCountriesList(false);
+		setViewStatesList(false);
 
 		// TODO: If user is logged in and has admin permissions:
 		setShowAddBtn(true);
@@ -66,7 +69,12 @@ export default function App() {
 	}
 
 	if (viewStatesList) {
-		appPages = <div>{selectedCountry.current}</div>;
+		appPages = (
+			<StatePage
+				selectedCountry={selectedCountry.current}
+				onResult={displayResultHandler}
+			/>
+		);
 	}
 
 	if (viewTrail) {
