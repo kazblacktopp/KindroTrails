@@ -21,15 +21,21 @@ export default function SearchOptions({ onResult }) {
 
 	async function searchByCountryHandler() {
 		try {
-			const queryResult = await queryDatabase({
-				queryType: 'trailLocations',
-			});
+			if (!Object.keys(trailCtx.trailLocations).length) {
+				console.log('Querying database');
 
-			if (!queryResult) {
-				throw new Error('The database did not return a query result.');
+				const queryResult = await queryDatabase({
+					queryType: 'trailLocations',
+				});
+
+				if (!queryResult) {
+					throw new Error(
+						'The database did not return a query result.',
+					);
+				}
+
+				trailCtx.updateTrailLocations(queryResult);
 			}
-
-			trailCtx.updateTrailLocations(queryResult);
 
 			onResult('countries');
 		} catch (err) {
