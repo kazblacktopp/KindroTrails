@@ -1,7 +1,7 @@
 export const trailData = {
 	title: 'Overland Track',
 	description:
-		"The Overland Track is Australia's premier alpine walk. The track begins at the iconic Cradle Mountain and ends at Australia’s deepest lake, Lake St Clair. The Cradle Mountain-Lake St Clair National Park is part of the magnificent Tasmanian Wilderness World Heritage Area.",
+		"​​​​The Ov​erland Track is Australia's premier alpine walk. This exhilarating and life-changing journey attracts walkers from across the globe. Beginning at the iconic Cradle Mountain and ending at Australia’s deepest lake – Lake St Clair, this 65 kilometre, six-day trek takes you through the heart of the Cradle Mountain-Lake St Clair National Park, part of the magnificent Tasmanian Wilderness World Heritage Area. Almost half of the track is above 1000 metres in elevation on exposed plateaus in a remote area. Thorough preparation and good gear is essential.",
 	infoUrl:
 		'https://parks.tas.gov.au/explore-our-parks/cradle-mountain/overland-track',
 	country: 'Australia',
