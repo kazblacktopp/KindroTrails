@@ -1,5 +1,5 @@
 import TrailSummary from '../TrailSummary/TrailSummary';
-import PhotoGallery from '../../PhotoGallery/PhotoGallery';
+import PhotoGallery from '../PhotoGallery/PhotoGallery';
 import classes from './TrailPage.module.css';
 
 function TrailPage({ trailData, trailImages }) {

@@ -10,7 +10,7 @@ import {
 	CC_LICENSE_PDM_VERSION,
 } from '../../config/appConfig';
 import TrailPage from '../Trail/TrailPage/TrailPage';
-import PhotoGallery from '../PhotoGallery/PhotoGallery';
+import PhotoGallery from '../Trail/PhotoGallery/PhotoGallery';
 import { createNewObject } from '../../helpers/createNewObject';
 
 import { trailData } from '../../config/trailData';

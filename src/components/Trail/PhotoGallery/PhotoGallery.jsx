@@ -5,8 +5,9 @@ import parse from 'html-react-parser';
 import {
 	PSWP_INFO_ICON_SVG_PATH,
 	PSWP_CLOSE_BTN_SVG,
-} from '../../config/appConfig';
-import Modal from '../UI/Modal/Modal';
+} from '../../../config/appConfig';
+import Modal from '../../UI/Modal/Modal';
+
 import 'photoswipe/dist/photoswipe.css';
 import classes from './PhotoGallery.module.css';
 

@@ -1,9 +1,10 @@
 import { useContext } from 'react';
 import TrailContext from '../../../../store/trail-context';
-import classes from './StatePage.module.css';
+import classes from './StateListPage.module.css';
 
 export default function StatePage({ selectedCountry, onResult }) {
 	const trailCtx = useContext(TrailContext);
+
 	const capitalisedCountry = capitalise(selectedCountry);
 
 	const { state_container_outer, state_container_inner, state_btn } = classes;
@@ -42,8 +43,10 @@ export default function StatePage({ selectedCountry, onResult }) {
 		return capitalisedString;
 	}
 
-	function loadTrailsHandler(event) {
+	async function loadTrailsHandler(event) {
 		console.log(event.target.id);
+
+		onResult('trails', event.target.id);
 	}
 
 	const searchPageContent = generateJSX();

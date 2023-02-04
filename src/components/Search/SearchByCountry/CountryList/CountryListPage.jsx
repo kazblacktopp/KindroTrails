@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 import TrailContext from '../../../../store/trail-context';
-import classes from './CountryPage.module.css';
+import classes from './CountryListPage.module.css';
 
 export default function CountryPage({ onResult }) {
 	const trailCtx = useContext(TrailContext);
