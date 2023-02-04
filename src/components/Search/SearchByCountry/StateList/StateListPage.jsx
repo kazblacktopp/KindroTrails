@@ -20,7 +20,7 @@ export default function StatePage({ selectedCountry, onResult }) {
 					<button
 						id={state}
 						className={`btn btn_blue ${state_btn}`}
-						onClick={loadTrailsHandler}
+						onClick={loadStatesHandler}
 					>
 						<span>{capitalisedState}</span>
 					</button>
@@ -43,7 +43,9 @@ export default function StatePage({ selectedCountry, onResult }) {
 		return capitalisedString;
 	}
 
-	async function loadTrailsHandler(event) {
+	function loadStatesHandler(event) {
+		event.preventDefault();
+
 		console.log(event.target.id);
 
 		onResult('trails', event.target.id);
