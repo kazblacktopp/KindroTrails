@@ -11,8 +11,6 @@ export default function CountryPage({ onResult }) {
 	function loadStatesHandler(event) {
 		event.preventDefault();
 
-		console.log(event.target.id);
-
 		onResult('states', event.target.id);
 	}
 
@@ -33,8 +31,6 @@ export default function CountryPage({ onResult }) {
 
 		for (const country in trailCtx.trailLocations) {
 			const capitalisedCountry = capitalise(country);
-
-			console.log(country);
 
 			countriesArray.push(
 				<li key={`country_${countriesArray.length + 1}`}>
