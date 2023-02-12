@@ -1,5 +1,4 @@
-import { useState, useContext, useRef } from 'react';
-import TrailContext from './store/trail-context';
+import { useState, useRef } from 'react';
 import NavBar from './components/UI/Nav/NavBar';
 import SearchOptions from './components/Search/SearchOptions';
 import CountryListPage from './components/Search/SearchByCountry/CountryList/CountryListPage';
@@ -9,7 +8,6 @@ import TrailPage from './components/Trail/TrailPage/TrailPage';
 import NewTrail from './components/NewTrail/NewTrail';
 
 export default function App() {
-	const trailCxt = useContext(TrailContext);
 	const [addNewTrail, setAddNewTrail] = useState(false);
 	const [viewTrail, setViewTrail] = useState(false);
 	const [viewCountriesList, setViewCountriesList] = useState(false);
@@ -61,12 +59,11 @@ export default function App() {
 		}
 	}
 
-	function viewTrailHandler(trailID) {
-		const trail = trailCxt.trails[trailID];
+	function viewTrailHandler(trail) {
+		setViewTrailsList(false);
+		setViewTrail(true);
 
 		selectedTrail.current = trail;
-		setAddNewTrail(false);
-		setViewTrail(true);
 	}
 
 	let appPages = (
@@ -87,7 +84,13 @@ export default function App() {
 	}
 
 	if (viewTrailsList) {
-		appPages = <TrailListPage />;
+		appPages = (
+			<TrailListPage
+				selectedCountry={selectedCountry.current}
+				selectedState={selectedState.current}
+				onResult={viewTrailHandler}
+			/>
+		);
 	}
 
 	if (viewTrail) {
