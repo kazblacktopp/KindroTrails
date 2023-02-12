@@ -3,8 +3,6 @@ import TrailContext from '../../../../store/trail-context';
 import classes from './StateListPage.module.css';
 
 export default function StatePage({ selectedCountry, onResult }) {
-	console.log(selectedCountry);
-
 	const trailCtx = useContext(TrailContext);
 
 	const capitalisedCountry = capitalise(selectedCountry);
@@ -13,8 +11,6 @@ export default function StatePage({ selectedCountry, onResult }) {
 
 	function loadStatesHandler(event) {
 		event.preventDefault();
-
-		console.dir(event.target.id);
 
 		onResult('trails', event.target.id);
 	}
@@ -36,8 +32,6 @@ export default function StatePage({ selectedCountry, onResult }) {
 
 		for (const state in trailCtx.trailLocations[selectedCountry]) {
 			const capitalisedState = capitalise(state);
-
-			console.log(state);
 
 			statesArray.push(
 				<li key={`state_${statesArray.length + 1}`}>
