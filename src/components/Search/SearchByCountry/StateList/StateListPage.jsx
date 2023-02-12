@@ -3,32 +3,20 @@ import TrailContext from '../../../../store/trail-context';
 import classes from './StateListPage.module.css';
 
 export default function StatePage({ selectedCountry, onResult }) {
+	console.log(selectedCountry);
+
 	const trailCtx = useContext(TrailContext);
 
 	const capitalisedCountry = capitalise(selectedCountry);
 
 	const { state_container_outer, state_container_inner, state_btn } = classes;
 
-	function generateJSX() {
-		const statesArray = [];
+	function loadStatesHandler(event) {
+		event.preventDefault();
 
-		for (const state in trailCtx.trailLocations[selectedCountry]) {
-			const capitalisedState = capitalise(state);
+		console.dir(event.target.id);
 
-			statesArray.push(
-				<li key={`state_${statesArray.length + 1}`}>
-					<button
-						id={state}
-						className={`btn btn_blue ${state_btn}`}
-						onClick={loadStatesHandler}
-					>
-						<span>{capitalisedState}</span>
-					</button>
-				</li>,
-			);
-		}
-
-		return statesArray;
+		onResult('trails', event.target.id);
 	}
 
 	function capitalise(string) {
@@ -43,12 +31,28 @@ export default function StatePage({ selectedCountry, onResult }) {
 		return capitalisedString;
 	}
 
-	function loadStatesHandler(event) {
-		event.preventDefault();
+	function generateJSX() {
+		const statesArray = [];
 
-		console.log(event.target.id);
+		for (const state in trailCtx.trailLocations[selectedCountry]) {
+			const capitalisedState = capitalise(state);
 
-		onResult('trails', event.target.id);
+			console.log(state);
+
+			statesArray.push(
+				<li key={`state_${statesArray.length + 1}`}>
+					<button
+						id={state}
+						className={`btn btn_blue ${state_btn}`}
+						onClick={loadStatesHandler}
+					>
+						{capitalisedState}
+					</button>
+				</li>,
+			);
+		}
+
+		return statesArray;
 	}
 
 	const searchPageContent = generateJSX();
