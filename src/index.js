@@ -6,9 +6,10 @@ import './index.css';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode>
-    <TrailProvider>
-      <App />
-    </TrailProvider>
-  </React.StrictMode>
+	<React.StrictMode>
+		<TrailProvider>
+			<App />
+		</TrailProvider>
+	</React.StrictMode>,
 );
+

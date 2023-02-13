@@ -1,0 +1,23 @@
+.state_container_outer {
+	text-align: center;
+	width: 100%;
+	height: calc(100vh - 90px);
+}
+
+.state_container_outer h2 {
+	margin-bottom: 1.5rem;
+}
+
+.state_container_inner {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 2.8rem;
+	list-style: none;
+}
+
+.state_btn {
+	width: 20rem;
+	height: 10rem;
+}

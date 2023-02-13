@@ -2,95 +2,101 @@ import { useReducer } from 'react';
 import TrailContext from './trail-context';
 
 const initialTrailState = {
-  trails: {},
-  pendingTrails: {},
-  trailLocations: {},
+	trails: {},
+	trailIDs: {},
+	trailGrades: {},
+	pendingTrails: {},
+	trailLocations: {},
 };
 
+function toLocalStorage(trailStateObj) {
+	console.log('For Local Storage: ', trailStateObj);
+}
+
 function trailStateReducer(state, action) {
-  const updatedTrails = { ...state.trails };
-  const updatedTrailLocations = { ...state.trailLocations };
-  const updatedPendingTrails = { ...state.pendingTrails };
+	const updatedTrails = { ...state.trails };
+	let updatedTrailIDs = state.trailIDs;
+	let updatedTrailGrades = state.trailGrades;
+	let updatedPendingTrails = state.pendingTrails;
+	let updatedTrailLocations = state.trailLocations;
 
-  if (action.type === 'ADD-TRAIL') {
-    const { id } = action.item;
+	if (action.type === 'TRAILS') {
+		const { id } = action.item;
 
-    updatedTrails[id] = action.item;
+		updatedTrails[id] = action.item;
+	}
 
-    const { country, state } = action.item;
+	if (action.type === 'TRAILIDS') {
+		updatedTrailIDs = action.item;
+	}
 
-    if (!updatedTrailLocations[country]) {
-      updatedTrailLocations[country] = {
-        [state]: {
-          [id]: true,
-        },
-      };
-    }
+	if (action.type === 'GRADES') {
+		updatedTrailGrades = action.item;
+	}
 
-    if (!updatedTrailLocations[country][state]) {
-      updatedTrailLocations[country][state] = {
-        [id]: true,
-      };
-    }
+	if (action.type === 'PENDING') {
+		updatedPendingTrails = action.item;
+	}
 
-    if (!updatedTrailLocations[country][state][id]) {
-      updatedTrailLocations[country][state][id] = true;
-    }
-  }
+	if (action.type === 'LOCATIONS') {
+		updatedTrailLocations = action.item;
+	}
 
-  if (action.type === 'REMOVE-TRAIL') {
-  }
+	const updatedTrailCtx = {
+		trails: updatedTrails,
+		trailIDs: updatedTrailIDs,
+		trailGrades: updatedTrailGrades,
+		pendingTrails: updatedPendingTrails,
+		trailLocations: updatedTrailLocations,
+	};
 
-  if (action.type === 'ADD-PENDING') {
-  }
+	toLocalStorage(updatedTrailCtx);
 
-  if (action.type === 'REMOVE-PENDING') {
-  }
-
-  const updatedTrailCtx = {
-    trails: updatedTrails,
-    pendingTrails: updatedPendingTrails,
-    trailLocations: updatedTrailLocations,
-  };
-
-  return updatedTrailCtx;
+	return updatedTrailCtx;
 }
 
 export default function TrailProvider({ children }) {
-  const [trailState, dispatchTrailReducer] = useReducer(
-    trailStateReducer,
-    initialTrailState
-  );
+	const [trailState, dispatchTrailReducer] = useReducer(
+		trailStateReducer,
+		initialTrailState,
+	);
 
-  const trailContext = {
-    trails: trailState.trails,
-    pendingTrails: trailState.pendingTrails,
-    trailLocations: trailState.trailLocations,
-    addToTrails: addToTrailsHandler,
-    removeFromTrails: removeFromTrailsHandler,
-    addToPendingTrails: addToPendingTrailsHandler,
-    removeFromPendingTrails: removeFromPendingTrailsHandler,
-  };
+	const trailContext = {
+		trails: trailState.trails,
+		trailIDs: trailState.trailIDs,
+		trailGrades: trailState.trailGrades,
+		pendingTrails: trailState.pendingTrails,
+		trailLocations: trailState.trailLocations,
+		updateTrails: updateTrailsHandler,
+		updateTrailIDs: updateTrailIDsHandler,
+		updateTrailGrades: updateTrailGradesHandler,
+		updatePendingTrails: updatePendingTrailsHandler,
+		updateTrailLocations: updateTrailLocationsHandler,
+	};
 
-  function addToTrailsHandler(trailData) {
-    dispatchTrailReducer({ type: 'ADD-TRAIL', item: trailData });
-  }
+	function updateTrailsHandler(trailData) {
+		dispatchTrailReducer({ type: 'TRAILS', item: trailData });
+	}
 
-  function removeFromTrailsHandler(trailID) {
-    dispatchTrailReducer({ type: 'REMOVE-TRAIL', item: trailID });
-  }
+	function updateTrailIDsHandler(trailIDsObj) {
+		dispatchTrailReducer({ type: 'TRAILIDS', item: trailIDsObj });
+	}
 
-  function addToPendingTrailsHandler(pendingData) {
-    dispatchTrailReducer({ type: 'ADD-PENDING', item: pendingData });
-  }
+	function updateTrailGradesHandler(gradesObj) {
+		dispatchTrailReducer({ type: 'GRADES', item: gradesObj });
+	}
 
-  function removeFromPendingTrailsHandler(pendingID) {
-    dispatchTrailReducer({ type: 'REMOVE-PENDING', item: pendingID });
-  }
+	function updatePendingTrailsHandler(pendingObj) {
+		dispatchTrailReducer({ type: 'PENDING', item: pendingObj });
+	}
 
-  return (
-    <TrailContext.Provider value={trailContext}>
-      {children}
-    </TrailContext.Provider>
-  );
+	function updateTrailLocationsHandler(locationsObj) {
+		dispatchTrailReducer({ type: 'LOCATIONS', item: locationsObj });
+	}
+
+	return (
+		<TrailContext.Provider value={trailContext}>
+			{children}
+		</TrailContext.Provider>
+	);
 }

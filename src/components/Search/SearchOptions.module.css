@@ -1,0 +1,74 @@
+.search_container_outer {
+	text-align: center;
+	width: 100%;
+	height: calc(100vh - 90px);
+}
+
+.search_container_outer h2 {
+	margin-bottom: 1.5rem;
+}
+
+.search_container_inner {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 2.8rem;
+}
+
+.search_btn {
+	width: 20rem;
+	height: 15rem;
+}
+
+.coming_soon {
+	position: relative;
+	font: inherit;
+	font-weight: 500;
+	border: none;
+	border-radius: 0.5rem;
+	box-shadow: 0 0.125rem 0.375rem #10182040;
+	padding: 0.5rem 1.5rem;
+	color: white;
+}
+
+.coming_soon::after {
+	content: 'Coming Soon!';
+	position: absolute;
+	top: 5.5rem;
+	left: 2rem;
+	color: black;
+	font-size: 2.2rem;
+	font-weight: 500;
+	transform: rotate(-30deg);
+}
+
+@media only screen and (min-width: 1008px) {
+	.search_container_outer {
+		background-color: var(--color-green-50);
+	}
+
+	.search_container_outer h2 {
+		font-size: 3.2rem;
+	}
+
+	.search_container_inner {
+		flex-direction: row;
+	}
+
+	.search_container_inner button {
+		font-size: 2.4rem;
+	}
+
+	.search_btn {
+		width: 30rem;
+		height: 25rem;
+	}
+
+	.coming_soon::after {
+		top: 9.5rem;
+		left: 4rem;
+		font-size: 3.2rem;
+		transform: rotate(-35deg);
+	}
+}

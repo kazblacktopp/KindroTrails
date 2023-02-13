@@ -1,0 +1,23 @@
+.country_container_outer {
+	text-align: center;
+	width: 100%;
+	height: calc(100vh - 90px);
+}
+
+.country_container_outer h2 {
+	margin-bottom: 1.5rem;
+}
+
+.country_container_inner {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 2.8rem;
+	list-style: none;
+}
+
+.country_btn {
+	width: 20rem;
+	height: 10rem;
+}

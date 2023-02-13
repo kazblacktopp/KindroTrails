@@ -1,13 +1,16 @@
 import React from 'react';
 
 const TrailContext = React.createContext({
-  trails: {},
-  pendingTrails: {},
-  trailLocations: {},
-  addToTrails: () => {},
-  removeFromTrails: () => {},
-  addToPendingTrails: () => {},
-  removeFromPendingTrails: () => {},
+	trails: {},
+	trailIDs: {},
+	trailGrades: {},
+	pendingTrails: {},
+	trailLocations: {},
+	updateTrails: () => {},
+	updateTrailIDs: () => {},
+	updateTrailGrades: () => {},
+	updatePendingTrails: () => {},
+	updateTrailLocations: () => {},
 });
 
 export default TrailContext;

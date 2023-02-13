@@ -1,42 +1,43 @@
 import TrailSummary from '../TrailSummary/TrailSummary';
-import PhotoGallery from '../../PhotoGallery/PhotoGallery';
+import PhotoGallery from '../PhotoGallery/PhotoGallery';
 import classes from './TrailPage.module.css';
 
 function TrailPage({ trailData, trailImages }) {
-  const { title, country, state, ...remainingData } = trailData;
+	const { title, country, state, ...remainingData } = trailData;
 
-  function capitaliseString(string) {
-    const stringArray = string.toLowerCase().split(' ');
+	function capitaliseString(string) {
+		const stringArray = string.toLowerCase().split(' ');
 
-    const capitalisedString = stringArray
-      .map(stringEl => {
-        return stringEl[0].toUpperCase() + stringEl.substring(1);
-      })
-      .join(' ');
+		const capitalisedString = stringArray
+			.map(stringEl => {
+				return stringEl[0].toUpperCase() + stringEl.substring(1);
+			})
+			.join(' ');
 
-    return capitalisedString;
-  }
+		return capitalisedString;
+	}
 
-  const capitalisedTitle = capitaliseString(title);
-  const capitalisedCountry = capitaliseString(country);
-  const capitalisedState = capitaliseString(state);
+	const capitalisedTitle = capitaliseString(title);
+	const capitalisedCountry = capitaliseString(country);
+	const capitalisedState = capitaliseString(state);
 
-  return (
-    <main>
-      <div className={classes['section-container']}>
-        <div className={classes['title_container']}>
-          <h1>{capitalisedTitle}</h1>
-          <p>
-            {capitalisedState}, {capitalisedCountry}
-          </p>
-        </div>
-        <div className={classes['top-section_container']}>
-          <TrailSummary summaryData={remainingData} />
-          <PhotoGallery photos={trailImages} trailTitle={capitalisedTitle} />
-        </div>
-      </div>
-    </main>
-  );
+	return (
+		<main>
+			<div className={classes['section-container']}>
+				<div className={classes['title_container']}>
+					<h1>{capitalisedTitle}</h1>
+					<p>
+						{capitalisedState}, {capitalisedCountry}
+					</p>
+				</div>
+				<div className={classes['top-section_container']}>
+					<TrailSummary summaryData={remainingData} />
+					<PhotoGallery photos={trailImages} />
+				</div>
+			</div>
+		</main>
+	);
 }
 
 export default TrailPage;
+
