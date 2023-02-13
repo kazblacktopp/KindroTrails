@@ -6,7 +6,7 @@ import classes from './SearchOptions.module.css';
 
 export default function SearchOptions({ onResult }) {
 	const { queryDatabase, isLoading, error } = useDatabase();
-	const trailCtx = useContext(TrailContext);
+	const trailCxt = useContext(TrailContext);
 
 	const {
 		search_container_outer,
@@ -21,7 +21,7 @@ export default function SearchOptions({ onResult }) {
 
 	async function searchByCountryHandler() {
 		try {
-			if (!Object.keys(trailCtx.trailLocations).length) {
+			if (!Object.keys(trailCxt.trailLocations).length) {
 				console.log('Querying database');
 
 				const queryResult = await queryDatabase({
@@ -34,7 +34,7 @@ export default function SearchOptions({ onResult }) {
 					);
 				}
 
-				trailCtx.updateTrailLocations(queryResult);
+				trailCxt.updateTrailLocations(queryResult);
 			}
 
 			onResult('countries');
