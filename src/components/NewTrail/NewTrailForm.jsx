@@ -751,7 +751,7 @@ export default function NewTrailForm({ onSubmitNewTrail, onClose }) {
 									onChange={inputChangeHandler}
 								/>
 								<label htmlFor="trailImageDescription">
-									Enter Image Description (optional)
+									Enter Image Description
 								</label>
 								<input
 									id="trailImageDescription"
