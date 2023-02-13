@@ -1,6 +1,6 @@
-import { Fragment, useState, useContext } from 'react';
+import { Fragment, useState } from 'react';
 import { useDatabase } from '../../hooks/use-database';
-import TrailContext from '../../store/trail-context';
+import { useUpdateContext } from '../../hooks/use-update-context';
 import Spinner from '../UI/Spinner/Spinner';
 import Card from '../UI/Card/Card';
 import NewTrailForm from './NewTrailForm';
@@ -8,9 +8,9 @@ import NewTrailForm from './NewTrailForm';
 export default function NewTrail({ onClose, onViewTrail }) {
 	const { uploadToStorage, updateDatabase, queryDatabase, isLoading, error } =
 		useDatabase();
+	const { addNewTrailToContext } = useUpdateContext();
 	const [newTrailID, setNewTrailID] = useState(null);
 	const [message, setMessage] = useState(null);
-	const trailCxt = useContext(TrailContext);
 
 	async function uploadNewTrailHandler(newTrailData, newTrailImages) {
 		setMessage(null);
@@ -50,7 +50,7 @@ export default function NewTrail({ onClose, onViewTrail }) {
 				throw new Error('The database did not return a trail result.');
 			}
 
-			trailCxt.updateTrails(trailResult);
+			addNewTrailToContext(trailResult);
 
 			setNewTrailID(trailID);
 
