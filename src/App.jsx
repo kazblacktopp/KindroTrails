@@ -61,6 +61,7 @@ export default function App() {
 
 	function viewTrailHandler(trail) {
 		setViewTrailsList(false);
+		setAddNewTrail(false);
 		setViewTrail(true);
 
 		selectedTrail.current = trail;
