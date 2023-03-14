@@ -1,4 +1,5 @@
-import { Fragment, useState, useRef } from 'react';
+import { Fragment, useState } from 'react';
+// import { useRef } from 'react';
 import { compressImage } from '../../helpers/compressImage';
 import {
 	IMAGE_MAX_WIDTH,
@@ -11,15 +12,14 @@ import {
 } from '../../config/appConfig';
 import TrailPage from '../Trail/TrailPage/TrailPage';
 import PhotoGallery from '../Trail/PhotoGallery/PhotoGallery';
+import GearListForm from './GearListForm';
 import { createNewObject } from '../../helpers/createNewObject';
-
-import { trailData } from '../../config/trailData';
 
 import icons from '../../assets/icons.svg';
 import classes from './NewTrailForm.module.css';
 
 export default function NewTrailForm({ onSubmitNewTrail, onClose }) {
-	const photoInputRef = useRef();
+	// const photoInputRef = useRef();
 
 	const [urlInputValue, setUrlInputValue] = useState('');
 	const [imageTitle, setImageTitle] = useState('');
@@ -78,14 +78,11 @@ export default function NewTrailForm({ onSubmitNewTrail, onClose }) {
 			},
 		},
 		trailImages: [],
+		recommenedGear: {},
 	};
 
 	//   TODO: Save 'newTrailPreview' to a context instead of a component state
 	const [newTrailPreview, setNewTrailPreview] = useState(initialTrailState);
-
-	function loadTestData() {
-		setNewTrailPreview(trailData);
-	}
 
 	function inputChangeHandler(event) {
 		event.preventDefault();
@@ -160,33 +157,42 @@ export default function NewTrailForm({ onSubmitNewTrail, onClose }) {
 		});
 	}
 
-	function uploadImageHandler(evnt) {
-		evnt.preventDefault();
-
-		const files = evnt.target.files;
-
-		if (!files) return;
-
-		const fileListArray = [...files];
-
-		fileListArray.forEach(file => {
-			// TODO: `file.attribution` and `file.description` needs to be set once user accounts are implemented
-			file.description = null;
-			file.attribution = null;
-
-			// TODO: `file.name` may need to be unique (randomly generated?). Is this possible?
-
-			setIsLoading(true);
-
-			compressImage(
-				file,
-				createPreviewImages,
-				IMAGE_MAX_WIDTH,
-				THUMBNAIL,
-				THUMBNAIL_MAX_WIDTH,
-			);
+	function handleGearListChange(gearList) {
+		setNewTrailPreview(prevState => {
+			return {
+				...prevState,
+				recommenedGear: gearList,
+			};
 		});
 	}
+
+	// function uploadImageHandler(evnt) {
+	// 	evnt.preventDefault();
+
+	// 	const files = evnt.target.files;
+
+	// 	if (!files) return;
+
+	// 	const fileListArray = [...files];
+
+	// 	fileListArray.forEach(file => {
+	// 		// TODO: `file.attribution` and `file.description` needs to be set once user accounts are implemented
+	// 		file.description = null;
+	// 		file.attribution = null;
+
+	// 		// TODO: `file.name` may need to be unique (randomly generated?). Is this possible?
+
+	// 		setIsLoading(true);
+
+	// 		compressImage(
+	// 			file,
+	// 			createPreviewImages,
+	// 			IMAGE_MAX_WIDTH,
+	// 			THUMBNAIL,
+	// 			THUMBNAIL_MAX_WIDTH,
+	// 		);
+	// 	});
+	// }
 
 	function createPreviewImages(imageData) {
 		setPreviewImages(prevPreviewState => {
@@ -315,8 +321,8 @@ export default function NewTrailForm({ onSubmitNewTrail, onClose }) {
 		state,
 		facts_container,
 		image_input_container,
-		photo_input_container,
-		photoInput,
+		// photo_input_container,
+		// photoInput,
 		url_input_container,
 		url_input_wrapper,
 		photo_preview,
@@ -413,6 +419,7 @@ export default function NewTrailForm({ onSubmitNewTrail, onClose }) {
 
 			{!isPreview && (
 				<form className={form_container}>
+					<h2>Trail Summary</h2>
 					<div className={title}>
 						<label htmlFor="title">Trail title:</label>
 						<input
@@ -715,8 +722,10 @@ export default function NewTrailForm({ onSubmitNewTrail, onClose }) {
 							/>
 						</div>
 					</div>
+					<h2>Trail Images</h2>
 					<div className={image_input_container}>
-						<div className={photo_input_container}>
+						{/* Uncomment below when user accounts are set up for user photo upload */}
+						{/* <div className={photo_input_container}>
 							<label htmlFor="trailPhoto">Select a photo:</label>
 							<input
 								id="trailPhoto"
@@ -736,7 +745,7 @@ export default function NewTrailForm({ onSubmitNewTrail, onClose }) {
 								Upload Photos
 							</button>
 						</div>
-						<p>OR</p>
+						<p>OR</p> */}
 						<div className={url_input_container}>
 							<div className={url_input_wrapper}>
 								<label htmlFor="trailImageURL">
@@ -831,6 +840,7 @@ export default function NewTrailForm({ onSubmitNewTrail, onClose }) {
 							)}
 						</div>
 					</div>
+					<GearListForm onInputChange={handleGearListChange} />
 					<div className="action_btns">
 						<div className="clear_close_btn_group">
 							<button
@@ -856,15 +866,6 @@ export default function NewTrailForm({ onSubmitNewTrail, onClose }) {
 							Preview
 						</button>
 					</div>
-					{/* Removes below button before building for production */}
-					<button
-						className="btn btn_test"
-						type="button"
-						onClick={loadTestData}
-					>
-						Load
-					</button>
-					{/* *************************************************** */}
 				</form>
 			)}
 		</Fragment>
