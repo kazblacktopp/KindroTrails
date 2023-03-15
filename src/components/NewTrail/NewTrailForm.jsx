@@ -161,7 +161,7 @@ export default function NewTrailForm({ onSubmitNewTrail, onClose }) {
 		setNewTrailPreview(prevState => {
 			return {
 				...prevState,
-				recommenedGear: gearList,
+				recommendedGear: gearList,
 			};
 		});
 	}
