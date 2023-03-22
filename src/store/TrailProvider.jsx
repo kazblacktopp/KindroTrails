@@ -3,6 +3,7 @@ import TrailContext from './trail-context';
 
 const initialTrailState = {
 	trails: {},
+	gearList: {},
 	trailIDs: {},
 	trailGrades: {},
 	pendingTrails: {},
@@ -15,6 +16,7 @@ function toLocalStorage(trailStateObj) {
 
 function trailStateReducer(state, action) {
 	const updatedTrails = { ...state.trails };
+	let updatedGearList = state.gearList;
 	let updatedTrailIDs = state.trailIDs;
 	let updatedTrailGrades = state.trailGrades;
 	let updatedPendingTrails = state.pendingTrails;
@@ -24,6 +26,10 @@ function trailStateReducer(state, action) {
 		const { id } = action.item;
 
 		updatedTrails[id] = action.item;
+	}
+
+	if (action.type === 'GEARLIST') {
+		updatedGearList = action.item;
 	}
 
 	if (action.type === 'TRAILIDS') {
@@ -44,6 +50,7 @@ function trailStateReducer(state, action) {
 
 	const updatedTrailCtx = {
 		trails: updatedTrails,
+		gearList: updatedGearList,
 		trailIDs: updatedTrailIDs,
 		trailGrades: updatedTrailGrades,
 		pendingTrails: updatedPendingTrails,
@@ -63,11 +70,13 @@ export default function TrailProvider({ children }) {
 
 	const trailContext = {
 		trails: trailState.trails,
+		gearList: trailState.gearList,
 		trailIDs: trailState.trailIDs,
 		trailGrades: trailState.trailGrades,
 		pendingTrails: trailState.pendingTrails,
 		trailLocations: trailState.trailLocations,
 		updateTrails: updateTrailsHandler,
+		updateGearList: updateGearListHandler,
 		updateTrailIDs: updateTrailIDsHandler,
 		updateTrailGrades: updateTrailGradesHandler,
 		updatePendingTrails: updatePendingTrailsHandler,
@@ -76,6 +85,10 @@ export default function TrailProvider({ children }) {
 
 	function updateTrailsHandler(trailData) {
 		dispatchTrailReducer({ type: 'TRAILS', item: trailData });
+	}
+
+	function updateGearListHandler(gearListData) {
+		dispatchTrailReducer({ type: 'GEARLIST', item: gearListData });
 	}
 
 	function updateTrailIDsHandler(trailIDsObj) {
