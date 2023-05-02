@@ -1,12 +1,16 @@
-import { Fragment, useContext } from 'react';
+import { Fragment } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { updateTrailLocations } from '../../store/trailData-slice';
 import { useDatabase } from '../../hooks/use-database';
-import TrailContext from '../../store/trail-context';
 import Spinner from '../UI/Spinner/Spinner';
 import classes from './SearchOptions.module.css';
 
 export default function SearchOptions({ onResult }) {
+	const { trailLocations } = useSelector(state => state.trailData);
+
+	const dispatch = useDispatch();
+
 	const { queryDatabase, isLoading, error } = useDatabase();
-	const trailCxt = useContext(TrailContext);
 
 	const {
 		search_container_outer,
@@ -21,7 +25,7 @@ export default function SearchOptions({ onResult }) {
 
 	async function searchByCountryHandler() {
 		try {
-			if (!Object.keys(trailCxt.trailLocations).length) {
+			if (!Object.keys(trailLocations).length) {
 				console.log('Querying database');
 
 				const queryResult = await queryDatabase({
@@ -34,7 +38,7 @@ export default function SearchOptions({ onResult }) {
 					);
 				}
 
-				trailCxt.updateTrailLocations(queryResult);
+				dispatch(updateTrailLocations(queryResult));
 			}
 
 			onResult('countries');

@@ -1,23 +1,57 @@
-import { recommendedGearListInputsData } from './newTrailFormData';
 import InputField from '../components/UI/Inputs/InputField';
 
-export const recommendedGearListInputsConfig = createCheckboxInputConfig(
-	recommendedGearListInputsData,
-);
+function createRecommendedGearListInputsConfig(gearListData) {
+	const inputs = {};
+
+	for (const itemCategory in gearListData) {
+		const category = gearListData[itemCategory];
+
+		for (const itemSubcategory in category) {
+			const itemData = {
+				label: createInputLabel(itemSubcategory),
+				name: itemSubcategory,
+				value: itemSubcategory,
+			};
+
+			inputs[itemCategory] = {
+				...inputs[itemCategory],
+				[itemSubcategory]: itemData,
+			};
+		}
+	}
+
+	const checkboxInputConfig = createCheckboxInputConfig(inputs);
+
+	return checkboxInputConfig;
+}
+
+function createInputLabel(inputPropertyName) {
+	const label = inputPropertyName
+		.split('_')
+		.map(element => {
+			let el = element[0].toUpperCase() + element.substring(1);
+
+			return el;
+		})
+		.join(' ');
+
+	return label;
+}
 
 function createCheckboxInputConfig(inputsObject) {
 	let newObj = {};
 
 	for (const inputID in inputsObject) {
-		inputsObject[inputID].forEach(inputObj => {
+		const inputObj = inputsObject[inputID];
+
+		for (const input in inputObj) {
 			const {
 				label,
 				name,
 				value,
 				renderLabelAfterInput = true,
-			} = inputObj;
-
-			let { id } = inputObj;
+			} = inputObj[input];
+			let { id } = inputObj[input];
 
 			if (!id) {
 				id = value;
@@ -36,7 +70,7 @@ function createCheckboxInputConfig(inputsObject) {
 					),
 				},
 			};
-		});
+		}
 	}
 
 	return newObj;
@@ -98,3 +132,5 @@ function createFormFieldConfig(
 		checked: false,
 	};
 }
+
+export { createRecommendedGearListInputsConfig };

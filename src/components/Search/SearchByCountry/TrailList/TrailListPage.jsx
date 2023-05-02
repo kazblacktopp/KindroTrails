@@ -1,5 +1,8 @@
-import { useContext } from 'react';
-import TrailContext from '../../../../store/trail-context';
+import { useSelector, useDispatch } from 'react-redux';
+import {
+	updateTrails,
+	updateTrailIDs,
+} from '../../../../store/trailData-slice';
 import { useDatabase } from '../../../../hooks/use-database';
 import Spinner from '../../../UI/Spinner/Spinner';
 
@@ -10,7 +13,11 @@ export default function TrailListPage({
 	selectedState,
 	onResult,
 }) {
-	const trailCtx = useContext(TrailContext);
+	const { trails, trailIDs, trailLocations } = useSelector(
+		state => state.trailData,
+	);
+
+	const dispatch = useDispatch();
 
 	const { queryDatabase, isLoading, error } = useDatabase();
 
@@ -28,7 +35,7 @@ export default function TrailListPage({
 		let trail;
 
 		try {
-			if (!trailCtx.trails[trailID]) {
+			if (!trails[trailID]) {
 				const trailResult = await queryDatabase({
 					queryType: 'trails',
 					queryID: trailID,
@@ -40,16 +47,18 @@ export default function TrailListPage({
 					);
 				}
 
-				trailCtx.updateTrails(trailResult);
+				dispatch(updateTrails(trailResult));
 
-				trailCtx.updateTrailIDs({
-					...trailCtx.trailIDs,
-					[trailID]: true,
-				});
+				dispatch(
+					updateTrailIDs({
+						...trailIDs,
+						[trailID]: true,
+					}),
+				);
 
 				trail = trailResult;
 			} else {
-				trail = trailCtx.trails[trailID];
+				trail = trails[trailID];
 			}
 
 			onResult(trail);
@@ -71,7 +80,7 @@ export default function TrailListPage({
 	}
 
 	function generateJSX() {
-		const countryObj = trailCtx.trailLocations[selectedCountry];
+		const countryObj = trailLocations[selectedCountry];
 
 		const trailElArray = [];
 

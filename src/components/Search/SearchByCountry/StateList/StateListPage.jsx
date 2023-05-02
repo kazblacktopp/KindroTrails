@@ -1,9 +1,8 @@
-import { useContext } from 'react';
-import TrailContext from '../../../../store/trail-context';
+import { useSelector } from 'react-redux';
 import classes from './StateListPage.module.css';
 
 export default function StatePage({ selectedCountry, onResult }) {
-	const trailCtx = useContext(TrailContext);
+	const { trailLocations } = useSelector(state => state.trailData);
 
 	const capitalisedCountry = capitalise(selectedCountry);
 
@@ -30,7 +29,7 @@ export default function StatePage({ selectedCountry, onResult }) {
 	function generateJSX() {
 		const statesArray = [];
 
-		for (const state in trailCtx.trailLocations[selectedCountry]) {
+		for (const state in trailLocations[selectedCountry]) {
 			const capitalisedState = capitalise(state);
 
 			statesArray.push(

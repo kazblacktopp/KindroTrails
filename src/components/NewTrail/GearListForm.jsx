@@ -1,7 +1,18 @@
-import { useState } from 'react';
-import useForm from '../../hooks/use-form';
-import { recommendedGearListInputsConfig } from '../../config/newTrailFormConfig';
-import classes from './GearListForm.module.css';
+import {
+	Fragment,
+	useState,
+	useRef,
+	useEffect,
+	useCallback,
+	useMemo,
+} from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { updateGearList } from '../../store/trailData-slice';
+import { useDatabase } from '../../hooks/use-database';
+import Spinner from '../UI/Spinner/Spinner';
+import { createRecommendedGearListInputsConfig } from '../../config/newTrailFormConfig';
+import Checkbox from './Checkbox';
+// import classes from './GearListForm.module.css';
 
 export default function GearListForm({ onInputChange }) {
 	const initialGearList = {
@@ -9,6 +20,7 @@ export default function GearListForm({ onInputChange }) {
 		sleepingBag: [],
 		sleepingBagLiner: [],
 		sleepingMat: [],
+		pillows: [],
 		apparel: [],
 		footware: [],
 		pack: [],
@@ -16,54 +28,84 @@ export default function GearListForm({ onInputChange }) {
 		accessories: [],
 	};
 
-	const [gearList, setGearList] = useState(initialGearList);
+	const [newGearList, setNewGearList] = useState(initialGearList);
+
+	const [gearInputs, setGearInputs] = useState({});
+
+	const dispatch = useDispatch();
+
+	const { gearList } = useSelector(state => state.trailData);
 
 	const {
-		tentInputs,
-		sleepingBagInputs,
-		sleepingBagLinerInputs,
-		sleepingMatInputs,
-		apparelInputs,
-		footwareInputs,
-		packInputs,
-		cookingGearInputs,
-		accessoriesInputs,
-	} = recommendedGearListInputsConfig;
+		queryDatabase,
+		isLoading,
+		// error
+	} = useDatabase();
 
-	const inputs = {
-		renderTentInputs: useForm(tentInputs).bind(null, updateGearList),
-		renderSleepingBagInputs: useForm(sleepingBagInputs).bind(
-			null,
-			updateGearList,
-		),
-		renderSleepingBagLinerInputs: useForm(sleepingBagLinerInputs).bind(
-			null,
-			updateGearList,
-		),
-		renderSleepingMatInputs: useForm(sleepingMatInputs).bind(
-			null,
-			updateGearList,
-		),
-		renderApparelInputs: useForm(apparelInputs).bind(null, updateGearList),
-		renderFootwareInputs: useForm(footwareInputs).bind(
-			null,
-			updateGearList,
-		),
-		renderPackInputs: useForm(packInputs).bind(null, updateGearList),
-		renderCookingGearInputs: useForm(cookingGearInputs).bind(
-			null,
-			updateGearList,
-		),
-		renderAccessoriesInputs: useForm(accessoriesInputs).bind(
-			null,
-			updateGearList,
-		),
-	};
+	const getGearListData = useCallback(async () => {
+		let list = gearList;
 
-	function updateGearList(inputObj) {
+		if (Object.keys(list).length === 0) {
+			list = await queryDatabase({
+				queryType: 'gearList',
+			});
+
+			dispatch(updateGearList(list));
+		}
+
+		const gearListInputsConfig =
+			createRecommendedGearListInputsConfig(list);
+
+		setGearInputs(gearListInputsConfig);
+	}, [gearList, queryDatabase, dispatch]);
+
+	const hasLoaded = useRef(false);
+
+	useEffect(() => {
+		if (!hasLoaded.current) {
+			getGearListData();
+			hasLoaded.current = true;
+		}
+	}, [getGearListData]);
+
+	const gearListFormJSX = useMemo(() => [], []);
+
+	const generateGearListFormJSX = useCallback(() => {
+		for (const category in gearInputs) {
+			const categoryTitle = category
+				.split('_')
+				.map(el => {
+					return el[0].toUpperCase() + el.substring(1);
+				})
+				.join(' ');
+
+			gearListFormJSX.push(
+				<Fragment>
+					<h3>{categoryTitle}</h3>
+					<div id={category}>
+						{
+							<Checkbox
+								key={category}
+								itemCategory={gearInputs[category]}
+								onInputChange={updateRecommendedGearList}
+							/>
+						}
+					</div>
+				</Fragment>,
+			);
+		}
+	}, [gearInputs, gearListFormJSX]);
+
+	useEffect(() => {
+		if (Object.keys(gearInputs).length !== 0) {
+			generateGearListFormJSX();
+		}
+	}, [gearInputs, generateGearListFormJSX]);
+
+	function updateRecommendedGearList(inputObj) {
 		const { name, value, type, checked } = inputObj;
 
-		setGearList(prevGearList => {
+		setNewGearList(prevGearList => {
 			const gearItemArray = prevGearList[name];
 
 			const itemIndex = gearItemArray.indexOf(value);
@@ -90,49 +132,26 @@ export default function GearListForm({ onInputChange }) {
 	}
 
 	function submitGearList() {
-		onInputChange(gearList);
+		onInputChange(newGearList);
 	}
 
 	return (
-		<div>
-			<h2>Recommended Gear List</h2>
-			<div id="recommenedGearList">
-				<h3>Sleeping Gear:</h3>
-				<div id="sleepingGear">
-					<h4>Tent</h4>
-					<div id="tents">{inputs.renderTentInputs()}</div>
-					<h4>Sleeping Bag</h4>
-					<div id="sleepingBags">
-						{inputs.renderSleepingBagInputs()}
-					</div>
-					<h4>Sleeping Bag Liner</h4>
-					<div id="sleepingBagLiner">
-						{inputs.renderSleepingBagLinerInputs()}
-					</div>
-					<h4>Sleeping Mat</h4>
-					<div id="sleepingMat">
-						{inputs.renderSleepingMatInputs()}
-					</div>
+		<Fragment>
+			{isLoading && <Spinner />}
+			{!isLoading && (
+				<div>
+					<h2>Recommended Gear List</h2>
+					<div id="recommenedGearList">{gearListFormJSX}</div>
+					<button
+						className="btn btn_blue"
+						type="button"
+						onClick={submitGearList}
+						disabled={false}
+					>
+						Add
+					</button>
 				</div>
-				<h3>Apparel:</h3>
-				<div id="apparel">{inputs.renderApparelInputs()}</div>
-				<h3>Footware:</h3>
-				<div id="footware">{inputs.renderFootwareInputs()}</div>
-				<h3>Pack:</h3>
-				<div id="packs">{inputs.renderPackInputs()}</div>
-				<h3>Cooking Gear:</h3>
-				<div id="cookingGear">{inputs.renderCookingGearInputs()}</div>
-				<h3>Accessories:</h3>
-				<div id="accessories">{inputs.renderAccessoriesInputs()}</div>
-			</div>
-			<button
-				className="btn btn_blue"
-				type="button"
-				onClick={submitGearList}
-				disabled={false}
-			>
-				Add
-			</button>
-		</div>
+			)}
+		</Fragment>
 	);
 }
