@@ -122,8 +122,7 @@ export default function GearListForm({ onInputChange }) {
 	}, [gearInputs, updateRecommendedGearList]);
 
 	function submitGearList() {
-		console.log(newGearList.current);
-		// onInputChange(newGearList.current);
+		onInputChange(newGearList.current);
 	}
 
 	useEffect(() => {
