@@ -2,7 +2,6 @@ import { Fragment, useState, useRef, useEffect, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateGearList } from '../../store/trailData-slice';
 import { useDatabase } from '../../hooks/use-database';
-import Spinner from '../UI/Spinner/Spinner';
 import { createRecommendedGearListInputsConfig } from '../../config/newTrailFormConfig';
 import Checkbox from './Checkbox';
 // import classes from './GearListForm.module.css';
@@ -30,11 +29,7 @@ export default function GearListForm({ onInputChange }) {
 
 	const { gearList } = useSelector(state => state.trailData);
 
-	const {
-		queryDatabase,
-		isLoading,
-		// error
-	} = useDatabase();
+	const { queryDatabase } = useDatabase();
 
 	const createGearItemCategories = useCallback(() => {
 		let gearItems = {};
