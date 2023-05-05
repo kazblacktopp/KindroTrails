@@ -4,9 +4,9 @@ function createRecommendedGearListInputsConfig(gearListData) {
 	const inputs = {};
 
 	for (const itemCategory in gearListData) {
-		const category = gearListData[itemCategory];
+		const categoryItems = gearListData[itemCategory];
 
-		for (const itemSubcategory in category) {
+		for (const itemSubcategory in categoryItems) {
 			const itemData = {
 				label: createInputLabel(itemSubcategory),
 				name: itemSubcategory,
@@ -39,7 +39,7 @@ function createInputLabel(inputPropertyName) {
 }
 
 function createCheckboxInputConfig(inputsObject) {
-	let newObj = {};
+	const newInputsObj = {};
 
 	for (const inputID in inputsObject) {
 		const inputObj = inputsObject[inputID];
@@ -57,8 +57,8 @@ function createCheckboxInputConfig(inputsObject) {
 				id = value;
 			}
 
-			newObj[inputID] = {
-				...newObj[inputID],
+			newInputsObj[inputID] = {
+				...newInputsObj[inputID],
 				[value]: {
 					...createFormFieldConfig(
 						label,
@@ -73,7 +73,7 @@ function createCheckboxInputConfig(inputsObject) {
 		}
 	}
 
-	return newObj;
+	return newInputsObj;
 }
 
 function createFormFieldConfig(
