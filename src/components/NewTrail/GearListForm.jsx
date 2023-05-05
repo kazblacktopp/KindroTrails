@@ -1,11 +1,4 @@
-import {
-	Fragment,
-	useState,
-	useRef,
-	useEffect,
-	useCallback,
-	useMemo,
-} from 'react';
+import { Fragment, useState, useRef, useEffect, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateGearList } from '../../store/trailData-slice';
 import { useDatabase } from '../../hooks/use-database';
@@ -16,21 +9,22 @@ import Checkbox from './Checkbox';
 
 export default function GearListForm({ onInputChange }) {
 	const initialGearList = {
-		tent: [],
-		sleepingBag: [],
-		sleepingBagLiner: [],
-		sleepingMat: [],
+		tents: [],
+		sleeping_bags: [],
+		sleeping_bag_liners: [],
+		sleeping_mats: [],
 		pillows: [],
 		apparel: [],
 		footware: [],
-		pack: [],
-		cookingGear: [],
+		packs: [],
+		cooking_gear: [],
 		accessories: [],
 	};
 
-	const [newGearList, setNewGearList] = useState(initialGearList);
-
 	const [gearInputs, setGearInputs] = useState({});
+	const [gearListFormJSX, setGearListFormJSX] = useState([]);
+	const newGearList = useRef(initialGearList);
+	const gearItemCategories = useRef();
 
 	const dispatch = useDispatch();
 
@@ -42,6 +36,16 @@ export default function GearListForm({ onInputChange }) {
 		// error
 	} = useDatabase();
 
+	const createGearItemCategories = useCallback(() => {
+		let gearItems = {};
+		for (const cat in gearInputs) {
+			for (const item in gearInputs[cat]) {
+				gearItems[item] = cat;
+			}
+		}
+		return gearItems;
+	}, [gearInputs]);
+
 	const getGearListData = useCallback(async () => {
 		let list = gearList;
 
@@ -49,7 +53,6 @@ export default function GearListForm({ onInputChange }) {
 			list = await queryDatabase({
 				queryType: 'gearList',
 			});
-
 			dispatch(updateGearList(list));
 		}
 
@@ -61,16 +64,36 @@ export default function GearListForm({ onInputChange }) {
 
 	const hasLoaded = useRef(false);
 
-	useEffect(() => {
-		if (!hasLoaded.current) {
-			getGearListData();
-			hasLoaded.current = true;
-		}
-	}, [getGearListData]);
+	const updateRecommendedGearList = useCallback(inputObj => {
+		const { name, value, type, checked } = inputObj;
 
-	const gearListFormJSX = useMemo(() => [], []);
+		const itemCategory = gearItemCategories.current[name];
+
+		const gearItemArray = [...newGearList.current[itemCategory]];
+
+		const itemIndex = gearItemArray.indexOf(value);
+
+		if (type === 'checkbox' && checked) {
+			if (itemIndex === -1) {
+				gearItemArray.push(value);
+			}
+		}
+
+		if (type === 'checkbox' && !checked) {
+			if (itemIndex > -1) {
+				gearItemArray.splice(itemIndex, 1);
+			}
+		}
+
+		newGearList.current = {
+			...newGearList.current,
+			[itemCategory]: gearItemArray,
+		};
+	}, []);
 
 	const generateGearListFormJSX = useCallback(() => {
+		const updatedGearList = [];
+
 		for (const category in gearInputs) {
 			const categoryTitle = category
 				.split('_')
@@ -79,79 +102,61 @@ export default function GearListForm({ onInputChange }) {
 				})
 				.join(' ');
 
-			gearListFormJSX.push(
-				<Fragment>
+			updatedGearList.push(
+				<Fragment key={category}>
 					<h3>{categoryTitle}</h3>
 					<div id={category}>
 						{
 							<Checkbox
 								key={category}
-								itemCategory={gearInputs[category]}
-								onInputChange={updateRecommendedGearList}
+								categoryItems={gearInputs[category]}
+								onChange={updateRecommendedGearList}
 							/>
 						}
 					</div>
 				</Fragment>,
 			);
 		}
-	}, [gearInputs, gearListFormJSX]);
 
-	useEffect(() => {
-		if (Object.keys(gearInputs).length !== 0) {
-			generateGearListFormJSX();
-		}
-	}, [gearInputs, generateGearListFormJSX]);
-
-	function updateRecommendedGearList(inputObj) {
-		const { name, value, type, checked } = inputObj;
-
-		setNewGearList(prevGearList => {
-			const gearItemArray = prevGearList[name];
-
-			const itemIndex = gearItemArray.indexOf(value);
-
-			if (type === 'checkbox' && !checked) {
-				if (itemIndex > -1) {
-					gearItemArray.splice(itemIndex, 1);
-				}
-			}
-
-			if (type === 'checkbox' && checked) {
-				if (itemIndex === -1) {
-					gearItemArray.push(value);
-				}
-			}
-
-			const updatedGearList = {
-				...prevGearList,
-				[name]: gearItemArray,
-			};
-
-			return updatedGearList;
-		});
-	}
+		setGearListFormJSX(updatedGearList);
+	}, [gearInputs, updateRecommendedGearList]);
 
 	function submitGearList() {
-		onInputChange(newGearList);
+		console.log(newGearList.current);
+		// onInputChange(newGearList.current);
 	}
+
+	useEffect(() => {
+		if (!hasLoaded.current) {
+			getGearListData();
+			hasLoaded.current = true;
+		}
+
+		if (Object.keys(gearInputs).length) {
+			generateGearListFormJSX();
+			gearItemCategories.current = createGearItemCategories();
+		}
+	}, [
+		getGearListData,
+		gearInputs,
+		generateGearListFormJSX,
+		createGearItemCategories,
+	]);
 
 	return (
 		<Fragment>
-			{isLoading && <Spinner />}
-			{!isLoading && (
-				<div>
-					<h2>Recommended Gear List</h2>
-					<div id="recommenedGearList">{gearListFormJSX}</div>
-					<button
-						className="btn btn_blue"
-						type="button"
-						onClick={submitGearList}
-						disabled={false}
-					>
-						Add
-					</button>
-				</div>
-			)}
+			<div>
+				<h2>Recommended Gear List</h2>
+				<div id="recommenedGearList">{gearListFormJSX}</div>
+				<button
+					className="btn btn_blue"
+					type="button"
+					onClick={submitGearList}
+					disabled={false}
+				>
+					Add
+				</button>
+			</div>
 		</Fragment>
 	);
 }
