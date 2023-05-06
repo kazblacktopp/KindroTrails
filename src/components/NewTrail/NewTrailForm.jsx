@@ -1,5 +1,7 @@
 import { Fragment, useState } from 'react';
-// import { useRef } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import initialTrailState from '../../config/newTrailPreviewConfig';
+import { updateNewTrailPreview } from '../../store/trailData-slice';
 import { compressImage } from '../../helpers/compressImage';
 import {
 	IMAGE_MAX_WIDTH,
@@ -19,8 +21,6 @@ import icons from '../../assets/icons.svg';
 import classes from './NewTrailForm.module.css';
 
 export default function NewTrailForm({ onSubmitNewTrail, onClose }) {
-	// const photoInputRef = useRef();
-
 	const [urlInputValue, setUrlInputValue] = useState('');
 	const [imageTitle, setImageTitle] = useState('');
 	const [imageDescription, setImageDescription] = useState('');
@@ -38,51 +38,9 @@ export default function NewTrailForm({ onSubmitNewTrail, onClose }) {
 	const [isPreview, setIsPreview] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
 
-	const initialTrailState = {
-		title: '',
-		description: '',
-		infoUrl: '',
-		country: '',
-		state: '',
-		facts: {
-			distance: '',
-			time: {
-				timeAmount: '',
-				timeType: '',
-			},
-			direction: '',
-			difficulty: '',
-			ownGear: '',
-			environment: '',
-			elevation: {
-				lowest: '',
-				highest: '',
-			},
-		},
-		temperatures: {
-			summer: {
-				sumMin: '',
-				sumMax: '',
-			},
-			autumn: {
-				autMin: '',
-				autMax: '',
-			},
-			winter: {
-				winMin: '',
-				winMax: '',
-			},
-			spring: {
-				sprMin: '',
-				sprMax: '',
-			},
-		},
-		trailImages: [],
-		recommenedGear: {},
-	};
+	const dispatch = useDispatch();
 
-	//   TODO: Save 'newTrailPreview' to a context instead of a component state
-	const [newTrailPreview, setNewTrailPreview] = useState(initialTrailState);
+	const { newTrailPreview } = useSelector(state => state.trailData);
 
 	function inputChangeHandler(event) {
 		event.preventDefault();
@@ -150,20 +108,28 @@ export default function NewTrailForm({ onSubmitNewTrail, onClose }) {
 			return;
 		}
 
-		setNewTrailPreview(prevTrailState => {
-			const newTrailState = createNewObject(prevTrailState, name, value);
+		dispatch(
+			updateNewTrailPreview(() => {
+				const newTrailState = createNewObject(
+					newTrailPreview,
+					name,
+					value,
+				);
 
-			return newTrailState;
-		});
+				return newTrailState;
+			}),
+		);
 	}
 
 	function handleGearListChange(gearList) {
-		setNewTrailPreview(prevState => {
-			return {
-				...prevState,
-				recommendedGear: gearList,
-			};
-		});
+		dispatch(
+			updateNewTrailPreview(() => {
+				return {
+					...newTrailPreview,
+					recommendedGear: gearList,
+				};
+			}),
+		);
 	}
 
 	// function uploadImageHandler(evnt) {
@@ -291,7 +257,7 @@ export default function NewTrailForm({ onSubmitNewTrail, onClose }) {
 	}
 
 	function clearNewTrailForm() {
-		setNewTrailPreview(initialTrailState);
+		dispatch(updateNewTrailPreview(initialTrailState));
 	}
 
 	const { facts, temperatures } = newTrailPreview;

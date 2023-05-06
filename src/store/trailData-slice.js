@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import initialTrailState from '../config/newTrailPreviewConfig';
 
 const initialTrailDataState = {
 	trails: {},
@@ -7,6 +8,7 @@ const initialTrailDataState = {
 	trailGrades: {},
 	pendingTrails: {},
 	trailLocations: {},
+	newTrailPreview: initialTrailState,
 };
 
 const trailDataSlice = createSlice({
@@ -32,6 +34,9 @@ const trailDataSlice = createSlice({
 		updateTrailLocations(state, action) {
 			state.trailLocations = action.payload;
 		},
+		updateNewTrailPreview(state, action) {
+			state.newTrailPreview = action.payload;
+		},
 	},
 });
 
@@ -42,6 +47,7 @@ export const {
 	updateTrailGrades,
 	updatePendingTrails,
 	updateTrailLocations,
+	updateNewTrailPreview,
 } = trailDataSlice.actions;
 
 export default trailDataSlice.reducer;
