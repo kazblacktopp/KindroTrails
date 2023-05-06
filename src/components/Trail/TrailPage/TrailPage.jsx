@@ -1,9 +1,11 @@
 import TrailSummary from '../TrailSummary/TrailSummary';
 import PhotoGallery from '../PhotoGallery/PhotoGallery';
+import RecommendedGearList from '../RecommendedGear/RecommendedGearList';
 import classes from './TrailPage.module.css';
 
 function TrailPage({ trailData, trailImages }) {
-	const { title, country, state, ...remainingData } = trailData;
+	const { title, country, state, recommendedGear, ...summaryData } =
+		trailData;
 
 	function capitaliseString(string) {
 		const stringArray = string.toLowerCase().split(' ');
@@ -31,8 +33,9 @@ function TrailPage({ trailData, trailImages }) {
 					</p>
 				</div>
 				<div className={classes['top-section_container']}>
-					<TrailSummary summaryData={remainingData} />
+					<TrailSummary summaryData={summaryData} />
 					<PhotoGallery photos={trailImages} />
+					<RecommendedGearList gearList={recommendedGear} />
 				</div>
 			</div>
 		</main>
