@@ -108,28 +108,22 @@ export default function NewTrailForm({ onSubmitNewTrail, onClose }) {
 			return;
 		}
 
-		dispatch(
-			updateNewTrailPreview(() => {
-				const newTrailState = createNewObject(
-					newTrailPreview,
-					name,
-					value,
-				);
-
-				return newTrailState;
-			}),
+		const newTrailPreviewState = createNewObject(
+			newTrailPreview,
+			name,
+			value,
 		);
+
+		dispatch(updateNewTrailPreview(newTrailPreviewState));
 	}
 
 	function handleGearListChange(gearList) {
-		dispatch(
-			updateNewTrailPreview(() => {
-				return {
-					...newTrailPreview,
-					recommendedGear: gearList,
-				};
-			}),
-		);
+		const updatedTrailPreview = {
+			...newTrailPreview,
+			recommendedGear: gearList,
+		};
+
+		dispatch(updateNewTrailPreview(updatedTrailPreview));
 	}
 
 	// function uploadImageHandler(evnt) {

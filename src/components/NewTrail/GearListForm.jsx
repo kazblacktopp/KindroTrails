@@ -27,7 +27,10 @@ export default function GearListForm({ onInputChange }) {
 
 	const dispatch = useDispatch();
 
-	const { gearList } = useSelector(state => state.trailData);
+	const {
+		gearList,
+		newTrailPreview: { recommendedGear },
+	} = useSelector(state => state.trailData);
 
 	const { queryDatabase } = useDatabase();
 
@@ -56,8 +59,6 @@ export default function GearListForm({ onInputChange }) {
 
 		setGearInputs(gearListInputsConfig);
 	}, [gearList, queryDatabase, dispatch]);
-
-	const hasLoaded = useRef(false);
 
 	const updateRecommendedGearList = useCallback(inputObj => {
 		const { name, value, type, checked } = inputObj;
@@ -97,6 +98,18 @@ export default function GearListForm({ onInputChange }) {
 				})
 				.join(' ');
 
+			const categoryItems = { ...gearInputs[category] };
+
+			if (Object.keys(recommendedGear).length !== 0) {
+				const catItems = recommendedGear[category];
+
+				if (catItems.length !== 0) {
+					catItems.forEach(item => {
+						categoryItems[item].checked = true;
+					});
+				}
+			}
+
 			updatedGearList.push(
 				<Fragment key={category}>
 					<h3>{categoryTitle}</h3>
@@ -104,7 +117,7 @@ export default function GearListForm({ onInputChange }) {
 						{
 							<Checkbox
 								key={category}
-								categoryItems={gearInputs[category]}
+								categoryItems={categoryItems}
 								onChange={updateRecommendedGearList}
 							/>
 						}
@@ -119,6 +132,8 @@ export default function GearListForm({ onInputChange }) {
 	function submitGearList() {
 		onInputChange(newGearList.current);
 	}
+
+	const hasLoaded = useRef(false);
 
 	useEffect(() => {
 		if (!hasLoaded.current) {
