@@ -7,57 +7,46 @@ import Checkbox from './Checkbox';
 // import classes from './GearListForm.module.css';
 
 export default function GearListForm({ onInputChange }) {
-	const initialGearList = {
-		tents: [],
-		sleeping_bags: [],
-		sleeping_bag_liners: [],
-		sleeping_mats: [],
-		pillows: [],
-		apparel: [],
-		footware: [],
-		packs: [],
-		cooking_gear: [],
-		accessories: [],
-	};
-
-	const [gearInputs, setGearInputs] = useState({});
 	const [gearListFormJSX, setGearListFormJSX] = useState([]);
-	const newGearList = useRef(initialGearList);
-	const gearItemCategories = useRef();
-
-	const dispatch = useDispatch();
 
 	const {
 		gearList,
 		newTrailPreview: { recommendedGear },
 	} = useSelector(state => state.trailData);
 
+	const newGearList = useRef(recommendedGear);
+	const gearInputs = useRef({});
+	const gearItemCategories = useRef();
+
+	const dispatch = useDispatch();
+
 	const { queryDatabase } = useDatabase();
 
 	const createGearItemCategories = useCallback(() => {
 		let gearItems = {};
-		for (const cat in gearInputs) {
-			for (const item in gearInputs[cat]) {
+		for (const cat in gearInputs.current) {
+			for (const item in gearInputs.current[cat]) {
 				gearItems[item] = cat;
 			}
 		}
 		return gearItems;
-	}, [gearInputs]);
+	}, []);
 
 	const getGearListData = useCallback(async () => {
-		let list = gearList;
+		let list = { ...gearList };
 
 		if (Object.keys(list).length === 0) {
 			list = await queryDatabase({
 				queryType: 'gearList',
 			});
+
 			dispatch(updateGearList(list));
 		}
 
 		const gearListInputsConfig =
 			createRecommendedGearListInputsConfig(list);
 
-		setGearInputs(gearListInputsConfig);
+		gearInputs.current = gearListInputsConfig;
 	}, [gearList, queryDatabase, dispatch]);
 
 	const updateRecommendedGearList = useCallback(inputObj => {
@@ -88,9 +77,9 @@ export default function GearListForm({ onInputChange }) {
 	}, []);
 
 	const generateGearListFormJSX = useCallback(() => {
-		const updatedGearList = [];
+		const updatedGearListJSX = [];
 
-		for (const category in gearInputs) {
+		for (const category in gearInputs.current) {
 			const categoryTitle = category
 				.split('_')
 				.map(el => {
@@ -98,7 +87,7 @@ export default function GearListForm({ onInputChange }) {
 				})
 				.join(' ');
 
-			const categoryItems = { ...gearInputs[category] };
+			const categoryItems = { ...gearInputs.current[category] };
 
 			if (Object.keys(recommendedGear).length !== 0) {
 				const catItems = recommendedGear[category];
@@ -110,7 +99,7 @@ export default function GearListForm({ onInputChange }) {
 				}
 			}
 
-			updatedGearList.push(
+			updatedGearListJSX.push(
 				<Fragment key={category}>
 					<h3>{categoryTitle}</h3>
 					<div id={category}>
@@ -126,8 +115,8 @@ export default function GearListForm({ onInputChange }) {
 			);
 		}
 
-		setGearListFormJSX(updatedGearList);
-	}, [gearInputs, updateRecommendedGearList]);
+		setGearListFormJSX(updatedGearListJSX);
+	}, [recommendedGear, updateRecommendedGearList]);
 
 	function submitGearList() {
 		onInputChange(newGearList.current);
@@ -138,19 +127,16 @@ export default function GearListForm({ onInputChange }) {
 	useEffect(() => {
 		if (!hasLoaded.current) {
 			getGearListData();
+
 			hasLoaded.current = true;
 		}
 
-		if (Object.keys(gearInputs).length) {
+		if (Object.keys(gearInputs.current).length !== 0) {
 			generateGearListFormJSX();
+
 			gearItemCategories.current = createGearItemCategories();
 		}
-	}, [
-		getGearListData,
-		gearInputs,
-		generateGearListFormJSX,
-		createGearItemCategories,
-	]);
+	}, [getGearListData, generateGearListFormJSX, createGearItemCategories]);
 
 	return (
 		<Fragment>

@@ -38,7 +38,18 @@ const initialTrailState = {
 		},
 	},
 	trailImages: [],
-	recommendedGear: {},
+	recommendedGear: {
+		tents: [],
+		sleeping_bags: [],
+		sleeping_bag_liners: [],
+		sleeping_mats: [],
+		pillows: [],
+		apparel: [],
+		footware: [],
+		packs: [],
+		cooking_gear: [],
+		accessories: [],
+	},
 };
 
 export default initialTrailState;
