@@ -4,6 +4,7 @@ import { updateGearList } from '../../store/trailData-slice';
 import { useDatabase } from '../../hooks/use-database';
 import { createRecommendedGearListInputsConfig } from '../../config/newTrailFormConfig';
 import Checkbox from './Checkbox';
+import capitaliseString from '../../helpers/capitaliseString';
 // import classes from './GearListForm.module.css';
 
 export default function GearListForm({ onInputChange }) {
@@ -80,12 +81,7 @@ export default function GearListForm({ onInputChange }) {
 		const updatedGearListJSX = [];
 
 		for (const category in gearInputs.current) {
-			const categoryTitle = category
-				.split('_')
-				.map(el => {
-					return el[0].toUpperCase() + el.substring(1);
-				})
-				.join(' ');
+			const categoryTitle = capitaliseString(category);
 
 			const categoryItems = { ...gearInputs.current[category] };
 

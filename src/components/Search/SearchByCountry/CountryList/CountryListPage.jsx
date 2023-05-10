@@ -1,4 +1,6 @@
 import { useSelector } from 'react-redux';
+import capitaliseString from '../../../../helpers/capitaliseString';
+
 import classes from './CountryListPage.module.css';
 
 export default function CountryPage({ onResult }) {
@@ -13,23 +15,11 @@ export default function CountryPage({ onResult }) {
 		onResult('states', event.target.id);
 	}
 
-	function capitalise(string) {
-		const stringArray = string.split('_');
-
-		const capitalisedString = stringArray
-			.map(stringEl => {
-				return stringEl[0].toUpperCase() + stringEl.substring(1);
-			})
-			.join(' ');
-
-		return capitalisedString;
-	}
-
 	function generateJSX() {
 		const countriesArray = [];
 
 		for (const country in trailLocations) {
-			const capitalisedCountry = capitalise(country);
+			const capitalisedCountry = capitaliseString(country);
 
 			countriesArray.push(
 				<li key={`country_${countriesArray.length + 1}`}>

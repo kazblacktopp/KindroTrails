@@ -1,10 +1,12 @@
 import { useSelector } from 'react-redux';
+import capitaliseString from '../../../../helpers/capitaliseString';
+
 import classes from './StateListPage.module.css';
 
 export default function StatePage({ selectedCountry, onResult }) {
 	const { trailLocations } = useSelector(state => state.trailData);
 
-	const capitalisedCountry = capitalise(selectedCountry);
+	const capitalisedCountry = capitaliseString(selectedCountry);
 
 	const { state_container_outer, state_container_inner, state_btn } = classes;
 
@@ -14,23 +16,11 @@ export default function StatePage({ selectedCountry, onResult }) {
 		onResult('trails', event.target.id);
 	}
 
-	function capitalise(string) {
-		const stringArray = string.split('_');
-
-		const capitalisedString = stringArray
-			.map(stringEl => {
-				return stringEl[0].toUpperCase() + stringEl.substring(1);
-			})
-			.join(' ');
-
-		return capitalisedString;
-	}
-
 	function generateJSX() {
 		const statesArray = [];
 
 		for (const state in trailLocations[selectedCountry]) {
-			const capitalisedState = capitalise(state);
+			const capitalisedState = capitaliseString(state);
 
 			statesArray.push(
 				<li key={`state_${statesArray.length + 1}`}>

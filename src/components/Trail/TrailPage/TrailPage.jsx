@@ -1,23 +1,13 @@
 import TrailSummary from '../TrailSummary/TrailSummary';
 import PhotoGallery from '../PhotoGallery/PhotoGallery';
 import RecommendedGearList from '../RecommendedGear/RecommendedGearList';
+import capitaliseString from '../../../helpers/capitaliseString';
+
 import classes from './TrailPage.module.css';
 
 function TrailPage({ trailData, trailImages }) {
 	const { title, country, state, recommendedGear, ...summaryData } =
 		trailData;
-
-	function capitaliseString(string) {
-		const stringArray = string.toLowerCase().split(' ');
-
-		const capitalisedString = stringArray
-			.map(stringEl => {
-				return stringEl[0].toUpperCase() + stringEl.substring(1);
-			})
-			.join(' ');
-
-		return capitalisedString;
-	}
 
 	const capitalisedTitle = capitaliseString(title);
 	const capitalisedCountry = capitaliseString(country);
@@ -35,7 +25,7 @@ function TrailPage({ trailData, trailImages }) {
 				<div className={classes['top-section_container']}>
 					<TrailSummary summaryData={summaryData} />
 					<PhotoGallery photos={trailImages} />
-					<RecommendedGearList gearList={recommendedGear} />
+					<RecommendedGearList previewGearList={recommendedGear} />
 				</div>
 			</div>
 		</main>
