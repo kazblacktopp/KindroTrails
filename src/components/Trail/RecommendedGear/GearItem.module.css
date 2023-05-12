@@ -1,0 +1,4 @@
+.gear_item_header {
+	display: flex;
+	justify-content: space-between;
+}
