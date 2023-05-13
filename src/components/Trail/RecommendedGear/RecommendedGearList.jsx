@@ -48,10 +48,10 @@ function RecommendedGearList({ previewGearList }) {
 	const gearListJSX = generateGearListJSX();
 
 	return (
-		<div>
+		<section>
 			<h2 className={title}>Recommended Gear List</h2>
 			{gearListJSX}
-		</div>
+		</section>
 	);
 }
 
