@@ -25,6 +25,8 @@ function TrailPage({ trailData, trailImages }) {
 				<div className={classes['top-section_container']}>
 					<TrailSummary summaryData={summaryData} />
 					<PhotoGallery photos={trailImages} />
+				</div>
+				<div className={classes['bottom-section_container']}>
 					<RecommendedGearList previewGearList={recommendedGear} />
 				</div>
 			</div>
