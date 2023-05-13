@@ -1,4 +1,4 @@
-// import classes from './ProductExample.module.css';
+import classes from './ProductExample.module.css';
 
 function ProductExample({ item }) {
 	const { productTitle, productPageURL, productImageURL } = item;
