@@ -114,7 +114,7 @@ export default function App() {
 
 	return (
 		<div className="app_container">
-			<header className="top_header">
+			<header>
 				<NavBar onClickHome={clickHomeHandler}></NavBar>
 				{!addNewTrail && showAddBtn && (
 					<button
@@ -125,7 +125,8 @@ export default function App() {
 					</button>
 				)}
 			</header>
-			{appPages}
+			<main>{appPages}</main>
+			<footer></footer>
 		</div>
 	);
 }
