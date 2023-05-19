@@ -1,7 +1,7 @@
+import cloneDeep from 'lodash.clonedeep';
+
 export function createNewObject(currentObj, keyName, inputValue) {
-	const newTrailObj = {
-		...currentObj,
-	};
+	const newTrailObj = cloneDeep(currentObj);
 
 	const keyPath = findKeyPath(currentObj, keyName);
 
