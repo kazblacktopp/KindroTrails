@@ -27,7 +27,7 @@ function TrailPage({ trailData, trailImages }) {
 					<PhotoGallery photos={trailImages} />
 				</div>
 				<div className={classes['bottom-section_container']}>
-					<RecommendedGearList previewGearList={recommendedGear} />
+					<RecommendedGearList trailGearList={recommendedGear} />
 				</div>
 			</div>
 		</main>
