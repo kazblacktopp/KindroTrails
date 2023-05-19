@@ -1,19 +1,27 @@
 import { useSelector } from 'react-redux';
+import { faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-icons';
+import { faCircleCheck } from '@fortawesome/free-regular-svg-icons';
 import GearItem from './GearItem';
 import capitaliseString from '../../../helpers/capitaliseString';
 
 import classes from './RecommendedGearList.module.css';
 
-function RecommendedGearList({ previewGearList }) {
+function RecommendedGearList({ trailGearList }) {
 	const { gearList } = useSelector(state => state.trailData);
+
+	console.log(gearList);
+
+	const expandIcon = faChevronDown;
+	const collapseIcon = faChevronUp;
+	const checkMarkIcon = faCircleCheck;
 
 	const { title } = classes;
 
 	function generateGearListJSX() {
 		const updatedGearListJSX = [];
 
-		for (const category in previewGearList) {
-			const previewListCategory = previewGearList[category];
+		for (const category in trailGearList) {
+			const previewListCategory = trailGearList[category];
 
 			if (previewListCategory.length !== 0) {
 				const categoryTitle = capitaliseString(category);
@@ -27,8 +35,14 @@ function RecommendedGearList({ previewGearList }) {
 
 						gearItemJSX.push(
 							<GearItem
-								exampleItems={gearListExamples}
+								key={gearItemTitle}
 								title={gearItemTitle}
+								exampleItems={gearListExamples}
+								icons={{
+									expand: expandIcon,
+									collapse: collapseIcon,
+									check: checkMarkIcon,
+								}}
 							/>,
 						);
 					}
