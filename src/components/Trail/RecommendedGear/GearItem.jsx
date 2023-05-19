@@ -1,9 +1,10 @@
 import { Fragment, useState } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import ProductExample from './ProductExample';
 
 import classes from './GearItem.module.css';
 
-function GearItem({ exampleItems = null, title }) {
+function GearItem({ exampleItems = null, title, icons }) {
 	const [isActive, setIsActive] = useState(false);
 
 	function handleToggleExamples(event) {
@@ -21,24 +22,39 @@ function GearItem({ exampleItems = null, title }) {
 
 		for (const itemExample in exampleItems) {
 			const item = exampleItems[itemExample];
+			const itemTitle = item.productTitle;
 
-			gearItemExamplesJSX.push(<ProductExample item={item} />);
+			gearItemExamplesJSX.push(
+				<ProductExample key={itemTitle} item={item} />,
+			);
 		}
 	}
 
-	const { gear_item_header } = classes;
+	const { expand, collapse, check } = icons;
+
+	const { gear_item_header, gear_item_examples, gear_icon, gear_item_title } =
+		classes;
+
+	const icon = (
+		<FontAwesomeIcon
+			icon={!isActive ? expand : collapse}
+			className={gear_icon}
+			onClick={handleToggleExamples}
+		/>
+	);
 
 	return (
 		<Fragment>
 			<div key={title} className={gear_item_header}>
-				<h4>[✓] {title}</h4>
-				{hasExamples && (
-					<button onClick={handleToggleExamples}>
-						Show examples
-					</button>
-				)}
+				<div>
+					<FontAwesomeIcon icon={check} />
+					<span className={gear_item_title}>{title}</span>
+				</div>
+				{hasExamples && icon}
 			</div>
-			{isActive && gearItemExamplesJSX}
+			{isActive && (
+				<div className={gear_item_examples}>{gearItemExamplesJSX}</div>
+			)}
 		</Fragment>
 	);
 }

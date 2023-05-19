@@ -2,3 +2,20 @@
 	display: flex;
 	justify-content: space-between;
 }
+
+.gear_item_examples {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 4rem;
+}
+
+.gear_icon {
+	width: 2rem;
+	height: 2rem;
+	cursor: pointer;
+	/* vertical-align: -0.125rem; */
+}
+
+.gear_item_title {
+	margin-left: 1rem;
+}
