@@ -99,6 +99,11 @@ header {
 	padding: 2rem;
 }
 
+a {
+	color: inherit;
+	text-decoration: none;
+}
+
 button {
 	cursor: pointer;
 }
