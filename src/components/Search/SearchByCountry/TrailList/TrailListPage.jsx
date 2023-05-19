@@ -2,6 +2,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import {
 	updateTrails,
 	updateTrailIDs,
+	updateGearList,
 } from '../../../../store/trailData-slice';
 import { useDatabase } from '../../../../hooks/use-database';
 import Spinner from '../../../UI/Spinner/Spinner';
@@ -14,7 +15,7 @@ export default function TrailListPage({
 	selectedState,
 	onResult,
 }) {
-	const { trails, trailIDs, trailLocations } = useSelector(
+	const { trails, trailIDs, trailLocations, gearList } = useSelector(
 		state => state.trailData,
 	);
 
@@ -60,6 +61,16 @@ export default function TrailListPage({
 				trail = trailResult;
 			} else {
 				trail = trails[trailID];
+			}
+
+			let list = { ...gearList };
+
+			if (Object.keys(list).length === 0) {
+				list = await queryDatabase({
+					queryType: 'gearList',
+				});
+
+				dispatch(updateGearList(list));
 			}
 
 			onResult(trail);
