@@ -26,8 +26,6 @@ export default function SearchOptions({ onResult }) {
 	async function searchByCountryHandler() {
 		try {
 			if (!Object.keys(trailLocations).length) {
-				console.log('Querying database');
-
 				const queryResult = await queryDatabase({
 					queryType: 'trailLocations',
 				});
