@@ -95,11 +95,10 @@ export default function App() {
 	}
 
 	if (viewTrail) {
+		const { trailImages, ...trailData } = selectedTrail.current;
+
 		appPages = (
-			<TrailPage
-				trailData={selectedTrail.current}
-				trailImages={selectedTrail.current.trailImages}
-			/>
+			<TrailPage trailData={trailData} trailImages={trailImages} />
 		);
 	}
 
