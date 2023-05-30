@@ -60,7 +60,7 @@
 @media only screen and (min-width: 1008px) {
 	.gallery_box {
 		grid-template-columns: repeat(2, 1fr);
-		padding: 3.2rem 1.6rem 3.2rem;
+		padding: 3.2rem 0 3.2rem;
 	}
 }
 

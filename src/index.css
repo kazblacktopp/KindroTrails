@@ -1,45 +1,27 @@
 :root {
-	/* Font Family, Size, Line Height and Letter Spacing */
-	--font-family: Montserrat, sans-serif;
-	--font-size-base: 62.5%;
-	--line-height-base: 1.75;
-	--letter-spacing-base: 0.05rem;
+	/* Font Size - used */
 
-	--font-size-title-1-desktop: 4.6rem;
-	--font-size-title-1-tab: 3.3rem;
-	--font-size-title-1-mobile: 2rem;
+	/* Font Size - unused */
 	--font-size-title-3-desktop-lg: 1.8rem;
 	--font-size-title-3-desktop: 1.4rem;
-	--font-size-title-3-mobile: 1.6rem;
 	--font-size-body-xlarge: 2rem;
-	--font-size-body-large: 1.8rem;
-	--font-size-body-regular: 1.6rem;
 	--font-size-body-small: 1.4rem;
 	--font-size-body-xsmall: 1.2rem;
 
-	/* Page Width and Height */
-	/* --max-page-width: 1440px; */
+	/* Colours - used */
+	--color-green-100: #e2eec6; /* TrailSummary.callout */
+	--color-green-800: #648e26; /* index.btn_green */
 
-	/* Colours */
+	/* Colours - unused */
 	--color-grey-800: #606060;
-
 	--color-green-950: #0a3c00;
 	--color-green-900: #406d14;
-	--color-green-100: #e2eec6;
-	--color-green-50: #f4f8e8;
-
-	--color-blue: #425df3;
-	--color-yellow: #9f831e;
-	--color-red: #ca3636;
-
-	--color-black: #000000;
-
-	--color-green-800: #648e26;
 	/* --color-green-700: #78a22f; */
 	/* --color-green-600: #8db639; */
 	/* --color-green-500: #9dc641; */
 	/* --color-green-400: #acce5f; */
 	/* --color-green-200: #cfe2a2; */
+	/* --color-green-50: #f4f8e8; */
 
 	/* --color-grey-900: #3c3c3c; */
 	/* --color-grey-700: #818181; */
@@ -74,20 +56,19 @@
 }
 
 html {
-	font-size: var(--font-size-base);
+	font-size: 62.5%; /* 10px */
 }
 
 body {
-	font-family: var(--font-family);
-	font-size: var(--font-size-body-regular);
+	font-family: Montserrat, sans-serif;
+	font-size: 1.6rem; /* 16px */
 	font-weight: 400;
-	line-height: var(--line-height-base);
-	letter-spacing: var(--letter-spacing-base);
-	box-sizing: border-box;
+	line-height: 1.75;
+	letter-spacing: 0.05rem; /* 0.5px */
 }
 
 * {
-	box-sizing: inherit;
+	box-sizing: border-box;
 	margin: 0;
 	padding: 0;
 }
@@ -125,11 +106,6 @@ button:disabled {
 	padding: 3rem;
 }
 
-.app_container {
-	display: flex;
-	flex-direction: column;
-}
-
 .action_btns {
 	display: flex;
 	justify-content: space-between;
@@ -165,7 +141,7 @@ button:disabled {
 }
 
 .btn_blue {
-	background-color: var(--color-blue);
+	background-color: #425df3;
 }
 
 .btn_green {
@@ -173,16 +149,11 @@ button:disabled {
 }
 
 .btn_yellow {
-	background-color: var(--color-yellow);
+	background-color: #9f831e;
 }
 
 .btn_red {
-	background-color: var(--color-red);
-}
-
-.btn_test {
-	background-color: var(--color-black);
-	margin-top: 2rem;
+	background-color: #ca3636;
 }
 
 @media only screen and (min-width: 641px) {
@@ -198,9 +169,6 @@ button:disabled {
 }
 
 @media only screen and (min-width: 1008px) {
-	header {
-		background-color: var(--color-green-50);
-	}
 }
 
 /* Classes that belong with their respective components */

@@ -112,7 +112,7 @@ export default function App() {
 	}
 
 	return (
-		<div className="app_container">
+		<div>
 			<header>
 				<NavBar onClickHome={clickHomeHandler}></NavBar>
 				{!addNewTrail && showAddBtn && (

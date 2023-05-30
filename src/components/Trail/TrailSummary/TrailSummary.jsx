@@ -31,7 +31,7 @@ export default function TrailSummary({ summaryData }) {
 			<div className={classes['summary_container']}>
 				<p>{descriptionWithBreaks}</p>
 				<a href={infoUrl} target="_blank" rel="noreferrer">
-					Learn more
+					{`>> Learn more`}
 				</a>
 			</div>
 			<div className={classes['callout_container']}>
