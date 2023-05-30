@@ -9,13 +9,16 @@ import classes from './RecommendedGearList.module.css';
 function RecommendedGearList({ trailGearList }) {
 	const { gearList } = useSelector(state => state.trailData);
 
-	console.log(gearList);
-
 	const expandIcon = faChevronDown;
 	const collapseIcon = faChevronUp;
 	const checkMarkIcon = faCircleCheck;
 
-	const { title } = classes;
+	const {
+		section_title,
+		category_container,
+		category_title,
+		gear_items_wrapper,
+	} = classes;
 
 	function generateGearListJSX() {
 		const updatedGearListJSX = [];
@@ -50,8 +53,8 @@ function RecommendedGearList({ trailGearList }) {
 
 				updatedGearListJSX.push(
 					<div key={category}>
-						<h3>{categoryTitle}</h3>
-						{gearItemJSX}
+						<h3 className={category_title}>{categoryTitle}</h3>
+						<div className={gear_items_wrapper}>{gearItemJSX}</div>
 					</div>,
 				);
 			}
@@ -63,8 +66,8 @@ function RecommendedGearList({ trailGearList }) {
 
 	return (
 		<section>
-			<h2 className={title}>Recommended Gear List</h2>
-			{gearListJSX}
+			<h2 className={section_title}>Recommended Gear List</h2>
+			<div className={category_container}>{gearListJSX}</div>
 		</section>
 	);
 }

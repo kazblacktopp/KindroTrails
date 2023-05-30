@@ -1,7 +1,20 @@
-.title {
+.section_title {
 	text-align: center;
+	margin-bottom: 2rem;
 }
 
-.hidden {
-	display: none;
+.category_container {
+	display: flex;
+	flex-direction: column;
+	gap: 2.8rem;
+}
+
+.category_title {
+	margin-bottom: 1.2rem;
+}
+
+.gear_items_wrapper {
+	display: flex;
+	flex-direction: column;
+	gap: 0.4rem;
 }
