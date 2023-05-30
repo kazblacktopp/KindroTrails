@@ -25,15 +25,20 @@ function GearItem({ exampleItems = null, title, icons }) {
 			const itemTitle = item.productTitle;
 
 			gearItemExamplesJSX.push(
-				<ProductExample key={itemTitle} item={item} />,
+				<ProductExample key={itemTitle} item={item} show={isActive} />,
 			);
 		}
 	}
 
 	const { expand, collapse, check } = icons;
 
-	const { gear_item_header, gear_item_examples, gear_icon, gear_item_title } =
-		classes;
+	const {
+		gear_item_header,
+		gear_item_examples,
+		gear_icon,
+		gear_item_title,
+		show,
+	} = classes;
 
 	const icon = (
 		<FontAwesomeIcon
@@ -42,6 +47,8 @@ function GearItem({ exampleItems = null, title, icons }) {
 			onClick={handleToggleExamples}
 		/>
 	);
+
+	const examplesClasses = `${gear_item_examples} ${isActive ? show : ''}`;
 
 	return (
 		<Fragment>
@@ -52,9 +59,7 @@ function GearItem({ exampleItems = null, title, icons }) {
 				</div>
 				{hasExamples && icon}
 			</div>
-			{isActive && (
-				<div className={gear_item_examples}>{gearItemExamplesJSX}</div>
-			)}
+			<div className={examplesClasses}>{gearItemExamplesJSX}</div>
 		</Fragment>
 	);
 }

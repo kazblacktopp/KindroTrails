@@ -4,18 +4,39 @@
 }
 
 .gear_item_examples {
-	display: grid;
+	display: none;
 	grid-template-columns: 1fr 1fr;
 	gap: 4rem;
+	margin-top: 1.6rem;
+	margin-bottom: 1.6rem;
+	opacity: 0;
+	animation: growDown 300ms ease-in-out forwards;
+	transform-origin: top center;
+}
+
+@keyframes growDown {
+	0% {
+		transform: scaleY(0);
+	}
+	80% {
+		transform: scaleY(1.1);
+	}
+	100% {
+		transform: scaleY(1);
+	}
 }
 
 .gear_icon {
 	width: 2rem;
 	height: 2rem;
 	cursor: pointer;
-	/* vertical-align: -0.125rem; */
 }
 
 .gear_item_title {
 	margin-left: 1rem;
+}
+
+.show {
+	display: grid;
+	opacity: 1;
 }
