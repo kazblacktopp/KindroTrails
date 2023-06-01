@@ -4,17 +4,16 @@
 	/* Font Size - unused */
 	--font-size-title-3-desktop-lg: 1.8rem;
 	--font-size-title-3-desktop: 1.4rem;
-	--font-size-body-xlarge: 2rem;
 	--font-size-body-small: 1.4rem;
 	--font-size-body-xsmall: 1.2rem;
 
 	/* Colours - used */
 	--color-green-100: #e2eec6; /* TrailSummary.callout */
 	--color-green-800: #648e26; /* index.btn_green */
+	--color-grey-800: #606060; /* TrailSummary.summary_container p */
+	--color-green-950: #0a3c00; /* TrailSummary.summary_container a, TrailSummary.callout*/
 
 	/* Colours - unused */
-	--color-grey-800: #606060;
-	--color-green-950: #0a3c00;
 	--color-green-900: #406d14;
 	/* --color-green-700: #78a22f; */
 	/* --color-green-600: #8db639; */
@@ -156,21 +155,6 @@ button:disabled {
 	background-color: #ca3636;
 }
 
-@media only screen and (min-width: 641px) {
-	.pswp__default-caption {
-		top: 0;
-		bottom: unset !important;
-	}
-
-	.clear_close_btn_group {
-		display: flex;
-		gap: 2rem;
-	}
-}
-
-@media only screen and (min-width: 1008px) {
-}
-
 /* Classes that belong with their respective components */
 
 .new_trail_btn {
@@ -220,5 +204,20 @@ button:disabled {
 
 .feedback p {
 	margin-bottom: 2rem;
+}
+
+/************* Media Queries *************/
+
+/* Tablet Screen Size and Above */
+@media only screen and (min-width: 640px) {
+	.pswp__default-caption {
+		top: 0;
+		bottom: unset !important;
+	}
+
+	.clear_close_btn_group {
+		display: flex;
+		gap: 2rem;
+	}
 }
 
