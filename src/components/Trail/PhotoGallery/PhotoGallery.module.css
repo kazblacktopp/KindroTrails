@@ -51,16 +51,21 @@
 
 /* svg: pswp__icn, use: pswp__icn-shadow */
 
-@media only screen and (min-width: 641px) {
+/************* Media Queries *************/
+
+/* Tablet Screen Size and Above */
+@media only screen and (min-width: 640px) {
 	.gallery_box {
 		grid-template-columns: repeat(3, 1fr);
 	}
 }
 
-@media only screen and (min-width: 1008px) {
+/* Laptop Screen Size and Above */
+@media only screen and (min-width: 1024px) {
 	.gallery_box {
 		grid-template-columns: repeat(2, 1fr);
-		padding: 3.2rem 1.6rem 3.2rem;
+		grid-template-rows: repeat(5, 1fr);
+		padding: 3.2rem 0 3.2rem;
 	}
 }
 

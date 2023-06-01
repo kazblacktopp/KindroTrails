@@ -1,6 +1,6 @@
 import { Fragment, useState } from 'react';
 import { useDatabase } from '../../hooks/use-database';
-import { useUpdateContext } from '../../hooks/use-update-context';
+import { useUpdateStore } from '../../hooks/use-update-store';
 import Spinner from '../UI/Spinner/Spinner';
 import Card from '../UI/Card/Card';
 import NewTrailForm from './NewTrailForm';
@@ -8,7 +8,7 @@ import NewTrailForm from './NewTrailForm';
 export default function NewTrail({ onClose, onViewTrail }) {
 	const { uploadToStorage, updateDatabase, queryDatabase, isLoading, error } =
 		useDatabase();
-	const { addNewTrailToContext } = useUpdateContext();
+	const { addNewTrailToStore } = useUpdateStore();
 	const [newTrailID, setNewTrailID] = useState(null);
 	const [message, setMessage] = useState(null);
 
@@ -50,7 +50,7 @@ export default function NewTrail({ onClose, onViewTrail }) {
 				throw new Error('The database did not return a trail result.');
 			}
 
-			addNewTrailToContext(trailResult);
+			addNewTrailToStore(trailResult);
 
 			setNewTrailID(trailID);
 

@@ -1,4 +1,7 @@
-import { Fragment, useState, useRef } from 'react';
+import { Fragment, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import initialTrailState from '../../config/newTrailPreviewConfig';
+import { updateNewTrailPreview } from '../../store/trailData-slice';
 import { compressImage } from '../../helpers/compressImage';
 import {
 	IMAGE_MAX_WIDTH,
@@ -11,16 +14,13 @@ import {
 } from '../../config/appConfig';
 import TrailPage from '../Trail/TrailPage/TrailPage';
 import PhotoGallery from '../Trail/PhotoGallery/PhotoGallery';
+import GearListForm from './GearListForm';
 import { createNewObject } from '../../helpers/createNewObject';
-
-import { trailData } from '../../config/trailData';
 
 import icons from '../../assets/icons.svg';
 import classes from './NewTrailForm.module.css';
 
 export default function NewTrailForm({ onSubmitNewTrail, onClose }) {
-	const photoInputRef = useRef();
-
 	const [urlInputValue, setUrlInputValue] = useState('');
 	const [imageTitle, setImageTitle] = useState('');
 	const [imageDescription, setImageDescription] = useState('');
@@ -38,54 +38,9 @@ export default function NewTrailForm({ onSubmitNewTrail, onClose }) {
 	const [isPreview, setIsPreview] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
 
-	const initialTrailState = {
-		title: '',
-		description: '',
-		infoUrl: '',
-		country: '',
-		state: '',
-		facts: {
-			distance: '',
-			time: {
-				timeAmount: '',
-				timeType: '',
-			},
-			direction: '',
-			difficulty: '',
-			ownGear: '',
-			environment: '',
-			elevation: {
-				lowest: '',
-				highest: '',
-			},
-		},
-		temperatures: {
-			summer: {
-				sumMin: '',
-				sumMax: '',
-			},
-			autumn: {
-				autMin: '',
-				autMax: '',
-			},
-			winter: {
-				winMin: '',
-				winMax: '',
-			},
-			spring: {
-				sprMin: '',
-				sprMax: '',
-			},
-		},
-		trailImages: [],
-	};
+	const dispatch = useDispatch();
 
-	//   TODO: Save 'newTrailPreview' to a context instead of a component state
-	const [newTrailPreview, setNewTrailPreview] = useState(initialTrailState);
-
-	function loadTestData() {
-		setNewTrailPreview(trailData);
-	}
+	const { newTrailPreview } = useSelector(state => state.trailData);
 
 	function inputChangeHandler(event) {
 		event.preventDefault();
@@ -153,40 +108,51 @@ export default function NewTrailForm({ onSubmitNewTrail, onClose }) {
 			return;
 		}
 
-		setNewTrailPreview(prevTrailState => {
-			const newTrailState = createNewObject(prevTrailState, name, value);
+		const newTrailPreviewState = createNewObject(
+			newTrailPreview,
+			name,
+			value,
+		);
 
-			return newTrailState;
-		});
+		dispatch(updateNewTrailPreview(newTrailPreviewState));
 	}
 
-	function uploadImageHandler(evnt) {
-		evnt.preventDefault();
+	function handleGearListChange(gearList) {
+		const updatedTrailPreview = {
+			...newTrailPreview,
+			recommendedGear: gearList,
+		};
 
-		const files = evnt.target.files;
-
-		if (!files) return;
-
-		const fileListArray = [...files];
-
-		fileListArray.forEach(file => {
-			// TODO: `file.attribution` and `file.description` needs to be set once user accounts are implemented
-			file.description = null;
-			file.attribution = null;
-
-			// TODO: `file.name` may need to be unique (randomly generated?). Is this possible?
-
-			setIsLoading(true);
-
-			compressImage(
-				file,
-				createPreviewImages,
-				IMAGE_MAX_WIDTH,
-				THUMBNAIL,
-				THUMBNAIL_MAX_WIDTH,
-			);
-		});
+		dispatch(updateNewTrailPreview(updatedTrailPreview));
 	}
+
+	// function uploadImageHandler(evnt) {
+	// 	evnt.preventDefault();
+
+	// 	const files = evnt.target.files;
+
+	// 	if (!files) return;
+
+	// 	const fileListArray = [...files];
+
+	// 	fileListArray.forEach(file => {
+	// 		// TODO: `file.attribution` and `file.description` needs to be set once user accounts are implemented
+	// 		file.description = null;
+	// 		file.attribution = null;
+
+	// 		// TODO: `file.name` may need to be unique (randomly generated?). Is this possible?
+
+	// 		setIsLoading(true);
+
+	// 		compressImage(
+	// 			file,
+	// 			createPreviewImages,
+	// 			IMAGE_MAX_WIDTH,
+	// 			THUMBNAIL,
+	// 			THUMBNAIL_MAX_WIDTH,
+	// 		);
+	// 	});
+	// }
 
 	function createPreviewImages(imageData) {
 		setPreviewImages(prevPreviewState => {
@@ -285,7 +251,7 @@ export default function NewTrailForm({ onSubmitNewTrail, onClose }) {
 	}
 
 	function clearNewTrailForm() {
-		setNewTrailPreview(initialTrailState);
+		dispatch(updateNewTrailPreview(initialTrailState));
 	}
 
 	const { facts, temperatures } = newTrailPreview;
@@ -315,8 +281,8 @@ export default function NewTrailForm({ onSubmitNewTrail, onClose }) {
 		state,
 		facts_container,
 		image_input_container,
-		photo_input_container,
-		photoInput,
+		// photo_input_container,
+		// photoInput,
 		url_input_container,
 		url_input_wrapper,
 		photo_preview,
@@ -413,6 +379,7 @@ export default function NewTrailForm({ onSubmitNewTrail, onClose }) {
 
 			{!isPreview && (
 				<form className={form_container}>
+					<h2>Trail Summary</h2>
 					<div className={title}>
 						<label htmlFor="title">Trail title:</label>
 						<input
@@ -715,8 +682,10 @@ export default function NewTrailForm({ onSubmitNewTrail, onClose }) {
 							/>
 						</div>
 					</div>
+					<h2>Trail Images</h2>
 					<div className={image_input_container}>
-						<div className={photo_input_container}>
+						{/* Uncomment below when user accounts are set up for user photo upload */}
+						{/* <div className={photo_input_container}>
 							<label htmlFor="trailPhoto">Select a photo:</label>
 							<input
 								id="trailPhoto"
@@ -736,7 +705,7 @@ export default function NewTrailForm({ onSubmitNewTrail, onClose }) {
 								Upload Photos
 							</button>
 						</div>
-						<p>OR</p>
+						<p>OR</p> */}
 						<div className={url_input_container}>
 							<div className={url_input_wrapper}>
 								<label htmlFor="trailImageURL">
@@ -831,6 +800,7 @@ export default function NewTrailForm({ onSubmitNewTrail, onClose }) {
 							)}
 						</div>
 					</div>
+					<GearListForm onInputChange={handleGearListChange} />
 					<div className="action_btns">
 						<div className="clear_close_btn_group">
 							<button
@@ -856,15 +826,6 @@ export default function NewTrailForm({ onSubmitNewTrail, onClose }) {
 							Preview
 						</button>
 					</div>
-					{/* Removes below button before building for production */}
-					<button
-						className="btn btn_test"
-						type="button"
-						onClick={loadTestData}
-					>
-						Load
-					</button>
-					{/* *************************************************** */}
 				</form>
 			)}
 		</Fragment>

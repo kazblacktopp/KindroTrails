@@ -13,7 +13,7 @@ import {
 	get,
 } from 'firebase/database';
 import { firebaseConfig } from '../config/firebaseConfig';
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 
 export function useDatabase() {
 	const [isLoading, setIsLoading] = useState(false);
@@ -113,44 +113,47 @@ export function useDatabase() {
 		}
 	}
 
-	async function queryDatabase({ queryType, queryID = '' }) {
-		setIsLoading(true);
-		setError(null);
+	const queryDatabase = useCallback(
+		async function ({ queryType, queryID = '' }) {
+			setIsLoading(true);
+			setError(null);
 
-		try {
-			if (!queryType) {
-				throw new Error('Please provide a `queryType` parameter.');
-			}
+			try {
+				if (!queryType) {
+					throw new Error('Please provide a `queryType` parameter.');
+				}
 
-			const dbRef = createRefInDatabase(database);
+				const dbRef = createRefInDatabase(database);
 
-			const queryRef = '/' + queryType + '/' + queryID;
+				const queryRef = '/' + queryType + '/' + queryID;
 
-			if (!queryRef) {
-				throw new Error(
-					'queryRef is undefined. Please check the `queryType` and `queryID` parameters are correct.',
+				if (!queryRef) {
+					throw new Error(
+						'queryRef is undefined. Please check the `queryType` and `queryID` parameters are correct.',
+					);
+				}
+
+				const snapshot = await get(child(dbRef, queryRef));
+
+				if (!snapshot.exists()) {
+					throw new Error('Database query snapshot does not exist.');
+				}
+
+				const data = snapshot.val();
+
+				setIsLoading(false);
+
+				return data;
+			} catch (err) {
+				console.error('queryDatabase: ', err);
+				setIsLoading(false);
+				setError(
+					'Something went wrong! Unable to query database. Please try a different query.',
 				);
 			}
-
-			const snapshot = await get(child(dbRef, queryRef));
-
-			if (!snapshot.exists()) {
-				throw new Error('Database query snapshot does not exist.');
-			}
-
-			const data = snapshot.val();
-
-			setIsLoading(false);
-
-			return data;
-		} catch (err) {
-			console.error('queryDatabase: ', err);
-			setIsLoading(false);
-			setError(
-				'Something went wrong! Unable to query database. Please try a different query.',
-			);
-		}
-	}
+		},
+		[database],
+	);
 
 	return {
 		queryDatabase,

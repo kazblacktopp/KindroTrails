@@ -6,6 +6,11 @@
 .form_container label {
 	font-size: var(--font-size-body-regular);
 	font-weight: 700;
+	margin: 0.5rem;
+}
+
+.form_container h4 {
+	font-size: var(--font-size-body-small);
 }
 
 .title,

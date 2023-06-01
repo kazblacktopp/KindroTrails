@@ -1,7 +1,12 @@
-import { useContext } from 'react';
-import TrailContext from '../../../../store/trail-context';
+import { useSelector, useDispatch } from 'react-redux';
+import {
+	updateTrails,
+	updateTrailIDs,
+	updateGearList,
+} from '../../../../store/trailData-slice';
 import { useDatabase } from '../../../../hooks/use-database';
 import Spinner from '../../../UI/Spinner/Spinner';
+import capitaliseString from '../../../../helpers/capitaliseString';
 
 import classes from './TrailListPage.module.css';
 
@@ -10,11 +15,15 @@ export default function TrailListPage({
 	selectedState,
 	onResult,
 }) {
-	const trailCtx = useContext(TrailContext);
+	const { trails, trailIDs, trailLocations, gearList } = useSelector(
+		state => state.trailData,
+	);
+
+	const dispatch = useDispatch();
 
 	const { queryDatabase, isLoading, error } = useDatabase();
 
-	const capitalisedState = capitalise(selectedState);
+	const capitalisedState = capitaliseString(selectedState);
 
 	const { trail_container_outer, trail_container_inner, trail_btn } = classes;
 
@@ -28,7 +37,7 @@ export default function TrailListPage({
 		let trail;
 
 		try {
-			if (!trailCtx.trails[trailID]) {
+			if (!trails[trailID]) {
 				const trailResult = await queryDatabase({
 					queryType: 'trails',
 					queryID: trailID,
@@ -40,16 +49,28 @@ export default function TrailListPage({
 					);
 				}
 
-				trailCtx.updateTrails(trailResult);
+				dispatch(updateTrails(trailResult));
 
-				trailCtx.updateTrailIDs({
-					...trailCtx.trailIDs,
-					[trailID]: true,
-				});
+				dispatch(
+					updateTrailIDs({
+						...trailIDs,
+						[trailID]: true,
+					}),
+				);
 
 				trail = trailResult;
 			} else {
-				trail = trailCtx.trails[trailID];
+				trail = trails[trailID];
+			}
+
+			let list = { ...gearList };
+
+			if (Object.keys(list).length === 0) {
+				list = await queryDatabase({
+					queryType: 'gearList',
+				});
+
+				dispatch(updateGearList(list));
 			}
 
 			onResult(trail);
@@ -58,25 +79,13 @@ export default function TrailListPage({
 		}
 	}
 
-	function capitalise(string) {
-		const stringArray = string.split('_');
-
-		const capitalisedString = stringArray
-			.map(stringEl => {
-				return stringEl[0].toUpperCase() + stringEl.substring(1);
-			})
-			.join(' ');
-
-		return capitalisedString;
-	}
-
 	function generateJSX() {
-		const countryObj = trailCtx.trailLocations[selectedCountry];
+		const countryObj = trailLocations[selectedCountry];
 
 		const trailElArray = [];
 
 		for (const trailID in countryObj[selectedState]) {
-			const capitalisedTrail = capitalise(trailID);
+			const capitalisedTrail = capitaliseString(trailID);
 
 			trailElArray.push(
 				<li key={`trail_${trailElArray.length + 1}`}>

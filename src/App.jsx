@@ -95,11 +95,10 @@ export default function App() {
 	}
 
 	if (viewTrail) {
+		const { trailImages, ...trailData } = selectedTrail.current;
+
 		appPages = (
-			<TrailPage
-				trailData={selectedTrail.current}
-				trailImages={selectedTrail.current.trailImages}
-			/>
+			<TrailPage trailData={trailData} trailImages={trailImages} />
 		);
 	}
 
@@ -113,8 +112,8 @@ export default function App() {
 	}
 
 	return (
-		<div className="app_container">
-			<header className="top_header">
+		<div>
+			<header>
 				<NavBar onClickHome={clickHomeHandler}></NavBar>
 				{!addNewTrail && showAddBtn && (
 					<button
@@ -125,7 +124,8 @@ export default function App() {
 					</button>
 				)}
 			</header>
-			{appPages}
+			<main>{appPages}</main>
+			<footer></footer>
 		</div>
 	);
 }
