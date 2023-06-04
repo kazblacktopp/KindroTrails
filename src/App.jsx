@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react';
-import NavBar from './components/UI/Nav/NavBar';
+import NavBar from './components/UI/Nav/NavBar.tsx';
 import SearchOptions from './components/Search/SearchOptions';
 import CountryListPage from './components/Search/SearchByCountry/CountryList/CountryListPage';
 import StateListPage from './components/Search/SearchByCountry/StateList/StateListPage';
@@ -18,27 +18,19 @@ export default function App() {
 	const selectedState = useRef(null);
 	const selectedTrail = useRef(null);
 
-	// Set showAddBtn to true if user is logged in and has admin permissions
-	const [showAddBtn, setShowAddBtn] = useState(true);
-
 	function clickHomeHandler() {
 		setAddNewTrail(false);
 		setViewTrail(false);
 		setViewCountriesList(false);
 		setViewStatesList(false);
-
-		// TODO: If user is logged in and has admin permissions:
-		setShowAddBtn(true);
 	}
 
 	function addNewTrailHandler() {
 		setAddNewTrail(true);
-		setShowAddBtn(false);
 	}
 
 	function closeNewTrailFormHandler() {
 		setAddNewTrail(false);
-		setShowAddBtn(true);
 	}
 
 	function displayResultHandler(resultType, resultID = null) {
@@ -112,21 +104,16 @@ export default function App() {
 	}
 
 	return (
-		<div>
+		<>
 			<header>
-				<NavBar onClickHome={clickHomeHandler}></NavBar>
-				{!addNewTrail && showAddBtn && (
-					<button
-						className="new_trail_btn btn btn_blue"
-						onClick={addNewTrailHandler}
-					>
-						Add New Trail
-					</button>
-				)}
+				<NavBar
+					onClickHome={clickHomeHandler}
+					onClickAddTrail={addNewTrailHandler}
+				/>
 			</header>
 			<main>{appPages}</main>
 			<footer></footer>
-		</div>
+		</>
 	);
 }
 
