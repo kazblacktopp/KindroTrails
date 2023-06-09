@@ -13,6 +13,7 @@ export default function App() {
 	const [viewCountriesList, setViewCountriesList] = useState(false);
 	const [viewStatesList, setViewStatesList] = useState(false);
 	const [viewTrailsList, setViewTrailsList] = useState(false);
+	const [isAuthenticated, setIsAuthenticated] = useState(false);
 
 	const selectedCountry = useRef(null);
 	const selectedState = useRef(null);
@@ -109,6 +110,7 @@ export default function App() {
 				<NavBar
 					onClickHome={clickHomeHandler}
 					onClickAddTrail={addNewTrailHandler}
+					isAuth={isAuthenticated}
 				/>
 			</header>
 			<main>{appPages}</main>

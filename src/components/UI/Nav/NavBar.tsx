@@ -1,10 +1,11 @@
 import { FC, useRef, useState } from 'react';
 import classes from './NavBar.module.css';
 
-interface navBarProps {
+type navBarProps = {
 	onClickHome: () => void;
 	onClickAddTrail: () => void;
-}
+	isAuth: boolean;
+};
 
 const {
 	nav,
@@ -24,7 +25,7 @@ const {
 	link5,
 } = classes;
 
-const NavBar: FC<navBarProps> = ({ onClickHome, onClickAddTrail }) => {
+const NavBar: FC<navBarProps> = ({ onClickHome, onClickAddTrail, isAuth }) => {
 	const [showMobileMenu, setShowMobileMenu] = useState<boolean>(false);
 
 	const navLinksRef = useRef<HTMLUListElement | null>(null);
@@ -61,12 +62,14 @@ const NavBar: FC<navBarProps> = ({ onClickHome, onClickAddTrail }) => {
 				<li className={`${link} ${link4}`}>
 					<a href="/">Contact</a>
 				</li>
-				<li
-					className={`${link} ${link5} btn btn_blue`}
-					onClick={onClickAddTrail}
-				>
-					+ Add New Trail
-				</li>
+				{isAuth && (
+					<li
+						className={`${link} ${link5} btn btn_blue`}
+						onClick={onClickAddTrail}
+					>
+						+ Add New Trail
+					</li>
+				)}
 			</ul>
 		</nav>
 	);
