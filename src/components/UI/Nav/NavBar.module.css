@@ -82,8 +82,8 @@
 
 .link a {
 	color: var(--color-green-50);
-	text-decoration: none;
 	padding: 2rem 3rem;
+	font-weight: 600;
 }
 
 .toggle .link1 {
@@ -110,6 +110,7 @@
 	color: var(--color-blue);
 	font-weight: 600;
 	background-color: var(--color-green-50);
+	/* transform: scale(1); */
 }
 
 @keyframes navBarFadeInOut {
@@ -129,5 +130,32 @@
 	100% {
 		opacity: 1;
 		transform: translateX(0);
+	}
+}
+
+@media only screen and (min-width: 756px) {
+	.hamburger {
+		display: none;
+	}
+
+	.nav_links {
+		flex-direction: row;
+		justify-content: flex-end;
+		gap: 0.5rem;
+		position: static;
+		padding-bottom: 0;
+		height: 10vh;
+		background-color: inherit;
+		margin-left: auto;
+	}
+
+	.link {
+		opacity: 1;
+		transform: translateX(0);
+	}
+
+	.link a {
+		color: inherit;
+		padding: 2rem 2.5rem;
 	}
 }
