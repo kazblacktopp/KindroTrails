@@ -1,12 +1,14 @@
-import { Fragment } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { updateTrailLocations } from '../../store/trailData-slice';
 import { useDatabase } from '../../hooks/use-database';
 import Spinner from '../UI/Spinner/Spinner';
 import classes from './SearchOptions.module.css';
+import { useNavigate } from 'react-router-dom';
 
-export default function SearchOptions({ onResult }) {
+export default function SearchOptions() {
 	const { trailLocations } = useSelector(state => state.trailData);
+
+	const navigate = useNavigate();
 
 	const dispatch = useDispatch();
 
@@ -39,14 +41,14 @@ export default function SearchOptions({ onResult }) {
 				dispatch(updateTrailLocations(queryResult));
 			}
 
-			onResult('countries');
+			navigate('/search/country');
 		} catch (err) {
 			console.error('searchByCountryHandler: ', err);
 		}
 	}
 
 	let searchPageContent = (
-		<Fragment>
+		<>
 			<button
 				className={countryBtnClasses}
 				onClick={searchByCountryHandler}
@@ -55,7 +57,7 @@ export default function SearchOptions({ onResult }) {
 			</button>
 			<button className={nameBtnClasses}>Search By Trail Name</button>
 			<button className={gradeBtnClasses}>Search By Grade</button>
-		</Fragment>
+		</>
 	);
 
 	if (isLoading) {
