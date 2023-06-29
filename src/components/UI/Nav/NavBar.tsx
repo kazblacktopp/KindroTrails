@@ -17,7 +17,6 @@ const {
 	link2,
 	link3,
 	link4,
-	link5,
 } = classes;
 
 function NavBar() {
