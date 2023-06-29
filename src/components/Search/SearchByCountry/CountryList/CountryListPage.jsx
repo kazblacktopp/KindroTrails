@@ -1,10 +1,13 @@
 import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import capitaliseString from '../../../../helpers/capitaliseString';
 
 import classes from './CountryListPage.module.css';
 
-export default function CountryPage({ onResult }) {
+export default function CountryPage() {
 	const { trailLocations } = useSelector(state => state.trailData);
+
+	const navigate = useNavigate();
 
 	const { country_container_outer, country_container_inner, country_btn } =
 		classes;
@@ -12,7 +15,11 @@ export default function CountryPage({ onResult }) {
 	function loadStatesHandler(event) {
 		event.preventDefault();
 
-		onResult('states', event.target.id);
+		const countryId = event.target.id;
+
+		localStorage.setItem('selectedCountry', countryId);
+
+		navigate('/search/country/state');
 	}
 
 	function generateJSX() {
