@@ -8,6 +8,8 @@ import TrailListPage from './components/Search/SearchByCountry/TrailList/TrailLi
 import TrailPage from './components/Trail/TrailPage/TrailPage';
 import NewTrail from './components/NewTrail/NewTrail';
 import Error from './pages/Home/Error.jsx';
+import About from './pages/Home/About';
+import Contact from './pages/Home/Contact';
 
 export default function App() {
 	const router = createBrowserRouter([
@@ -18,6 +20,8 @@ export default function App() {
 			children: [
 				{ path: '/', element: <Home /> },
 				{ path: '/search', element: <SearchOptions /> },
+				{ path: '/about', element: <About /> },
+				{ path: '/contact', element: <Contact /> },
 				{ path: '/search/country', element: <CountryListPage /> },
 				{ path: 'search/country/state', element: <StateListPage /> },
 				{
