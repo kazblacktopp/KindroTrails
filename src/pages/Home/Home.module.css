@@ -1,0 +1,11 @@
+.section {
+	display: flex;
+	flex-direction: column;
+	gap: 2rem;
+	max-width: 50rem;
+	margin: auto;
+}
+
+.section h1 {
+	font-size: 3.5rem;
+}
