@@ -2,9 +2,14 @@ import { useSelector } from 'react-redux';
 import capitaliseString from '../../../../helpers/capitaliseString';
 
 import classes from './StateListPage.module.css';
+import { useNavigate } from 'react-router-dom';
 
-export default function StatePage({ selectedCountry, onResult }) {
+export default function StatePage() {
 	const { trailLocations } = useSelector(state => state.trailData);
+
+	const navigate = useNavigate();
+
+	const selectedCountry = localStorage.getItem('selectedCountry');
 
 	const capitalisedCountry = capitaliseString(selectedCountry);
 
@@ -13,7 +18,11 @@ export default function StatePage({ selectedCountry, onResult }) {
 	function loadStatesHandler(event) {
 		event.preventDefault();
 
-		onResult('trails', event.target.id);
+		const stateId = event.target.id;
+
+		localStorage.setItem('selectedState', stateId);
+
+		navigate(`/search/country/state/trail`);
 	}
 
 	function generateJSX() {
