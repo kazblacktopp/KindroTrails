@@ -1,7 +1,7 @@
-import { FC, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import classes from './NavBar.module.css';
 
-type navBarProps = {
+type NavBarProps = {
 	onClickHome: () => void;
 	onClickAddTrail: () => void;
 	isAuth: boolean;
@@ -25,7 +25,7 @@ const {
 	link5,
 } = classes;
 
-const NavBar: FC<navBarProps> = ({ onClickHome, onClickAddTrail, isAuth }) => {
+function NavBar({ onClickHome, onClickAddTrail, isAuth }: NavBarProps) {
 	const [showMobileMenu, setShowMobileMenu] = useState<boolean>(false);
 
 	const navLinksRef = useRef<HTMLUListElement | null>(null);
@@ -73,6 +73,6 @@ const NavBar: FC<navBarProps> = ({ onClickHome, onClickAddTrail, isAuth }) => {
 			</ul>
 		</nav>
 	);
-};
+}
 
 export default NavBar;
