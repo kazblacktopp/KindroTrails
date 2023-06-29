@@ -11,6 +11,7 @@
 	--color-green-50: #f4f8e8; /* index.btn, NavBar.link a */
 	--color-green-100: #e2eec6; /* TrailSummary.callout */
 	--color-green-800: #648e26; /* index.btn_green */
+	--color-green-900: #406d14;
 	--color-green-950: #0a3c00; /* TrailSummary.summary_container a, TrailSummary.callout*/
 
 	--color-grey-800: #606060; /* TrailSummary.summary_container p */
@@ -18,7 +19,6 @@
 	--color-blue: #425df3;
 
 	/* Colours - unused */
-	--color-green-900: #406d14;
 	/* --color-green-700: #78a22f; */
 	/* --color-green-600: #8db639; */
 	/* --color-green-500: #9dc641; */
