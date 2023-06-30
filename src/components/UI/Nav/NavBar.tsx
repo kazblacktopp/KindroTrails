@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import classes from './NavBar.module.css';
 
 const {
@@ -17,6 +17,7 @@ const {
 	link2,
 	link3,
 	link4,
+	active,
 } = classes;
 
 function NavBar() {
@@ -25,7 +26,11 @@ function NavBar() {
 	const navLinksRef = useRef<HTMLUListElement | null>(null);
 
 	function handleToggleMenu() {
-		setShowMobileMenu(prevState => !prevState);
+		const windowWidth = window.innerWidth;
+
+		if (windowWidth < 756) {
+			setShowMobileMenu(prevState => !prevState);
+		}
 	}
 
 	return (
@@ -47,16 +52,49 @@ function NavBar() {
 
 				<ul className={nav_links} ref={navLinksRef}>
 					<li className={`${link} ${link1}`}>
-						<Link to="/">Home</Link>
-					</li>
-					<li className={`${link} ${link2}`}>
-						<a href="/">About</a>
+						<NavLink
+							to="/"
+							className={({ isActive }) =>
+								isActive ? active : undefined
+							}
+							end
+							onClick={handleToggleMenu}
+						>
+							Home
+						</NavLink>
 					</li>
 					<li className={`${link} ${link3}`}>
-						<a href="/">Search</a>
+						<NavLink
+							to="/search"
+							className={({ isActive }) =>
+								isActive ? active : undefined
+							}
+							onClick={handleToggleMenu}
+						>
+							Search
+						</NavLink>
+					</li>
+					<li className={`${link} ${link2}`}>
+						<NavLink
+							to="/about"
+							className={({ isActive }) =>
+								isActive ? active : undefined
+							}
+							onClick={handleToggleMenu}
+						>
+							About
+						</NavLink>
 					</li>
 					<li className={`${link} ${link4}`}>
-						<a href="/">Contact</a>
+						<NavLink
+							to="/contact"
+							className={({ isActive }) =>
+								isActive ? active : undefined
+							}
+							onClick={handleToggleMenu}
+						>
+							Contact
+						</NavLink>
 					</li>
 				</ul>
 			</nav>
