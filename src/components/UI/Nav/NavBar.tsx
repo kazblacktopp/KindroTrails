@@ -63,7 +63,7 @@ function NavBar() {
 							Home
 						</NavLink>
 					</li>
-					<li className={`${link} ${link3}`}>
+					<li className={`${link} ${link2}`}>
 						<NavLink
 							to="/search"
 							className={({ isActive }) =>
@@ -74,7 +74,7 @@ function NavBar() {
 							Search
 						</NavLink>
 					</li>
-					<li className={`${link} ${link2}`}>
+					<li className={`${link} ${link3}`}>
 						<NavLink
 							to="/about"
 							className={({ isActive }) =>
