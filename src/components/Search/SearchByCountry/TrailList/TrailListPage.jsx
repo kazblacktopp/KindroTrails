@@ -9,7 +9,7 @@ import Spinner from '../../../UI/Spinner/Spinner';
 import capitaliseString from '../../../../helpers/capitaliseString';
 
 import classes from './TrailListPage.module.css';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 export default function TrailListPage() {
 	const { trails, trailIDs, trailLocations, gearList } = useSelector(
@@ -22,24 +22,24 @@ export default function TrailListPage() {
 
 	const { queryDatabase, isLoading, error } = useDatabase();
 
-	const selectedState = localStorage.getItem('selectedState');
+	const { countryId, stateId } = useParams();
 
-	const capitalisedState = capitaliseString(selectedState);
+	const capitalisedState = capitaliseString(stateId);
 
 	const { trail_container_outer, trail_container_inner, trail_btn } = classes;
 
 	async function loadTrailsHandler(event) {
 		event.preventDefault();
 
-		const trailID = event.target.id;
+		const trailId = event.target.id;
 
-		if (!trailID) return;
+		if (!trailId) return;
 
 		try {
-			if (!trails[trailID]) {
+			if (!trails[trailId]) {
 				const trailResult = await queryDatabase({
 					queryType: 'trails',
-					queryID: trailID,
+					queryID: trailId,
 				});
 
 				if (!trailResult) {
@@ -53,7 +53,7 @@ export default function TrailListPage() {
 				dispatch(
 					updateTrailIDs({
 						...trailIDs,
-						[trailID]: true,
+						[trailId]: true,
 					}),
 				);
 			}
@@ -66,22 +66,18 @@ export default function TrailListPage() {
 				dispatch(updateGearList(list));
 			}
 
-			localStorage.setItem('selectedTrail', capitalisedState);
-
-			navigate(`/trail`);
+			navigate(`trail/${trailId}`);
 		} catch (err) {
 			console.error('loadTrailsHandler: ', err);
 		}
 	}
 
-	const selectedCountry = localStorage.getItem('selectedCountry');
-
 	function generateJSX() {
-		const countryObj = trailLocations[selectedCountry];
+		const countryObj = trailLocations[countryId];
 
 		const trailElArray = [];
 
-		for (const trailID in countryObj[selectedState]) {
+		for (const trailID in countryObj[stateId]) {
 			const capitalisedTrail = capitaliseString(trailID);
 
 			trailElArray.push(

@@ -2,16 +2,16 @@ import { useSelector } from 'react-redux';
 import capitaliseString from '../../../../helpers/capitaliseString';
 
 import classes from './StateListPage.module.css';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 export default function StatePage() {
 	const { trailLocations } = useSelector(state => state.trailData);
 
 	const navigate = useNavigate();
 
-	const selectedCountry = localStorage.getItem('selectedCountry');
+	const { countryId } = useParams();
 
-	const capitalisedCountry = capitaliseString(selectedCountry);
+	const capitalisedCountry = capitaliseString(countryId);
 
 	const { state_container_outer, state_container_inner, state_btn } = classes;
 
@@ -20,15 +20,15 @@ export default function StatePage() {
 
 		const stateId = event.target.id;
 
-		localStorage.setItem('selectedState', stateId);
-
-		navigate(`/search/country/state/trail`);
+		navigate(`search/${countryId}/${stateId}`);
 	}
 
 	function generateJSX() {
 		const statesArray = [];
 
-		for (const state in trailLocations[selectedCountry]) {
+		console.log(trailLocations);
+
+		for (const state in trailLocations[countryId]) {
 			const capitalisedState = capitaliseString(state);
 
 			statesArray.push(
