@@ -1,4 +1,12 @@
 .spinner {
+	display: flex;
+	justify-content: center;
+}
+
+.spinner svg {
+	display: block;
 	width: 5rem;
 	height: 5rem;
+	fill: var(--color-primary);
+	animation: rotate 2s infinite linear;
 }
