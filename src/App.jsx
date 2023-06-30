@@ -19,17 +19,20 @@ export default function App() {
 			errorElement: <Error />,
 			children: [
 				{ path: '/', element: <Home /> },
-				{ path: '/search', element: <SearchOptions /> },
-				{ path: '/about', element: <About /> },
-				{ path: '/contact', element: <Contact /> },
-				{ path: '/search/country', element: <CountryListPage /> },
-				{ path: '/search/country/state', element: <StateListPage /> },
+				{ path: 'search', element: <SearchOptions /> },
+				{ path: 'about', element: <About /> },
+				{ path: 'contact', element: <Contact /> },
+				{ path: 'search/country', element: <CountryListPage /> },
 				{
-					path: '/search/country/state/trail',
+					path: 'search/:countryId',
+					element: <StateListPage />,
+				},
+				{
+					path: 'search/:countryId/:stateId',
 					element: <TrailListPage />,
 				},
-				{ path: '/trail', element: <TrailPage /> },
-				{ path: '/new-trail', element: <NewTrail /> },
+				{ path: ':trailId', element: <TrailPage /> },
+				{ path: 'new-trail', element: <NewTrail /> },
 			],
 		},
 	]);
