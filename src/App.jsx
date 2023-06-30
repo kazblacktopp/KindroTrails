@@ -23,9 +23,9 @@ export default function App() {
 				{ path: '/about', element: <About /> },
 				{ path: '/contact', element: <Contact /> },
 				{ path: '/search/country', element: <CountryListPage /> },
-				{ path: 'search/country/state', element: <StateListPage /> },
+				{ path: '/search/country/state', element: <StateListPage /> },
 				{
-					path: 'search/country/state/trail',
+					path: '/search/country/state/trail',
 					element: <TrailListPage />,
 				},
 				{ path: '/trail', element: <TrailPage /> },
