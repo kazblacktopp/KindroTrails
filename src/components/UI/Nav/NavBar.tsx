@@ -65,7 +65,7 @@ function NavBar() {
 					</li>
 					<li className={`${link} ${link2}`}>
 						<NavLink
-							to="/search"
+							to="search"
 							className={({ isActive }) =>
 								isActive ? active : undefined
 							}
@@ -76,7 +76,7 @@ function NavBar() {
 					</li>
 					<li className={`${link} ${link3}`}>
 						<NavLink
-							to="/about"
+							to="about"
 							className={({ isActive }) =>
 								isActive ? active : undefined
 							}
@@ -87,7 +87,7 @@ function NavBar() {
 					</li>
 					<li className={`${link} ${link4}`}>
 						<NavLink
-							to="/contact"
+							to="contact"
 							className={({ isActive }) =>
 								isActive ? active : undefined
 							}

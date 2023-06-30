@@ -41,7 +41,7 @@ export default function SearchOptions() {
 				dispatch(updateTrailLocations(queryResult));
 			}
 
-			navigate('/search/country');
+			navigate('search/country');
 		} catch (err) {
 			console.error('searchByCountryHandler: ', err);
 		}

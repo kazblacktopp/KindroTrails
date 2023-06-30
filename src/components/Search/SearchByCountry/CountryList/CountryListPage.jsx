@@ -17,9 +17,7 @@ export default function CountryPage() {
 
 		const countryId = event.target.id;
 
-		localStorage.setItem('selectedCountry', countryId);
-
-		navigate('/search/country/state');
+		navigate(`search/${countryId}`);
 	}
 
 	function generateJSX() {
