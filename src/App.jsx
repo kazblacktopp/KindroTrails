@@ -31,8 +31,8 @@ export default function App() {
 					path: 'search/:countryId/:stateId',
 					element: <TrailListPage />,
 				},
-				{ path: ':trailId', element: <TrailPage /> },
-				{ path: 'new-trail', element: <NewTrail /> },
+				{ path: 'trail/:trailId', element: <TrailPage /> },
+				{ path: 'trail/new', element: <NewTrail /> },
 			],
 		},
 	]);
