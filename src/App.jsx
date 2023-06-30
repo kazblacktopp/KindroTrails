@@ -18,7 +18,7 @@ export default function App() {
 			element: <RootLayout />,
 			errorElement: <Error />,
 			children: [
-				{ path: '/', element: <Home /> },
+				{ index: true, element: <Home /> },
 				{ path: 'search', element: <SearchOptions /> },
 				{ path: 'about', element: <About /> },
 				{ path: 'contact', element: <Contact /> },
