@@ -17,6 +17,9 @@
 }
 
 .search_btn {
+	display: flex;
+	align-items: center;
+	justify-content: center;
 	width: 20rem;
 	height: 15rem;
 }
@@ -52,7 +55,7 @@
 		flex-direction: row;
 	}
 
-	.search_container_inner button {
+	.search_container_inner .search_btn {
 		font-size: 2.4rem;
 	}
 
