@@ -1,19 +1,7 @@
-import { useSelector, useDispatch } from 'react-redux';
-import { updateTrailLocations } from '../../store/trailData-slice';
-import { useDatabase } from '../../hooks/use-database';
-import Spinner from '../UI/Spinner/Spinner';
+import { Link } from 'react-router-dom';
 import classes from './SearchOptions.module.css';
-import { useNavigate } from 'react-router-dom';
 
 export default function SearchOptions() {
-	const { trailLocations } = useSelector(state => state.trailData);
-
-	const navigate = useNavigate();
-
-	const dispatch = useDispatch();
-
-	const { queryDatabase, isLoading, error } = useDatabase();
-
 	const {
 		search_container_outer,
 		search_container_inner,
@@ -25,57 +13,20 @@ export default function SearchOptions() {
 	const nameBtnClasses = `btn_blue ${search_btn} ${coming_soon}`;
 	const gradeBtnClasses = `btn_red ${search_btn} ${coming_soon}`;
 
-	async function searchByCountryHandler() {
-		try {
-			if (!Object.keys(trailLocations).length) {
-				const queryResult = await queryDatabase({
-					queryType: 'trailLocations',
-				});
-
-				if (!queryResult) {
-					throw new Error(
-						'The database did not return a query result.',
-					);
-				}
-
-				dispatch(updateTrailLocations(queryResult));
-			}
-
-			navigate('search/country');
-		} catch (err) {
-			console.error('searchByCountryHandler: ', err);
-		}
-	}
-
-	let searchPageContent = (
-		<>
-			<button
-				className={countryBtnClasses}
-				onClick={searchByCountryHandler}
-			>
-				Search By Country
-			</button>
-			<button className={nameBtnClasses}>Search By Trail Name</button>
-			<button className={gradeBtnClasses}>Search By Grade</button>
-		</>
-	);
-
-	if (isLoading) {
-		searchPageContent = (
-			<div className="container_centered">
-				<Spinner />
-			</div>
-		);
-	}
-
-	if (error) {
-		alert(error);
-	}
-
 	return (
 		<div className={search_container_outer}>
 			<h2>Search for a trail:</h2>
-			<div className={search_container_inner}>{searchPageContent}</div>
+			<div className={search_container_inner}>
+				<Link to="country" className={countryBtnClasses}>
+					Search By Country
+				</Link>
+				<button className={nameBtnClasses} disabled>
+					Search By Trail Name
+				</button>
+				<button className={gradeBtnClasses} disabled>
+					Search By Grade
+				</button>
+			</div>
 		</div>
 	);
 }
