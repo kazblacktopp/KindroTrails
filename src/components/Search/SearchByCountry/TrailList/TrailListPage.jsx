@@ -66,7 +66,7 @@ export default function TrailListPage() {
 				dispatch(updateGearList(list));
 			}
 
-			navigate(`trail/${trailId}`);
+			navigate(`/trail/${trailId}`);
 		} catch (err) {
 			console.error('loadTrailsHandler: ', err);
 		}
