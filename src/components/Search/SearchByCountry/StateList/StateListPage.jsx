@@ -20,13 +20,11 @@ export default function StatePage() {
 
 		const stateId = event.target.id;
 
-		navigate(`search/${countryId}/${stateId}`);
+		navigate(`/search/${countryId}/${stateId}`);
 	}
 
 	function generateJSX() {
 		const statesArray = [];
-
-		console.log(trailLocations);
 
 		for (const state in trailLocations[countryId]) {
 			const capitalisedState = capitaliseString(state);
