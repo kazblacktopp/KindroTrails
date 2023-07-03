@@ -20,7 +20,7 @@ const {
 	active,
 } = classes;
 
-function NavBar() {
+export default function MainNavigation() {
 	const [showMobileMenu, setShowMobileMenu] = useState<boolean>(false);
 
 	const navLinksRef = useRef<HTMLUListElement | null>(null);
@@ -101,5 +101,3 @@ function NavBar() {
 		</header>
 	);
 }
-
-export default NavBar;
