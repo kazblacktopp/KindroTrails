@@ -62,6 +62,8 @@
 	.section {
 		padding-left: 0;
 		padding-right: 0;
+		max-width: 120rem;
+		margin: auto;
 	}
 
 	.title_container h1 {
