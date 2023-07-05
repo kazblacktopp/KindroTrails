@@ -63,9 +63,16 @@
 /* Laptop Screen Size and Above */
 @media only screen and (min-width: 1024px) {
 	.gallery_box {
-		grid-template-columns: repeat(2, 1fr);
-		grid-template-rows: repeat(5, 1fr);
+		grid-template-columns: repeat(auto-fit, minmax(118px, 1fr));
+		align-content: center;
+		height: 100%;
 		padding: 3.2rem 0 3.2rem;
+	}
+}
+
+@media only screen and (min-width: 1340px) {
+	.gallery_box {
+		grid-template-columns: repeat(auto-fit, minmax(124px, 1fr));
 	}
 }
 

@@ -59,6 +59,11 @@
 
 /* Desktop Screen Size and Above */
 @media only screen and (min-width: 1024px) {
+	.section {
+		padding-left: 0;
+		padding-right: 0;
+	}
+
 	.title_container h1 {
 		font-size: 4.6rem;
 	}
@@ -72,6 +77,7 @@
 		align-items: flex-start;
 		justify-content: center;
 		max-width: 136rem;
+		gap: 3.2rem;
 	}
 }
 
