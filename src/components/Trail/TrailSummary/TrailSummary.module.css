@@ -71,10 +71,6 @@
 	.summary_container {
 		margin-bottom: 6rem;
 		padding: 0 2rem;
-	}
-
-	.summary_container p,
-	.summary_container a {
 		font-size: 1.8rem;
 	}
 
@@ -87,16 +83,21 @@
 /* Laptop Screen Size and Above */
 @media only screen and (min-width: 1024px) {
 	.section_summary {
-		padding: 3.2rem 6.4rem 0 3.2rem;
+		padding: 3.2rem 0 0 0;
 		margin: 0;
+	}
+
+	.summary_container {
+		font-size: 1.6rem;
+		margin-bottom: 2rem;
+	}
+
+	.summary_container p {
+		text-align: left;
 	}
 
 	.callout_container {
 		align-items: flex-start;
-	}
-
-	.callout:first-of-type {
-		margin-bottom: 2rem;
 	}
 
 	.callout h3 {
@@ -111,7 +112,7 @@
 /* Desktop Screen Size and Above */
 @media only screen and (min-width: 1280px) {
 	.summary_container p {
-		font-size: 2rem;
+		padding: 0 2rem;
 	}
 
 	.callout h3 {
@@ -119,7 +120,7 @@
 	}
 
 	.callout ul {
-		font-size: var(--font-size-body-regular);
+		font-size: var(--font-size-body-small);
 	}
 }
 

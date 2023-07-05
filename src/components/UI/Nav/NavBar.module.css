@@ -1,32 +1,167 @@
 .nav {
-	margin-right: auto;
-}
-
-.nav li {
 	display: flex;
+	justify-content: space-between;
 	align-items: center;
-	justify-content: center;
-	list-style: none;
+	height: 10vh;
+	position: relative;
+	padding: 0 3rem;
 }
 
-.nav button {
-	border: none;
-	background: none;
+.nav.toggle {
+	animation: navBarFadeInOut 0.5s ease forwards;
 }
 
-.nav img {
+.logo {
 	width: 5rem;
 	height: 5rem;
 	cursor: pointer;
 	transition: scale 300ms;
 }
 
-.nav img:hover {
+.logo:hover {
 	transform: scale(1.05);
 }
 
 @supports (scale: 1) {
-	.nav img:hover {
+	.logo:hover {
 		scale: 1.05;
+	}
+}
+
+.hamburger {
+	cursor: pointer;
+}
+
+.line {
+	width: 2.5rem;
+	height: 0.3rem;
+	background-color: blue;
+	margin: 0.5rem;
+	transition: all 300ms ease;
+}
+
+.toggle .line1 {
+	transform: rotate(-45deg) translate(-5px, 6px);
+	background-color: var(--color-green-100);
+}
+
+.toggle .line2 {
+	opacity: 0;
+}
+
+.toggle .line3 {
+	transform: rotate(45deg) translate(-5px, -6px);
+	background-color: var(--color-green-100);
+}
+
+.toggle .hamburger:hover .line1,
+.toggle .hamburger:hover .line3 {
+	background-color: white;
+}
+
+.nav_links {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: space-around;
+	position: absolute;
+	padding-bottom: 5vh;
+	top: 10vh;
+	left: 100%;
+	width: 100%;
+	height: 90vh;
+	list-style: none;
+	background-color: var(--color-green-900);
+	transition: all 300ms ease-in;
+	z-index: 1;
+}
+
+.toggle .nav_links {
+	left: 0%;
+}
+
+.link {
+	opacity: 0;
+	transform: translateX(40vw);
+}
+
+.link a {
+	color: var(--color-green-100);
+	font-weight: 600;
+}
+
+.link a:hover,
+.link a.active {
+	color: var(--color-green-50);
+	padding-bottom: 3px;
+	border-bottom: 2px solid var(--color-green-50);
+}
+
+.toggle .link1 {
+	animation: navLinkSlideInOut 0.5s ease forwards 0.1s;
+}
+
+.toggle .link2 {
+	animation: navLinkSlideInOut 0.5s ease forwards 0.2s;
+}
+
+.toggle .link3 {
+	animation: navLinkSlideInOut 0.5s ease forwards 0.4s;
+}
+
+.toggle .link4 {
+	animation: navLinkSlideInOut 0.5s ease forwards 0.5s;
+}
+
+@keyframes navBarFadeInOut {
+	0% {
+		background-color: none;
+	}
+	100% {
+		background-color: var(--color-green-900);
+	}
+}
+
+@keyframes navLinkSlideInOut {
+	0% {
+		opacity: 0;
+		transform: translateX(40vw);
+	}
+	100% {
+		opacity: 1;
+		transform: translateX(0);
+	}
+}
+
+@media only screen and (min-width: 756px) {
+	.hamburger {
+		display: none;
+	}
+
+	.nav_links {
+		flex-direction: row;
+		justify-content: flex-end;
+		gap: 0.5rem;
+		position: static;
+		padding-bottom: 0;
+		height: 10vh;
+		background-color: inherit;
+		margin-left: auto;
+	}
+
+	.link {
+		opacity: 1;
+		transform: translateX(0);
+	}
+
+	.link a {
+		color: var(--color-green-900);
+		margin: 2rem 2.5rem;
+	}
+
+	.link a:hover,
+	.link a.active {
+		color: var(--color-green-950);
+		border-bottom-color: var(--color-green-950);
 	}
 }
