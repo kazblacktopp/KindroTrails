@@ -38,7 +38,7 @@ function TrailPage({ trailData = null, images = null }) {
 	} = classes;
 
 	return (
-		<main className={section}>
+		<section className={section}>
 			<div className={section_container}>
 				<div className={title_container}>
 					<h1>{capitalisedTitle}</h1>
@@ -54,7 +54,7 @@ function TrailPage({ trailData = null, images = null }) {
 			<div className={section_container}>
 				<RecommendedGearList trailGearList={recommendedGear} />
 			</div>
-		</main>
+		</section>
 	);
 }
 
