@@ -1,4 +1,9 @@
-import { initializeApp } from 'firebase/app';
+//* Import firebase compat packages, instead of modular packages, to support the FirebaseUI widget - compat packages to be removed after FirebaseUI widget is updated to support v9+ modular SDK
+// import { initializeApp } from 'firebase/app'; //* v9 modular package import
+// import { getAuth } from 'firebase/auth'; //* v9 modular package import
+import firebase from 'firebase/compat/app'; //* compat namespace package import
+import 'firebase/compat/auth'; //* compat namespace package import
+
 import {
 	getDatabase,
 	ref as createRefInDatabase,
@@ -7,7 +12,10 @@ import {
 } from 'firebase/database';
 import { firebaseConfig } from '../config/firebaseConfig';
 
-const app = initializeApp(firebaseConfig);
+//* Initialise app using compat namespace method instead of v9 modular function
+// const app = initializeApp(firebaseConfig); //* v9 modular function
+const app = firebase.initializeApp(firebaseConfig); //* compat namespace method
+
 const database = getDatabase(app);
 
 export async function queryDatabase({ queryType, queryID = '' }) {
