@@ -13,6 +13,7 @@
     "@testing-library/user-event": "^13.5.0",
     "dompurify": "^2.4.5",
     "firebase": "^10.0.0",
+    "firebaseui": "^6.0.2",
     "html-react-parser": "^3.0.16",
     "lodash.clonedeep": "^4.5.0",
     "photoswipe": "^5.3.7",
