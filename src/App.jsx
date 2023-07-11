@@ -1,5 +1,5 @@
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
-import RootLayout from './components/RootLayout';
+import RootLayout from './pages/Root';
 import HomePage from './pages/Home';
 import SearchOptions from './components/Search/SearchOptions';
 import CountryListPage, {

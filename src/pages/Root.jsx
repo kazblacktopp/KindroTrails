@@ -1,6 +1,6 @@
 import { Outlet, useNavigation } from 'react-router-dom';
-import MainNavigation from './UI/Nav/NavBar';
-import Spinner from './UI/Spinner/Spinner';
+import MainNavigation from '../components/UI/Nav/NavBar';
+import Spinner from '../components/UI/Spinner/Spinner';
 
 export default function RootLayout() {
 	const navigation = useNavigation();
