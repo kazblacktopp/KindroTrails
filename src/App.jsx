@@ -1,6 +1,6 @@
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import RootLayout from './components/RootLayout';
-import Home from './pages/Home/Home.jsx';
+import HomePage from './pages/Home';
 import SearchOptions from './components/Search/SearchOptions';
 import CountryListPage, {
 	loader as countryListLoader,
@@ -9,9 +9,9 @@ import StateListPage from './components/Search/SearchByCountry/StateList/StateLi
 import TrailListPage from './components/Search/SearchByCountry/TrailList/TrailListPage';
 import TrailPage from './components/Trail/TrailPage/TrailPage';
 import NewTrail from './components/NewTrail/NewTrail';
-import ErrorPage from './pages/Home/Error.jsx';
-import About from './pages/Home/About';
-import Contact from './pages/Home/Contact';
+import ErrorPage from './pages/Error';
+import AboutPage from './pages/About';
+import ContactPage from './pages/Contact';
 
 export default function App() {
 	const router = createBrowserRouter([
@@ -20,10 +20,10 @@ export default function App() {
 			element: <RootLayout />,
 			errorElement: <ErrorPage />,
 			children: [
-				{ index: true, element: <Home /> },
+				{ index: true, element: <HomePage /> },
 				{ path: 'search', element: <SearchOptions /> },
-				{ path: 'about', element: <About /> },
-				{ path: 'contact', element: <Contact /> },
+				{ path: 'about', element: <AboutPage /> },
+				{ path: 'contact', element: <ContactPage /> },
 				{
 					path: 'search/country',
 					loader: countryListLoader,
