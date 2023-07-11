@@ -17,6 +17,7 @@ const {
 	link2,
 	link3,
 	link4,
+	link5,
 	active,
 } = classes;
 
@@ -94,6 +95,17 @@ export default function MainNavigation() {
 							onClick={handleToggleMenu}
 						>
 							Contact
+						</NavLink>
+					</li>
+					<li className={`${link} ${link5}`}>
+						<NavLink
+							to="login"
+							className={({ isActive }) =>
+								isActive ? active : undefined
+							}
+							onClick={handleToggleMenu}
+						>
+							Login
 						</NavLink>
 					</li>
 				</ul>
