@@ -12,6 +12,7 @@ import NewTrail from './components/NewTrail/NewTrail';
 import ErrorPage from './pages/Error';
 import AboutPage from './pages/About';
 import ContactPage from './pages/Contact';
+import LoginPage from './pages/Login';
 
 export default function App() {
 	const router = createBrowserRouter([
@@ -24,6 +25,7 @@ export default function App() {
 				{ path: 'search', element: <SearchOptions /> },
 				{ path: 'about', element: <AboutPage /> },
 				{ path: 'contact', element: <ContactPage /> },
+				{ path: 'login', element: <LoginPage /> },
 				{
 					path: 'search/country',
 					loader: countryListLoader,
